@@ -2,9 +2,9 @@ use godot::{engine::Engine, prelude::*};
 
 pub mod flux;
 pub mod startup;
+pub mod content;
 
 struct MyExtension;
-
 
 #[gdextension]
 unsafe impl ExtensionLibrary for MyExtension {
