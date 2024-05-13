@@ -1,3 +1,3 @@
-pub mod map;
-pub mod mapset;
+pub mod beatmap;
+pub mod beatmapset;
 pub mod sspm;

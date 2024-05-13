@@ -1,6 +1,6 @@
 use std::{borrow::{Borrow, BorrowMut}, sync::{mpsc, Arc, Mutex}, thread};
 
-use godot::{engine::{os, Control, DirAccess, DirectionalLight2D, IControl, Label, Os}, prelude::*};
+use godot::{engine::{IControl, Label, Os, Time}, prelude::*};
 
 use crate::content::maploader::MapLoader;
 
@@ -52,10 +52,8 @@ impl INode for Startup {
     fn enter_tree(&mut self) {        
         let internal = Arc::clone(&self.internal);
         
-        thread::scope(|s| {
-            s.spawn(|| {
-                Self::run_load(internal);
-            });
+        thread::spawn(|| {
+            Self::run_load(internal);
         });
     }
 }
@@ -64,8 +62,18 @@ impl Startup {
     fn run_load(internal: Arc<Mutex<StartupInternal>>) {
         let os = Os::singleton();
         let user_dir = os.get_user_data_dir().to_string();
+
         internal.lock().unwrap().stage = "Loading maps".to_string();
-        MapLoader::load_all_from_dir(format!("{}/maps", user_dir));
+        Self::load_maps(user_dir);
         internal.lock().unwrap().stage = "Done".to_string();
+    }
+
+    fn load_maps(user_dir: String) {
+        let time = Time::singleton();
+
+        let start = time.get_ticks_usec();
+        MapLoader::load_all_from_dir(format!("{}/maps", user_dir));
+        let end = time.get_ticks_usec();
+        godot_print!("Loaded maps in {}ms", (end - start) / 1000);
     }
 }

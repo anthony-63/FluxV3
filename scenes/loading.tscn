@@ -35,6 +35,7 @@ offset_bottom = 35.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Loading Flux"
+horizontal_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1

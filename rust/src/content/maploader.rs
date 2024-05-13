@@ -1,7 +1,6 @@
-use godot::prelude::*;
+use godot::{engine::{Os, Time}, prelude::*};
 
-use crate::{content::maps::mapset::Mapset, FLUX};
-
+use crate::{content::maps::beatmapset::BeatmapSet, FLUX};
 
 pub struct MapLoader;
 impl MapLoader {
@@ -11,7 +10,9 @@ impl MapLoader {
         let map_folders = std::fs::read_dir(path).unwrap();
 
         for folder in map_folders {
-            godot_print!("loading map {}", folder.unwrap().path().display());
+            unsafe {
+                FLUX.loaded_mapsets.push(BeatmapSet::from_folder(folder.unwrap().path().to_str().unwrap().to_string()));
+            }
         }
     }
 }
