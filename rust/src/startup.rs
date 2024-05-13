@@ -47,6 +47,13 @@ impl INode for Startup {
 
             self.dot_timer = 0.
         }
+
+        if internal.stage.contains("Done")
+        {
+            drop(internal);
+            godot_print!("HI");
+            self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/menu.tscn".into_godot());
+        }
     }
 
     fn enter_tree(&mut self) {        
@@ -55,6 +62,8 @@ impl INode for Startup {
         thread::spawn(|| {
             Self::run_load(internal);
         });
+
+
     }
 }
 
