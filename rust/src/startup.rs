@@ -58,12 +58,14 @@ impl INode for Startup {
             });
         });
     }
-
-    
 }
 
 impl Startup { 
     fn run_load(internal: Arc<Mutex<StartupInternal>>) {
+        let os = Os::singleton();
+        let user_dir = os.get_user_data_dir().to_string();
         internal.lock().unwrap().stage = "Loading maps".to_string();
+        MapLoader::load_all_from_dir(format!("{}/maps", user_dir));
+        internal.lock().unwrap().stage = "Done".to_string();
     }
 }
