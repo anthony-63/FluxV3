@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Debug Project (Godot 4)",
+            "type": "lldb", // type provided by CodeLLDB extension
+            "request": "launch",
+            "preLaunchTask": "rust: cargo build",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "--path", // run editor (remove this to launch the scene directly)
+                "C:\\Users\\antho\\Documents\\Code\\Rust\\FluxV3", // windowed mode
+            ],
+            "windows": {
+                "program": "C:\\Users\\antho\\Documents\\godot\\Godot_v4.2.2-stable_win64.exe",
+            }
+        }
+    ]
+}
