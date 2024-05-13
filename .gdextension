@@ -4,5 +4,5 @@ compatibility_minimum = 4.2
 reloadable = true
 
 [libraries]
-windows.debug.x86_64 =   "res://rust/target/debug/rust.dll"
-windows.release.x86_64 = "res://rust/target/release/rust.dll"
+windows.debug.x86_64 =   "res://rust/target/debug/fluxv3.dll"
+windows.release.x86_64 = "res://rust/target/release/fluxv3.dll"

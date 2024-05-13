@@ -1,5 +1,5 @@
 [package]
-name = "rust"
+name = "fluxv3"
 version = "0.1.0"
 edition = "2021"
 
@@ -12,3 +12,4 @@ crate-type = ["cdylib"]
 godot = { git = "https://github.com/godot-rust/gdext", branch = "master", features=["experimental-threads"] }
 json = "*"
 tokio = {version = "*", features = ["full"]}
+byteorder = "*"

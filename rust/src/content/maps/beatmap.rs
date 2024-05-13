@@ -1,18 +1,17 @@
-use super::beatmapset::BeatmapSet;
-
+#[derive(Default)]
 pub struct NoteData {
-    x: f32,
-    y: f32,
-    time: f32,
+    pub x: f32,
+    pub y: f32,
+    pub time: f32,
 }
 
 
 pub struct Beatmap {
-    broken: bool,
-    version: u8,
-    path: String,
-    name: String,
-    notes: Vec<NoteData>,
+    pub broken: bool,
+    pub version: u8,
+    pub path: String,
+    pub name: String,
+    pub notes: Vec<NoteData>,
 }
 
 impl Beatmap {

@@ -6,19 +6,19 @@ use super::beatmap::Beatmap;
 
 #[derive(Default)]
 pub struct BeatmapSet {
-    broken: bool,
+    pub broken: bool,
 
-    version: u8,
-    hash: String,
-    path: String,
+    pub version: u8,
+    pub hash: String,
+    pub path: String,
 
-    artist: String,
-    title: String,
+    pub artist: String,
+    pub title: String,
     
-    difficulties: Vec<Beatmap>,
-    mappers: Vec<String>,
+    pub difficulties: Vec<Beatmap>,
+    pub mappers: Vec<String>,
 
-    music_path: String,
+    pub music_path: String,
 }
 
 impl BeatmapSet {
@@ -48,7 +48,7 @@ impl BeatmapSet {
             difficulties.push(Beatmap::from_file(format!("{}/{}", folder_path, difficulty.to_string())))
         }
 
-        let mut music_path = meta["_music"].to_string();
+        let music_path = meta["_music"].to_string();
         
         Self {
             broken: false,

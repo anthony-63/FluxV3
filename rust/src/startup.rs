@@ -1,6 +1,6 @@
-use std::{borrow::{Borrow, BorrowMut}, sync::{mpsc, Arc, Mutex}, thread};
+use std::{sync::{Arc, Mutex}, thread};
 
-use godot::{engine::{IControl, Label, Os, Time}, prelude::*};
+use godot::{engine::{Label, Os, Time}, prelude::*};
 
 use crate::content::maploader::MapLoader;
 
@@ -48,10 +48,8 @@ impl INode for Startup {
             self.dot_timer = 0.
         }
 
-        if internal.stage.contains("Done")
-        {
+        if internal.stage.contains("Done") {
             drop(internal);
-            godot_print!("HI");
             self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/menu.tscn".into_godot());
         }
     }
