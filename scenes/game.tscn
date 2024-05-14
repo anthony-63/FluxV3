@@ -1,7 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dd3hfhgjj3yvn"]
+[gd_scene load_steps=11 format=3 uid="uid://dd3hfhgjj3yvn"]
 
 [ext_resource type="Texture2D" uid="uid://45n06myc80yj" path="res://assets/skins/Default/grid.png" id="1_ju5r5"]
 [ext_resource type="Texture2D" uid="uid://cc5kpuab5r4pq" path="res://assets/skins/Default/cursor.png" id="2_hp5it"]
+[ext_resource type="ArrayMesh" uid="uid://bb4k165orjql6" path="res://assets/skins/Default/mesh.obj" id="3_5k0cv"]
+[ext_resource type="PackedScene" uid="uid://bow41ovi3ktl0" path="res://prefabs/righthud.tscn" id="3_5me73"]
+[ext_resource type="PackedScene" uid="uid://gi3jmg8gqxa" path="res://prefabs/lefthud.tscn" id="4_662rr"]
 
 [sub_resource type="Environment" id="Environment_ur1ql"]
 background_mode = 1
@@ -16,12 +19,23 @@ viewport_path = NodePath("HUD/RightViewport")
 [sub_resource type="ViewportTexture" id="ViewportTexture_2m5mu"]
 viewport_path = NodePath("HUD/LeftViewport")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_argoq"]
-bg_color = Color(0, 0, 0, 0.898039)
-corner_radius_top_left = 32
-corner_radius_top_right = 32
-corner_radius_bottom_right = 32
-corner_radius_bottom_left = 32
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_haxa0"]
+render_priority = 2
+transparency = 4
+depth_draw_mode = 1
+shading_mode = 0
+specular_mode = 2
+disable_ambient_light = true
+disable_fog = true
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="MultiMesh" id="MultiMesh_sp2eq"]
+transform_format = 1
+use_colors = true
+instance_count = 1
+mesh = ExtResource("3_5k0cv")
+buffer = PackedFloat32Array(0, 0, 0, 0.7, 8.5, 146.5, 0, 0, 0, 0.7, 9.5, 147.5, 0, 0, 0, 0.7)
 
 [node name="Game" type="Node3D"]
 
@@ -58,11 +72,7 @@ handle_input_locally = false
 size = Vector2i(360, 720)
 render_target_update_mode = 4
 
-[node name="HUD" type="Panel" parent="HUD/RightViewport"]
-custom_minimum_size = Vector2(360, 720)
-offset_right = 40.0
-offset_bottom = 40.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_argoq")
+[node name="HUD" parent="HUD/RightViewport" instance=ExtResource("3_5me73")]
 
 [node name="LeftViewport" type="SubViewport" parent="HUD"]
 transparent_bg = true
@@ -70,8 +80,11 @@ handle_input_locally = false
 size = Vector2i(360, 720)
 render_target_update_mode = 4
 
-[node name="HUD" type="Panel" parent="HUD/LeftViewport"]
-custom_minimum_size = Vector2(360, 720)
-offset_right = 40.0
-offset_bottom = 40.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_argoq")
+[node name="HUD" parent="HUD/LeftViewport" instance=ExtResource("4_662rr")]
+
+[node name="NoteManager" type="Node" parent="."]
+
+[node name="NoteRenderer" type="MultiMeshInstance3D" parent="NoteManager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.15)
+material_override = SubResource("StandardMaterial3D_haxa0")
+multimesh = SubResource("MultiMesh_sp2eq")

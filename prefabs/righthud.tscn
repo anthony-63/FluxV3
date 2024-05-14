@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://bow41ovi3ktl0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_argoq"]
+bg_color = Color(0, 0, 0, 0.898039)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[node name="HUD" type="Panel"]
+custom_minimum_size = Vector2(360, 720)
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_argoq")
