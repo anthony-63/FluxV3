@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dd3hfhgjj3yvn"]
+[gd_scene load_steps=13 format=3 uid="uid://dd3hfhgjj3yvn"]
 
 [ext_resource type="Texture2D" uid="uid://45n06myc80yj" path="res://assets/skins/Default/grid.png" id="1_ju5r5"]
 [ext_resource type="Texture2D" uid="uid://cc5kpuab5r4pq" path="res://assets/skins/Default/cursor.png" id="2_hp5it"]
@@ -37,6 +37,9 @@ use_colors = true
 instance_count = 1
 mesh = ExtResource("3_5k0cv")
 buffer = PackedFloat32Array(0, 0, 0, 0.7, 8.5, 146.5, 0, 0, 0, 0.7, 9.5, 147.5, 0, 0, 0, 0.7)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7wv0u"]
+font_size = 24
 
 [node name="Game" type="Node3D"]
 
@@ -97,3 +100,11 @@ multimesh = SubResource("MultiMesh_sp2eq")
 [node name="Music" type="AudioStreamPlayer" parent="SyncManager"]
 stream = ExtResource("6_46wqm")
 bus = &"Music"
+
+[node name="DebugLabel" type="DebugLabel" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "DEBVYAS(HU*ADS*(HADHS*(
+ASDH*ADSH*ADSH*(DAS*(
+ADSH*(ADS*(HH*(ADS"
+label_settings = SubResource("LabelSettings_7wv0u")
