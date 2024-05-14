@@ -114,6 +114,7 @@ impl SSPMParser {
         let before_notes = std::time::SystemTime::now();
         let notes = parser.get_notes(note_count, offsets.marker_offset);
         let elapsed_notes = std::time::SystemTime::now().duration_since(before_notes).unwrap();
+        
         godot_print!("loaded {} notes in {}ms", note_count, elapsed_notes.as_millis());
 
         let audio_buffer: Vec<u8> = parser.get_audio_buffer(offsets.audio_offset, offsets.audio_length);

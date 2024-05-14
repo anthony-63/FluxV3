@@ -4,7 +4,7 @@ use godot::prelude::*;
 pub mod flux;
 pub mod startup;
 pub mod content;
-
+pub mod menu;
 struct MyExtension;
 
 static mut FLUX: Flux = Flux {

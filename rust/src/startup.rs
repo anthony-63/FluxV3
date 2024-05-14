@@ -56,12 +56,9 @@ impl INode for Startup {
 
     fn enter_tree(&mut self) {        
         let internal = Arc::clone(&self.internal);
-        
         thread::spawn(|| {
             Self::run_load(internal);
         });
-
-
     }
 }
 

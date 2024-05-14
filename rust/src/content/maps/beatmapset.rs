@@ -45,7 +45,7 @@ impl BeatmapSet {
 
         let mut difficulties: Vec<Beatmap> = vec![];
         for difficulty in meta["_difficulties"].members() {
-            difficulties.push(Beatmap::from_file(format!("{}/{}", folder_path, difficulty.to_string())))
+            difficulties.push(Beatmap::from_file(format!("{}/{}", folder_path, difficulty.to_string())));
         }
 
         let music_path = meta["_music"].to_string();
