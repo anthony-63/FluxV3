@@ -11,7 +11,7 @@ pub struct SyncManager {
     speed: f32,
     
     last_time: f64,
-    real_time: f64,
+    pub real_time: f64,
     time_delay: f64,
     playing: bool,
 }

@@ -6,6 +6,7 @@ use self::{cursor::Cursor, managers::sync_manager::SyncManager};
 
 pub mod cursor;
 pub mod managers;
+pub mod debug;
 
 #[derive(GodotClass)]
 #[class(base=Node3D)]
