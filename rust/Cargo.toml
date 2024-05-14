@@ -10,6 +10,8 @@ crate-type = ["cdylib"]
 
 [dependencies]
 godot = { git = "https://github.com/godot-rust/gdext", branch = "master", features=["experimental-threads"] }
-json = "*"
-tokio = {version = "*", features = ["full"]}
-byteorder = "*"
+json = "0.12.4"
+tokio = {version = "1.37.0", features = ["full"]}
+byteorder = "1.5.0"
+serde = {version = "1.0.201", features = ["derive"]}
+bincode = "1.3.3"

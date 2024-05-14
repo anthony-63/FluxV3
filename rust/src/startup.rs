@@ -2,7 +2,7 @@ use std::{sync::{Arc, Mutex}, thread};
 
 use godot::{engine::{Label, Os, Time}, prelude::*};
 
-use crate::content::maploader::MapLoader;
+use crate::{content::maploader::MapLoader, settings::Settings, FLUX};
 
 #[derive(GodotClass)]
 #[class(base=Node)]
@@ -67,9 +67,19 @@ impl Startup {
         let os = Os::singleton();
         let user_dir = os.get_user_data_dir().to_string();
 
+        internal.lock().unwrap().stage = "Loading settings".to_string();
+        Self::load_settings();
+
         internal.lock().unwrap().stage = "Loading maps".to_string();
-        Self::load_maps(user_dir);
+        Self::load_maps(user_dir.clone());
         internal.lock().unwrap().stage = "Done".to_string();
+    }
+
+    fn load_settings() {
+        unsafe {
+            FLUX.settings = Some(Settings::new());
+            FLUX.settings.as_mut().unwrap().update(true);
+        }
     }
 
     fn load_maps(user_dir: String) {

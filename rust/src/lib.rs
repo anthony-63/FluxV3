@@ -5,10 +5,13 @@ pub mod flux;
 pub mod startup;
 pub mod content;
 pub mod menu;
+pub mod settings;
+
 struct MyExtension;
 
 static mut FLUX: Flux = Flux {
     loaded_mapsets: vec![],
+    settings: None,
 };
 
 #[gdextension]
