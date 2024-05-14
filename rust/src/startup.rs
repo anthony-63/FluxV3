@@ -50,7 +50,7 @@ impl INode for Startup {
 
         if internal.stage.contains("Done") {
             drop(internal);
-            self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/game.tscn".into_godot());
+            self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/menu.tscn".into_godot());
         }
     }
 

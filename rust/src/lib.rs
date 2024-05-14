@@ -13,6 +13,8 @@ struct MyExtension;
 static mut FLUX: Flux = Flux {
     loaded_mapsets: vec![],
     settings: None,
+    selected_map: None,
+    selected_mapset: None,
 };
 
 #[gdextension]

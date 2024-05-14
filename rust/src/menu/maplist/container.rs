@@ -41,13 +41,19 @@ impl IVBoxContainer for MapContainer {
 #[godot_api]
 impl MapContainer {
     #[func]
-    pub fn selected_map(&mut self, mapset: Gd<BeatmapSet>, _map: Gd<Beatmap>) {
-        let map_audio = mapset.bind().load_audio(true);
-        if map_audio == None {
-            return;
+    pub fn selected_map(&mut self, mapset: Gd<BeatmapSet>, map: Gd<Beatmap>) {
+        unsafe {
+            FLUX.selected_map = Some(map.clone());
+            FLUX.selected_mapset = Some(mapset.clone());
         }
+        self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/game.tscn".into_godot());
 
-        self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
-        self.audio_player.as_mut().unwrap().play();
+        // let map_audio = mapset.bind().load_audio(true);
+        // if map_audio == None {
+        //     return;
+        // }
+
+        // self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
+        // self.audio_player.as_mut().unwrap().play();
     }
 }

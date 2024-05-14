@@ -29,7 +29,7 @@ impl IButton for MapButton {
 #[godot_api]
 impl MapButton {
     #[func]
-    fn set_data(&mut self, map: Gd<Beatmap>, mapset: Gd<BeatmapSet>) {
+    pub fn set_data(&mut self, map: Gd<Beatmap>, mapset: Gd<BeatmapSet>) {
         self.map = Some(map.clone());
         self.mapset = Some(mapset.clone());
 
