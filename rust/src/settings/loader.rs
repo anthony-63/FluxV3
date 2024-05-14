@@ -6,8 +6,7 @@ use godot::{engine::Os, log::godot_warn};
 
 impl Settings {
     pub fn load(&mut self, filename: String) {
-        let os = Os::singleton();
-        let user_dir = os.get_user_data_dir().to_string();
+        let user_dir = Os::singleton().get_user_data_dir().to_string();
 
         let setting_path = format!("{}/{}", user_dir, filename);
         let mut f = match std::fs::File::open(setting_path) {

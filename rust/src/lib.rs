@@ -6,6 +6,7 @@ pub mod startup;
 pub mod content;
 pub mod menu;
 pub mod settings;
+pub mod game;
 
 struct MyExtension;
 
