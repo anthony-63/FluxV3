@@ -29,7 +29,6 @@ impl Maplist {
     fn back_pressed(&mut self) {
         self.base_mut().emit_signal("change_to_menu".into(), &[]);
     }
-
     #[signal]
     fn change_to_menu();
 }
