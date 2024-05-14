@@ -1,11 +1,14 @@
-#[derive(Default)]
+use godot::register::GodotClass;
+
+#[derive(Default, Clone, Debug)]
 pub struct NoteData {
     pub x: f32,
     pub y: f32,
     pub time: f32,
 }
 
-
+#[derive(GodotClass, Clone, Debug)]
+#[class(base=RefCounted, no_init)]
 pub struct Beatmap {
     pub broken: bool,
     pub version: u8,

@@ -4,7 +4,8 @@ use godot::prelude::*;
 
 use super::beatmap::Beatmap;
 
-#[derive(Default)]
+#[derive(Default, Clone, GodotClass, Debug)]
+#[class(base=RefCounted, no_init)]
 pub struct BeatmapSet {
     pub broken: bool,
 
@@ -56,6 +57,7 @@ impl BeatmapSet {
             title,
             mappers,
             music_path,
+            difficulties,
             ..Default::default()
         }
     }

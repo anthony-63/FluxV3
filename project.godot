@@ -17,3 +17,8 @@ config/custom_user_dir_name="Flux"
 config/quit_on_go_back=false
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://assets/images/flux.png"
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900

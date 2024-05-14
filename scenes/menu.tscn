@@ -1,12 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=8 format=3 uid="uid://dkq7fb6lkop1u"]
 
+[ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
 [ext_resource type="Texture2D" uid="uid://dxb101pp528qf" path="res://assets/images/flux.png" id="2_vl1kh"]
+[ext_resource type="Texture2D" uid="uid://c426721xvj06u" path="res://assets/skins/Default/backbutton.png" id="4_3oxqr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqxjy"]
+bg_color = Color(0.0562916, 0.0562916, 0.0562916, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6xr4h"]
 
-[node name="Menu" type="Control"]
-layout_mode = 3
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_patc4"]
+bg_color = Color(0.0745098, 0.0745098, 0.0745098, 0.894118)
+
+[node name="Menu" type="Viewports"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -20,6 +27,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("1_sru2r")
+expand_mode = 1
 
 [node name="DefaultColor" type="ColorRect" parent="Background"]
 layout_mode = 1
@@ -28,9 +37,37 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0562916, 0.0562916, 0.0562916, 1)
+color = Color(0.054902, 0.054902, 0.054902, 0.705882)
 
-[node name="Buttons" type="VBoxContainer" parent="."]
+[node name="TopPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 79.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jqxjy")
+
+[node name="Logo" type="TextureRect" parent="TopPanel"]
+layout_mode = 1
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 89.0
+offset_bottom = 80.0
+texture = ExtResource("2_vl1kh")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Viewports" type="Node" parent="."]
+
+[node name="Menu" type="Menu" parent="Viewports"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Buttons" type="VBoxContainer" parent="Viewports/Menu"]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -39,7 +76,7 @@ offset_right = 329.0
 grow_vertical = 2
 alignment = 1
 
-[node name="Singleplayer" type="Button" parent="Buttons"]
+[node name="Singleplayer" type="Button" parent="Viewports/Menu/Buttons"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_6xr4h")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_6xr4h")
@@ -48,31 +85,69 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_6xr4h")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_6xr4h")
 flat = true
 
-[node name="TextureRect" type="TextureRect" parent="Buttons/Singleplayer"]
+[node name="TextureRect" type="TextureRect" parent="Viewports/Menu/Buttons/Singleplayer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 7.0
+offset_right = -1.0
 offset_bottom = 46.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_ufmdi")
 expand_mode = 1
+stretch_mode = 4
 
-[node name="TopPanel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 10
+[node name="Maplist" type="Maplist" parent="Viewports"]
+anchors_preset = 15
 anchor_right = 1.0
-offset_bottom = 60.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Logo" type="TextureRect" parent="TopPanel"]
+[node name="BottomBar" type="Panel" parent="Viewports/Maplist"]
 layout_mode = 1
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 60.0
-offset_bottom = 59.0
-texture = ExtResource("2_vl1kh")
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_patc4")
+
+[node name="Back" type="Button" parent="Viewports/Maplist/BottomBar"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 207.0
+offset_bottom = 46.0
+
+[node name="TextureRect" type="TextureRect" parent="Viewports/Maplist/BottomBar/Back"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_3oxqr")
 expand_mode = 1
 stretch_mode = 4
+
+[node name="MapList" type="ScrollContainer" parent="Viewports/Maplist"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -819.0
+offset_top = 80.0
+offset_right = -3.0
+offset_bottom = -50.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="MapContainer" parent="Viewports/Maplist/MapList"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

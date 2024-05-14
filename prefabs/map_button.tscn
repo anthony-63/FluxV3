@@ -1,0 +1,60 @@
+[gd_scene load_steps=3 format=3 uid="uid://b67bkdae6v07m"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_j3wn3"]
+font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_yigvh"]
+font_size = 20
+
+[node name="MapButton" type="MapButton"]
+custom_minimum_size = Vector2(426, 100)
+offset_right = 982.0
+offset_bottom = 100.0
+
+[node name="ArtistSongName" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 10.0
+offset_right = -1.0
+offset_bottom = -55.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Artist - Song Name"
+label_settings = SubResource("LabelSettings_j3wn3")
+vertical_alignment = 1
+clip_text = true
+
+[node name="Mapper" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 37.0
+offset_right = -1.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Mapper"
+label_settings = SubResource("LabelSettings_yigvh")
+vertical_alignment = 1
+clip_text = true
+
+[node name="Difficulty" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 62.0
+offset_right = -1.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Difficulty"
+label_settings = SubResource("LabelSettings_yigvh")
+vertical_alignment = 1
+clip_text = true
