@@ -12,8 +12,6 @@ impl MapLoader {
         for filename in map_folders {
             let file = filename.unwrap();
 
-            godot_print!("loading {}", file.path().to_str().unwrap());
-            
             if file.path().is_dir() {
                 unsafe {
                     FLUX.loaded_mapsets.push(BeatmapSet::from_folder(file.path().to_str().unwrap().to_string()));

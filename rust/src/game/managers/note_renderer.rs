@@ -29,7 +29,7 @@ impl IMultiMeshInstance3D for NoteRenderer {
     fn enter_tree(&mut self) {
         let sync_manager = self.base().get_node_as::<SyncManager>("../../SyncManager");
 
-        self.approach_time = unsafe { FLUX.settings.clone().unwrap().note.approach_time as f64 };
+        self.approach_time = unsafe { FLUX.settings.clone().unwrap().note.approach_time as f64 } * sync_manager.bind().speed as f64;
         self.approach_distance = unsafe { FLUX.settings.clone().unwrap().note.approach_distance as f64 };
 
         let mut mesh = self.base_mut().get_multimesh().unwrap();

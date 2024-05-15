@@ -58,7 +58,7 @@ impl INode for NoteManager {
         let note_renderer = self.base().get_node_as::<NoteRenderer>("NoteRenderer");
         let cursor: Gd<Cursor> = self.base().get_node_as::<Cursor>("../Player/Cursor");
 
-        self.approach_time = unsafe { FLUX.settings.clone().unwrap().note.approach_time as f64 };
+        self.approach_time = unsafe { FLUX.settings.clone().unwrap().note.approach_time as f64 } * sync_manager.bind().speed as f64;
 
         self.game = Some(game);
         self.sync_manager = Some(sync_manager);

@@ -28,7 +28,7 @@ impl INode for SyncManager {
             real_time: 0.,
             time_delay: 0.,
             playing: false,
-            speed: 1.,
+            speed: 1.5,
         }
     }
 
