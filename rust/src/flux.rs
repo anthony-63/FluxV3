@@ -7,6 +7,8 @@ pub struct Flux {
     pub settings: Option<Settings>,
     pub score: Option<Score>,
 
+    pub fullscreen: bool,
+
     pub selected_mapset: Option<Gd<BeatmapSet>>,
     pub selected_map: Option<Gd<Beatmap>>,
 }

@@ -1,4 +1,6 @@
-use godot::{engine::{Button, Control, IControl}, prelude::*};
+use godot::{engine::{window, Button, Control, IControl, InputEvent}, prelude::*};
+
+use crate::FLUX;
 
 #[derive(GodotClass)]
 #[class(base=Control)]
@@ -14,12 +16,28 @@ impl IControl for Menu {
         }
     }
 
+    //    self.base_mut().get_tree().unwrap().get_root().unwrap().set_mode(window::Mode::EXCLUSIVE_FULLSCREEN);
+
     fn enter_tree(&mut self,) {
         let mut singleplayer = self.base().get_node_as::<Button>("Buttons/Singleplayer");
         let mut settings: Gd<Button> = self.base().get_node_as::<Button>("Buttons/Settings");
 
         singleplayer.connect("pressed".into(), self.base_mut().callable("singleplayer_pressed"));
         settings.connect("pressed".into(), self.base_mut().callable("settings_pressed"));
+    }
+
+    fn input(&mut self, _: Gd<InputEvent>) {
+        if Input::singleton().is_action_just_pressed("fullscreen".into()) {
+            unsafe {
+                FLUX.fullscreen = !FLUX.fullscreen;
+
+                if FLUX.fullscreen {
+                    self.base_mut().get_tree().unwrap().get_root().unwrap().set_mode(window::Mode::EXCLUSIVE_FULLSCREEN);
+                } else {
+                    self.base_mut().get_tree().unwrap().get_root().unwrap().set_mode(window::Mode::WINDOWED);
+                }
+            }
+        }
     }
 }
 
