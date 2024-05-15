@@ -1,6 +1,6 @@
 use godot::prelude::*;
 
-static HIT_WINDOW: f64 = 0.058;
+static HIT_WINDOW: f64 = 0.050;
 static AABB: f64 = (1.75 + 0.525) / 2.;
 
 #[derive(GodotClass)]
