@@ -8,7 +8,7 @@ pub struct SyncManager {
     base: Base<Node>,
     game: Option<Gd<Game>>,
     audio_player: Option<Gd<AudioStreamPlayer>>,
-    speed: f32,
+    pub speed: f32,
     
     last_time: f64,
     time_delay: f64,

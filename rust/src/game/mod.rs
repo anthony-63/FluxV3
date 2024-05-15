@@ -44,12 +44,9 @@ impl INode3D for Game {
         unsafe { self.loaded_map = FLUX.selected_map.clone(); }
         unsafe { self.loaded_mapset = FLUX.selected_mapset.clone(); }
 
-        godot_print!("{}", self.loaded_map.as_ref().unwrap().bind().name);
-
         let audio_stream = self.loaded_mapset.as_ref().unwrap().bind().load_audio(false).unwrap();
 
         sync_manager.call("set_stream".into(), &[audio_stream.to_variant()]);
-
 
         self.cursor = Some(cursor);
         self.sync_manager = Some(sync_manager);
@@ -68,6 +65,8 @@ impl Game {
         if !self.started {
             self.sync_manager.as_mut().unwrap().call("start".into(), &[(0.).to_variant()]);
             self.note_manager.as_mut().unwrap().bind_mut().load_notes(self.loaded_map.as_ref().unwrap().bind().notes.clone());
+            self.note_manager.as_mut().unwrap().call("start".into(), &[]);
+            
             self.started = true;
         }
     }

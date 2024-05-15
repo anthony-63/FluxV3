@@ -29,16 +29,21 @@ impl ILabel for DebugLabel {
         }
 
         let fps_monitor = Performance::singleton().get_monitor(Monitor::TIME_FPS);
-        let binding = self.game.as_ref().unwrap();
-        let game = binding.bind();
+        let game = self.game.as_ref().unwrap().bind();
         let game_time = game.sync_manager.as_ref().unwrap().bind().real_time;
+        let notes_processed = game.note_manager.as_ref().unwrap().bind().notes_processing;
+        let start_process = game.note_manager.as_ref().unwrap().bind().start_process;
         drop(game);
 
         self.base_mut().set_text(format!(
             "{} FPS
-Time: {:.2}",
+Time: {:.2}
+Processing: {}
+Start Proc: {}",
         fps_monitor,
         game_time,
+        notes_processed,
+        start_process,
         ).to_godot());
     }
 }
