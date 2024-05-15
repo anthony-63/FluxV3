@@ -114,3 +114,8 @@ a
 deug
 menu"
 label_settings = SubResource("LabelSettings_7wv0u")
+
+[node name="Hit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_46wqm")
+volume_db = 10.306
+max_polyphony = 128

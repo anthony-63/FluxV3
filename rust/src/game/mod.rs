@@ -74,7 +74,7 @@ impl Game {
             self.sync_manager.as_mut().unwrap().call("start".into(), &[(0.).to_variant()]);
             self.note_manager.as_mut().unwrap().bind_mut().load_notes(self.loaded_map.as_ref().unwrap().bind().notes.clone());
             self.note_manager.as_mut().unwrap().call("start".into(), &[]);
-            
+
             unsafe {
                 FLUX.score = Some(Score::default());
             }

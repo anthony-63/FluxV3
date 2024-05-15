@@ -11,6 +11,7 @@ pub struct NoteManager {
     game: Option<Gd<Game>>,
     sync_manager: Option<Gd<SyncManager>>,
     note_renderer: Option<Gd<NoteRenderer>>,
+    hit_player: Option<Gd<AudioStreamPlayer>>,
     cursor: Option<Gd<Cursor>>,
 
     ordered_notes: Vec<Gd<Note>>,
@@ -46,6 +47,7 @@ impl INode for NoteManager {
             notes_processing: 0,
             _skipped_notes: 0,
             start_process: 0,
+            hit_player: None,
 
             ordered_notes: vec![],
             colors: vec![Color::from_html("#5d3fd3").unwrap(), Color::from_html("#ffe4ed").unwrap()]
@@ -56,7 +58,8 @@ impl INode for NoteManager {
         let game = self.base_mut().get_node_as::<Game>("../GameManager");
         let sync_manager = self.base().get_node_as::<SyncManager>("../SyncManager");
         let note_renderer = self.base().get_node_as::<NoteRenderer>("NoteRenderer");
-        let cursor: Gd<Cursor> = self.base().get_node_as::<Cursor>("../Player/Cursor");
+        let cursor = self.base().get_node_as::<Cursor>("../Player/Cursor");
+        let hit_player  = self.base().get_node_as::<AudioStreamPlayer>("../Hit");
 
         self.approach_time = unsafe { FLUX.settings.clone().unwrap().note.approach_time as f64 } * sync_manager.bind().speed as f64;
 
@@ -64,6 +67,7 @@ impl INode for NoteManager {
         self.sync_manager = Some(sync_manager);
         self.note_renderer = Some(note_renderer);
         self.cursor = Some(cursor);
+        self.hit_player = Some(hit_player);
     }
 
     fn process(&mut self, _: f64) {
@@ -119,6 +123,8 @@ impl INode for NoteManager {
                     FLUX.score.as_mut().unwrap().hits += 1;
                     FLUX.score.as_mut().unwrap().total += 1;
                 }
+
+                self.hit_player.as_mut().unwrap().play();
             }
 
             if !bound.hit && !bound.in_hit_window(sync_manager.real_time, sync_manager.speed) {
