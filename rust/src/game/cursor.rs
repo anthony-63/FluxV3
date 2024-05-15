@@ -7,7 +7,7 @@ static CLAMP: f32 = (6. - 0.525) / 2.;
 pub struct Cursor {
     base: Base<Sprite3D>,
     position: Vector2,
-    clamped_position: Vector2,
+    pub clamped_position: Vector2,
     camera: Option<Gd<Camera3D>>,
 }
 

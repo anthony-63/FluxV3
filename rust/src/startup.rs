@@ -2,7 +2,7 @@ use std::{sync::{Arc, Mutex}, thread};
 
 use godot::{engine::{Label, Os, Time}, prelude::*};
 
-use crate::{content::maploader::MapLoader, settings::Settings, FLUX};
+use crate::{content::maploader::MapLoader, game::score::Score, settings::Settings, FLUX};
 
 #[derive(GodotClass)]
 #[class(base=Node)]
@@ -54,7 +54,11 @@ impl INode for Startup {
         }
     }
 
-    fn enter_tree(&mut self) {        
+    fn enter_tree(&mut self) {
+        unsafe {
+            FLUX.score = Some(Score::default());
+        }
+
         let internal = Arc::clone(&self.internal);
         thread::spawn(|| {
             Self::run_load(internal);

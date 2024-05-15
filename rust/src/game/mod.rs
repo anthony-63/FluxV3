@@ -8,6 +8,8 @@ pub mod cursor;
 pub mod managers;
 pub mod debug;
 pub mod note;
+pub mod hud;
+pub mod score;
 
 #[derive(GodotClass)]
 #[class(base=Node3D)]

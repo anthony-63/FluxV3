@@ -11,14 +11,25 @@ impl MapLoader {
 
         for filename in map_folders {
             let file = filename.unwrap();
+
+            godot_print!("loading {}", file.path().to_str().unwrap());
             
-            if file.path().extension().unwrap().to_str().unwrap().eq("sspm") {
-                SSPMParser::sspm_to_folder(file.path().to_str().unwrap());
-            } else {
+            if file.path().is_dir() {
                 unsafe {
                     FLUX.loaded_mapsets.push(BeatmapSet::from_folder(file.path().to_str().unwrap().to_string()));
                 }
+            } else {
+                if file.path().extension().unwrap() == "sspm" {
+                    SSPMParser::sspm_to_folder(file.path().to_str().unwrap());
+                    unsafe {
+                        FLUX.loaded_mapsets.push(BeatmapSet::from_folder(file.path().with_extension("").to_str().unwrap().to_string()));
+                    }
+                    continue
+                }
             }
+            
+
+            
         }
     }
 }

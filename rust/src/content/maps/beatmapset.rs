@@ -25,6 +25,7 @@ pub struct BeatmapSet {
 impl BeatmapSet {
     pub fn from_folder(folder_path: String) -> Self {
         let meta_path = &format!("{}/meta.json", folder_path);
+
         if !Path::new(meta_path).exists() {
             godot_print!("meta.json not found for {}", folder_path);
             return Self {
@@ -43,7 +44,7 @@ impl BeatmapSet {
         for mapper in meta["_mappers"].members() {
             mappers.push(mapper.to_string());
         }
-
+        
         let mut difficulties: Vec<Beatmap> = vec![];
         for difficulty in meta["_difficulties"].members() {
             difficulties.push(Beatmap::from_file(format!("{}/{}", folder_path, difficulty.to_string())));

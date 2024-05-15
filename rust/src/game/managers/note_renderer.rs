@@ -51,7 +51,7 @@ impl IMultiMeshInstance3D for NoteRenderer {
             let note_time = bound.calculate_time(sync_manager.real_time, self.approach_time);
             let note_distance = note_time * self.approach_distance;
             mesh.set_instance_transform(i as i32, Transform3D::new(Basis::IDENTITY, Vector3::new(bound.x as f32 * 2., bound.y as f32 * 2., -note_distance as f32)));
-            mesh.set_instance_color(i as i32, Color::from_rgba(1., 1., 1., 1.));
+            mesh.set_instance_color(i as i32, bound.color);
         }
 
         drop(sync_manager);

@@ -15,6 +15,7 @@ static mut FLUX: Flux = Flux {
     settings: None,
     selected_map: None,
     selected_mapset: None,
+    score: None,
 };
 
 #[gdextension]
