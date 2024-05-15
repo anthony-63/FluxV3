@@ -39,6 +39,7 @@ mesh = ExtResource("3_5k0cv")
 buffer = PackedFloat32Array(0, 0, 0, 0.7, 8.5, 146.5, 0, 0, 0, 0.7, 9.5, 147.5, 0, 0, 0, 0.7)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7wv0u"]
+line_spacing = 0.0
 font_size = 24
 
 [node name="Game" type="Node3D"]
@@ -86,7 +87,7 @@ render_target_update_mode = 4
 
 [node name="HUD" parent="HUD/LeftViewport" instance=ExtResource("4_662rr")]
 
-[node name="NoteManager" type="Node" parent="."]
+[node name="NoteManager" type="NoteManager" parent="."]
 
 [node name="NoteRenderer" type="MultiMeshInstance3D" parent="NoteManager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.15)
@@ -104,7 +105,9 @@ bus = &"Music"
 [node name="DebugLabel" type="DebugLabel" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0
-text = "DEBVYAS(HU*ADS*(HADHS*(
-ASDH*ADSH*ADSH*(DAS*(
-ADSH*(ADS*(HH*(ADS"
+text = "this
+is
+a
+deug
+menu"
 label_settings = SubResource("LabelSettings_7wv0u")
