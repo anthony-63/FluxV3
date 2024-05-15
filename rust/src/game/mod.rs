@@ -1,8 +1,8 @@
-use godot::prelude::*;
+use godot::{engine::{input::MouseMode, InputEvent}, prelude::*};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
 
-use self::{cursor::Cursor, managers::{note_manager::NoteManager, sync_manager::SyncManager}};
+use self::{cursor::Cursor, managers::{note_manager::NoteManager, sync_manager::SyncManager}, score::Score};
 
 pub mod cursor;
 pub mod managers;
@@ -55,6 +55,12 @@ impl INode3D for Game {
         self.note_manager = Some(note_manager);
     }
 
+    fn input(&mut self, _: Gd<InputEvent>) {
+        if Input::singleton().is_action_just_pressed("end_map".into()) {
+            self.end_game();
+        }
+    }
+
     fn process(&mut self, _: f64) {
         self.try_start();
     }
@@ -69,7 +75,16 @@ impl Game {
             self.note_manager.as_mut().unwrap().bind_mut().load_notes(self.loaded_map.as_ref().unwrap().bind().notes.clone());
             self.note_manager.as_mut().unwrap().call("start".into(), &[]);
             
+            unsafe {
+                FLUX.score = Some(Score::default());
+            }
+
             self.started = true;
         }
+    }
+
+    fn end_game(&mut self) {
+        Input::singleton().set_mouse_mode(MouseMode::VISIBLE);
+        self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/menu.tscn".into_godot());
     }
 }
