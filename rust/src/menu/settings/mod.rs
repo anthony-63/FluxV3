@@ -2,6 +2,7 @@ use godot::{engine::{Button, Control, IControl}, prelude::*};
 
 pub mod note;
 pub mod audio;
+pub mod cursor;
 
 #[derive(GodotClass)]
 #[class(base=Control)]

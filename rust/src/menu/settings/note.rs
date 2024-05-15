@@ -30,16 +30,15 @@ impl IControl for NoteSettings {
         let mut approach_distance = self.base().get_node_as::<SpinBox>("GridContainer/Approach/Distance");
         let mut approach_time = self.base().get_node_as::<SpinBox>("GridContainer/Approach/Time");
         
-        self.approach_type = Some(approach_type.clone());
-        self.approach_rate = Some(approach_rate.clone());
-        self.approach_distance = Some(approach_distance.clone());
-        self.approach_time = Some(approach_time.clone());
-        
-
         approach_type.connect("item_selected".into(), self.base_mut().callable("update_type"));
         approach_distance.connect("value_changed".into(), self.base_mut().callable("update_ad"));
         approach_rate.connect("value_changed".into(), self.base_mut().callable("update_ar"));
         approach_time.connect("value_changed".into(), self.base_mut().callable("update_at"));
+
+        self.approach_type = Some(approach_type.clone());
+        self.approach_rate = Some(approach_rate.clone());
+        self.approach_distance = Some(approach_distance.clone());
+        self.approach_time = Some(approach_time.clone());
 
         self.update_settings();
     }
@@ -92,12 +91,13 @@ impl NoteSettings {
 
     #[func]
     fn update_ar(&mut self, value: f64) {
-        unsafe { 
+        unsafe {
             FLUX.settings.as_mut().unwrap().note.approach_rate = value as f32;
             FLUX.settings.as_mut().unwrap().update(false);
         }
         self.update_settings();
     }
+    
     #[func]
     fn update_ad(&mut self, value: f64) {
         unsafe { 
@@ -106,6 +106,7 @@ impl NoteSettings {
         }
         self.update_settings();
     }
+
     #[func]
     fn update_at(&mut self, value: f64) {
         unsafe { 

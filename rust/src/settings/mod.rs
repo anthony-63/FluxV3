@@ -25,11 +25,17 @@ pub struct AudioSettings {
     pub music_volume: f32,
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct CursorSettings {
+    pub sensitivity: f32,
+}
+
 #[derive(GodotClass, Clone, Debug, Serialize, Deserialize)]
 #[class(base=RefCounted, no_init)]
 pub struct Settings {
     pub note: NoteSettings,
     pub audio: AudioSettings,
+    pub cursor: CursorSettings,
 }
 
 impl Settings {
@@ -44,6 +50,9 @@ impl Settings {
             audio: AudioSettings {
                 master_volume: 0.5,
                 music_volume: 0.5
+            },
+            cursor: CursorSettings {
+                sensitivity: 0.5,
             }
         }
     }

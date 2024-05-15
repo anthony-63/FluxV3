@@ -1,5 +1,7 @@
 use godot::{engine::{input::MouseMode, InputEvent, InputEventMouseMotion, Sprite3D}, prelude::*};
 
+use crate::FLUX;
+
 static CLAMP: f32 = (6. - 0.525) / 2.;
 
 #[derive(GodotClass)]
@@ -9,6 +11,7 @@ pub struct Cursor {
     position: Vector2,
     pub clamped_position: Vector2,
     camera: Option<Gd<Camera3D>>,
+    sensitivity: f32,
 }
 
 #[godot_api]
@@ -19,12 +22,16 @@ impl INode3D for Cursor {
             position: Vector2::ZERO,
             clamped_position: Vector2::ZERO,
             camera: None,
+            sensitivity: 0.5,
         }
     }
 
     fn enter_tree(&mut self) {
         let camera = self.base_mut().get_node_as::<Camera3D>("../Camera");
         self.camera = Some(camera);
+        unsafe {
+            self.sensitivity = FLUX.settings.as_ref().unwrap().cursor.sensitivity;
+        }
 
         Input::singleton().set_mouse_mode(MouseMode::CAPTURED);
 
@@ -35,7 +42,7 @@ impl INode3D for Cursor {
             return;
         };
 
-        let relative = event_motion.get_relative() * (0.525 / 4.);
+        let relative = event_motion.get_relative() * (self.sensitivity / 4.);
 
         self.position += Vector2::new(relative.x, -relative.y) * 0.1675;
         self.clamped_position = Vector2::new(
