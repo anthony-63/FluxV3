@@ -11,9 +11,10 @@ pub struct SyncManager {
     speed: f32,
     
     last_time: f64,
-    pub real_time: f64,
     time_delay: f64,
     playing: bool,
+    
+    pub real_time: f64,
 }
 
 #[godot_api]
@@ -61,7 +62,6 @@ impl SyncManager {
         audio_player.set_stream(stream);
         
         self.audio_player = Some(audio_player);
-
     }
 
     #[func]

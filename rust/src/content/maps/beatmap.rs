@@ -1,6 +1,7 @@
 use godot::register::GodotClass;
 
-#[derive(Default, Clone, Debug)]
+#[derive(Default, Clone, Debug, GodotClass)]
+#[class(base=RefCounted, no_init)]
 pub struct NoteData {
     pub x: f32,
     pub y: f32,

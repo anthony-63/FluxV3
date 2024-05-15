@@ -35,10 +35,8 @@ impl ILabel for DebugLabel {
         drop(game);
 
         self.base_mut().set_text(format!(
-            "
-            {} FPS \n
-            time: {} \n
-            ",
+            "{} FPS
+Time: {:.2}",
         fps_monitor,
         game_time,
         ).to_godot());

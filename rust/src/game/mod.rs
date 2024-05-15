@@ -2,11 +2,12 @@ use godot::prelude::*;
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
 
-use self::{cursor::Cursor, managers::sync_manager::SyncManager};
+use self::{cursor::Cursor, managers::{note_manager::NoteManager, sync_manager::SyncManager}};
 
 pub mod cursor;
 pub mod managers;
 pub mod debug;
+pub mod note;
 
 #[derive(GodotClass)]
 #[class(base=Node3D)]
@@ -15,6 +16,7 @@ pub struct Game {
     loaded_map: Option<Gd<Beatmap>>,
     loaded_mapset: Option<Gd<BeatmapSet>>,
     sync_manager: Option<Gd<SyncManager>>,
+    note_manager: Option<Gd<NoteManager>>,
     cursor: Option<Gd<Cursor>>,
     started: bool,
 }
@@ -28,12 +30,15 @@ impl INode3D for Game {
             loaded_map: None,
             loaded_mapset: None,
             sync_manager: None,
+            note_manager: None,
             started: false,
         }
     }
 
     fn enter_tree(&mut self) {
         let mut sync_manager = self.base_mut().get_node_as::<SyncManager>("../SyncManager");
+        let note_manager = self.base_mut().get_node_as::<NoteManager>("../NoteManager");
+
         let cursor = self.base_mut().get_node_as::<Cursor>("../Player/Cursor");
 
         unsafe { self.loaded_map = FLUX.selected_map.clone(); }
@@ -48,12 +53,12 @@ impl INode3D for Game {
 
         self.cursor = Some(cursor);
         self.sync_manager = Some(sync_manager);
+        self.note_manager = Some(note_manager);
     }
 
     fn process(&mut self, _: f64) {
         self.try_start();
     }
-    
 }
 
 #[godot_api]
@@ -62,6 +67,7 @@ impl Game {
     fn try_start(&mut self) {
         if !self.started {
             self.sync_manager.as_mut().unwrap().call("start".into(), &[(0.).to_variant()]);
+            self.note_manager.as_mut().unwrap().bind_mut().load_notes(self.loaded_map.as_ref().unwrap().bind().notes.clone());
             self.started = true;
         }
     }
