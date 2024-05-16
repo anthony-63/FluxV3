@@ -16,6 +16,7 @@ pub struct NoteSettings {
     pub approach_rate: f32,
     pub approach_time: f32,
     pub approach_distance: f32,
+    pub pushback: bool,
     pub approach_mode: ApproachMode,
 }
 
@@ -23,6 +24,7 @@ pub struct NoteSettings {
 pub struct AudioSettings {
     pub master_volume: f32,
     pub music_volume: f32,
+    pub sfx_volume: f32,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -46,10 +48,12 @@ impl Settings {
                 approach_time: 1.,
                 approach_distance: 50.,
                 approach_mode: ApproachMode::RateTime,
+                pushback: true,
             },
             audio: AudioSettings {
                 master_volume: 0.5,
-                music_volume: 0.5
+                music_volume: 0.5,
+                sfx_volume: 0.5,
             },
             cursor: CursorSettings {
                 sensitivity: 0.5,
@@ -77,5 +81,8 @@ impl Settings {
 
         let music_bus = audio_server.get_bus_index("Music".into());
         audio_server.set_bus_volume_db(music_bus, 10. * self.audio.music_volume.log10());
+
+        let sfx_bus = audio_server.get_bus_index("SFX".into());
+        audio_server.set_bus_volume_db(sfx_bus, 10. * self.audio.sfx_volume.log10());
     }
 }

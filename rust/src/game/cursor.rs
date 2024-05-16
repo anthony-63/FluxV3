@@ -30,7 +30,11 @@ impl INode3D for Cursor {
         let mut camera = self.base_mut().get_node_as::<Camera3D>("../Camera");
         
         camera.set_keep_aspect_mode(KeepAspect::HEIGHT);
-        
+        // if lock
+        let mut cam_transform = camera.get_transform();
+        cam_transform.origin.z = 0.5;
+        camera.set_transform(cam_transform);
+
         self.camera = Some(camera);
 
         unsafe {

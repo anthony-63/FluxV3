@@ -38,6 +38,8 @@ impl IControl for Viewports {
 
         settings_view.connect("close_settings".into(), self.base_mut().callable("close_settings"));
         settings_view.set_visible(false);
+
+        self.change_visibility(true, false);
     }
 
     fn input(&mut self, _: Gd<InputEvent>) {

@@ -56,7 +56,10 @@ pixel_size = 0.0005
 texture = ExtResource("2_hp5it")
 
 [node name="Camera" type="Camera3D" parent="Player"]
+current = true
 fov = 70.0
+near = 0.001
+far = 500.0
 
 [node name="HUD" type="HudManager" parent="."]
 
@@ -117,5 +120,5 @@ label_settings = SubResource("LabelSettings_7wv0u")
 
 [node name="Hit" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_46wqm")
-volume_db = 10.306
 max_polyphony = 128
+bus = &"SFX"

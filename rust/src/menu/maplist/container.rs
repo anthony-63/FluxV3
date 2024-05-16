@@ -1,19 +1,19 @@
-use godot::{engine::{IVBoxContainer, VBoxContainer}, prelude::*};
+use godot::{engine::{GridContainer, IGridContainer}, prelude::*};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
 
 use super::map_button::MapButton;
 
 #[derive(GodotClass)]
-#[class(base=VBoxContainer)]
+#[class(base=GridContainer)]
 pub struct MapContainer {
-    base: Base<VBoxContainer>,
+    base: Base<GridContainer>,
     audio_player: Option<Gd<AudioStreamPlayer>>,
 }
 
 #[godot_api]
-impl IVBoxContainer for MapContainer {
-    fn init(base: Base<VBoxContainer>) -> Self {
+impl IGridContainer for MapContainer {
+    fn init(base: Base<GridContainer>) -> Self {
         Self {
             base,
             audio_player: None,

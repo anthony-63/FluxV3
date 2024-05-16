@@ -10,7 +10,8 @@ pub struct AudioSettings {
     master_label: Option<Gd<Label>>,
     music_slider: Option<Gd<HSlider>>,
     music_label: Option<Gd<Label>>,
-
+    sfx_slider: Option<Gd<HSlider>>,
+    sfx_label: Option<Gd<Label>>,
 }
 
 #[godot_api]
@@ -20,31 +21,41 @@ impl IControl for AudioSettings {
             base,
             master_label: None,
             music_label: None,
+            sfx_label: None,
             master_slider: None,
             music_slider: None,
+            sfx_slider: None,
         }
     }
 
     fn enter_tree(&mut self) {
         let mut master_slider = self.base_mut().get_node_as::<HSlider>("GridContainer/Volumes/Master");
         let mut music_slider = self.base_mut().get_node_as::<HSlider>("GridContainer/Volumes/Music");
+        let mut sfx_slider = self.base_mut().get_node_as::<HSlider>("GridContainer/Volumes/SFX");
 
         let master_vol = unsafe {FLUX.settings.as_ref().unwrap().audio.master_volume};
         let music_vol = unsafe {FLUX.settings.as_ref().unwrap().audio.music_volume};
+        let sfx_vol = unsafe {FLUX.settings.as_ref().unwrap().audio.sfx_volume};
 
         self.master_label = Some(master_slider.get_node_as::<Label>("Percent"));
         self.music_label = Some(music_slider.get_node_as::<Label>("Percent"));
+        self.sfx_label = Some(sfx_slider.get_node_as::<Label>("Percent"));
+
         self.master_slider = Some(master_slider.clone());
         self.music_slider = Some(music_slider.clone());
+        self.sfx_slider = Some(sfx_slider.clone());
 
         master_slider.set_value(master_vol as f64);
         music_slider.set_value(music_vol as f64);
+        sfx_slider.set_value(sfx_vol as f64);
 
         self.master_label.as_mut().unwrap().set_text(format!("{}%", (master_vol * 100.).ceil()).into());
         self.music_label.as_mut().unwrap().set_text(format!("{}%", (music_vol * 100.).ceil()).into());
+        self.sfx_label.as_mut().unwrap().set_text(format!("{}%", (sfx_vol * 100.).ceil()).into());
 
         master_slider.connect("value_changed".into(), self.base_mut().callable("change_master_volume"));
         music_slider.connect("value_changed".into(), self.base_mut().callable("change_music_volume"));
+        sfx_slider.connect("value_changed".into(), self.base_mut().callable("change_sfx_volume"));
     }
 }
 
@@ -63,6 +74,15 @@ impl AudioSettings {
     fn change_music_volume(&mut self, value: f64) {
         unsafe {
             FLUX.settings.as_mut().unwrap().audio.music_volume = value as f32;
+            FLUX.settings.as_mut().unwrap().update(false);
+            self.music_label.as_mut().unwrap().set_text(format!("{}%", (value * 100.).ceil()).into());
+        }
+    }
+
+    #[func]
+    fn change_sfx_volume(&mut self, value: f64) {
+        unsafe {
+            FLUX.settings.as_mut().unwrap().audio.sfx_volume = value as f32;
             FLUX.settings.as_mut().unwrap().update(false);
             self.music_label.as_mut().unwrap().set_text(format!("{}%", (value * 100.).ceil()).into());
         }

@@ -70,6 +70,7 @@ stretch_mode = 4
 [node name="Viewports" type="Node" parent="."]
 
 [node name="Menu" type="Menu" parent="Viewports"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -168,21 +169,21 @@ stretch_mode = 4
 
 [node name="MapList" type="ScrollContainer" parent="Viewports/Maplist"]
 layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -819.0
-offset_top = 80.0
-offset_right = -3.0
-offset_bottom = -50.0
-grow_horizontal = 0
+offset_left = 10.0
+offset_top = 86.0
+offset_right = -7.0
+offset_bottom = -56.0
+grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="MapContainer" parent="Viewports/Maplist/MapList"]
+[node name="Container" type="MapContainer" parent="Viewports/Maplist/MapList"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+columns = 2
 
 [node name="Music" type="AudioStreamPlayer" parent="Viewports/Maplist"]
 bus = &"Music"
@@ -219,8 +220,10 @@ offset_top = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 12
+current_tab = 1
 
 [node name="Note" type="NoteSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
+visible = false
 layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="Viewports/SettingsMenu/Settings/Tabs/Note"]
@@ -315,8 +318,22 @@ offset_right = -38.0
 offset_bottom = 27.0
 text = "Approach Distance"
 
+[node name="Pushback" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
+layout_mode = 0
+offset_left = 153.0
+offset_top = 207.0
+offset_right = 236.063
+offset_bottom = 238.0
+
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/Pushback"]
+layout_mode = 0
+offset_left = -140.0
+offset_top = 4.0
+offset_right = 6.0
+offset_bottom = 27.0
+text = "Pushback"
+
 [node name="Audio" type="AudioSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
-visible = false
 layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="Viewports/SettingsMenu/Settings/Tabs/Audio"]
@@ -381,6 +398,31 @@ text = "Music Volume"
 horizontal_alignment = 1
 
 [node name="Percent" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Audio/GridContainer/Volumes/Music"]
+layout_mode = 0
+offset_left = -50.0
+offset_right = -8.0
+offset_bottom = 31.0
+text = "100%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SFX" type="HSlider" parent="Viewports/SettingsMenu/Settings/Tabs/Audio/GridContainer/Volumes"]
+offset_left = 60.0
+offset_top = 110.0
+offset_right = 396.0
+offset_bottom = 141.0
+max_value = 1.0
+step = 0.01
+
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Audio/GridContainer/Volumes/SFX"]
+layout_mode = 0
+offset_top = -13.0
+offset_right = 336.0
+offset_bottom = 10.0
+text = "SFX Volume"
+horizontal_alignment = 1
+
+[node name="Percent" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Audio/GridContainer/Volumes/SFX"]
 layout_mode = 0
 offset_left = -50.0
 offset_right = -8.0

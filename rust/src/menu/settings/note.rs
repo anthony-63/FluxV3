@@ -1,4 +1,4 @@
-use godot::{engine::{Control, IControl, OptionButton, SpinBox}, prelude::*};
+use godot::{engine::{CheckButton, Control, IControl, OptionButton, SpinBox}, prelude::*};
 
 use crate::{settings::ApproachMode, FLUX};
 
@@ -10,6 +10,7 @@ pub struct NoteSettings {
     approach_rate: Option<Gd<SpinBox>>,
     approach_time: Option<Gd<SpinBox>>,
     approach_distance: Option<Gd<SpinBox>>,
+    pushback: Option<Gd<CheckButton>>,
 }
 
 #[godot_api]
@@ -21,6 +22,7 @@ impl IControl for NoteSettings {
             approach_distance: None,
             approach_rate: None,
             approach_time: None,
+            pushback: None,
         }
     }
 
@@ -29,16 +31,19 @@ impl IControl for NoteSettings {
         let mut approach_rate = self.base().get_node_as::<SpinBox>("GridContainer/Approach/Rate");
         let mut approach_distance = self.base().get_node_as::<SpinBox>("GridContainer/Approach/Distance");
         let mut approach_time = self.base().get_node_as::<SpinBox>("GridContainer/Approach/Time");
+        let mut pushback = self.base().get_node_as::<CheckButton>("GridContainer/Approach/Pushback");
         
         approach_type.connect("item_selected".into(), self.base_mut().callable("update_type"));
         approach_distance.connect("value_changed".into(), self.base_mut().callable("update_ad"));
         approach_rate.connect("value_changed".into(), self.base_mut().callable("update_ar"));
         approach_time.connect("value_changed".into(), self.base_mut().callable("update_at"));
+        pushback.connect("toggled".into(), self.base_mut().callable("update_pushback"));
 
         self.approach_type = Some(approach_type.clone());
         self.approach_rate = Some(approach_rate.clone());
         self.approach_distance = Some(approach_distance.clone());
         self.approach_time = Some(approach_time.clone());
+        self.pushback = Some(pushback.clone());
 
         self.update_settings();
     }
@@ -53,6 +58,7 @@ impl NoteSettings {
         self.approach_rate.as_mut().unwrap().set_value(settings.note.approach_rate as f64);
         self.approach_distance.as_mut().unwrap().set_value(settings.note.approach_distance as f64);
         self.approach_time.as_mut().unwrap().set_value(settings.note.approach_time as f64);
+        self.pushback.as_mut().unwrap().set_pressed(settings.note.pushback);
 
         match settings.note.approach_mode  {
             ApproachMode::DistRate => {
@@ -111,6 +117,15 @@ impl NoteSettings {
     fn update_at(&mut self, value: f64) {
         unsafe { 
             FLUX.settings.as_mut().unwrap().note.approach_time = value as f32;
+            FLUX.settings.as_mut().unwrap().update(false);
+        }
+        self.update_settings();
+    }
+
+    #[func]
+    fn update_pushback(&mut self, value: bool) {
+        unsafe { 
+            FLUX.settings.as_mut().unwrap().note.pushback = value;
             FLUX.settings.as_mut().unwrap().update(false);
         }
         self.update_settings();

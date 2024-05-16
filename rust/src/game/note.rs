@@ -36,9 +36,9 @@ impl Note {
         return (note_time - self.time as f64) <= HIT_WINDOW * speed as f64;
     }
 
-    pub fn is_visible(&self, note_time: f64, speed: f32, approach_time: f64) -> bool {
+    pub fn is_visible(&self, note_time: f64, speed: f32, approach_time: f64, pushback: bool) -> bool {
         if self.hit { return false; }
-        // if note_time > self.time { return false; }
+        if note_time > self.time && !pushback { return false; }
         return self.calculate_time(note_time, approach_time) <= 1. && self.in_hit_window(note_time, speed);
     }
 
