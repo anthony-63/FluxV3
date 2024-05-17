@@ -32,12 +32,18 @@ pub struct CursorSettings {
     pub sensitivity: f32,
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct CameraSettings {
+    pub spin: bool,
+}
+
 #[derive(GodotClass, Clone, Debug, Serialize, Deserialize)]
 #[class(base=RefCounted, no_init)]
 pub struct Settings {
     pub note: NoteSettings,
     pub audio: AudioSettings,
     pub cursor: CursorSettings,
+    pub camera: CameraSettings,
 }
 
 impl Settings {
@@ -57,7 +63,10 @@ impl Settings {
             },
             cursor: CursorSettings {
                 sensitivity: 0.5,
-            }
+            },
+            camera: CameraSettings {
+                spin: false,
+            },
         }
     }
 

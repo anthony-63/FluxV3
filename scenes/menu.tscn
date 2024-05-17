@@ -220,7 +220,7 @@ offset_top = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 12
-current_tab = 1
+current_tab = 2
 
 [node name="Note" type="NoteSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
 visible = false
@@ -320,20 +320,21 @@ text = "Approach Distance"
 
 [node name="Pushback" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
 layout_mode = 0
-offset_left = 153.0
+offset_left = 192.0
 offset_top = 207.0
-offset_right = 236.063
+offset_right = 236.0
 offset_bottom = 238.0
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/Pushback"]
 layout_mode = 0
-offset_left = -140.0
+offset_left = -178.0
 offset_top = 4.0
-offset_right = 6.0
+offset_right = -32.0
 offset_bottom = 27.0
 text = "Pushback"
 
 [node name="Audio" type="AudioSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
+visible = false
 layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="Viewports/SettingsMenu/Settings/Tabs/Audio"]
@@ -407,6 +408,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SFX" type="HSlider" parent="Viewports/SettingsMenu/Settings/Tabs/Audio/GridContainer/Volumes"]
+layout_mode = 0
 offset_left = 60.0
 offset_top = 110.0
 offset_right = 396.0
@@ -431,11 +433,10 @@ text = "100%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Cursor" type="CursorSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
-visible = false
+[node name="Cursor & Camera" type="CursorSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor"]
+[node name="GridContainer" type="GridContainer" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -447,13 +448,13 @@ offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Cursor" type="Panel" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor/GridContainer"]
+[node name="Cursor" type="Panel" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mjhed")
 
-[node name="Sensitivity" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor/GridContainer/Cursor"]
+[node name="Sensitivity" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
 layout_mode = 0
 offset_left = 198.0
 offset_top = 15.0
@@ -462,13 +463,28 @@ offset_bottom = 46.0
 max_value = 1000.0
 step = 0.01
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor/GridContainer/Cursor/Sensitivity"]
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/Sensitivity"]
 layout_mode = 0
 offset_left = -182.0
 offset_top = 3.0
 offset_right = -68.0
 offset_bottom = 26.0
 text = "Sensitivity"
+
+[node name="Spin" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
+layout_mode = 0
+offset_left = 192.0
+offset_top = 63.0
+offset_right = 236.0
+offset_bottom = 94.0
+
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/Spin"]
+layout_mode = 0
+offset_left = -178.0
+offset_top = 4.0
+offset_right = -32.0
+offset_bottom = 27.0
+text = "Spin"
 
 [node name="Close" type="Button" parent="Viewports/SettingsMenu/Settings"]
 layout_mode = 1
