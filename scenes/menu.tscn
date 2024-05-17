@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=12 format=3 uid="uid://dkq7fb6lkop1u"]
 
 [ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
@@ -13,6 +13,10 @@ bg_color = Color(0.0562916, 0.0562916, 0.0562916, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_patc4"]
 bg_color = Color(0.0745098, 0.0745098, 0.0745098, 0.894118)
+
+[sub_resource type="Theme" id="Theme_rg211"]
+GridContainer/constants/h_separation = 12
+GridContainer/constants/v_separation = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mjhed"]
 bg_color = Color(0.0728427, 0.0728426, 0.0728426, 1)
@@ -129,7 +133,6 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Maplist" type="Maplist" parent="Viewports"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -172,10 +175,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 86.0
-offset_right = -7.0
-offset_bottom = -56.0
+offset_left = 16.0
+offset_top = 96.0
+offset_right = -16.0
+offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -183,12 +186,14 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = SubResource("Theme_rg211")
 columns = 2
 
 [node name="Music" type="AudioStreamPlayer" parent="Viewports/Maplist"]
 bus = &"Music"
 
 [node name="SettingsMenu" type="SettingsMenu" parent="Viewports"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

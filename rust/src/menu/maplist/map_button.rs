@@ -1,4 +1,4 @@
-use godot::{engine::{Button, IButton, Label}, prelude::*};
+use godot::{engine::{global::Error, Button, IButton, Image, ImageTexture, Label, TextureRect}, prelude::*};
 
 use crate::content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet};
 
@@ -36,10 +36,22 @@ impl MapButton {
         let mut titlelabel = self.base().get_node_as::<Label>("ArtistSongName");
         let mut difficultylabel = self.base().get_node_as::<Label>("Difficulty");
         let mut mapperlabel = self.base().get_node_as::<Label>("Mapper");
+        let mut coverimage = self.base().get_node_as::<TextureRect>("Cover");
 
         titlelabel.set_text(mapset.bind().title.to_godot());
         difficultylabel.set_text(map.bind().name.to_godot());
         mapperlabel.set_text(mapset.bind().mappers.join(",").to_godot());
+        let cover = mapset.bind().cover.clone();
+        if  cover.is_some() {
+            let bytes = cover.unwrap();
+            let mut img = Image::new_gd();
+            if img.load_png_from_buffer(bytes.as_slice().into()) != Error::OK {
+                godot_warn!("failed to load png cover, skipping");
+                return;
+            }
+            let texture = ImageTexture::create_from_image(img).unwrap();
+            coverimage.set_texture(texture.upcast());
+        }
     }
 
     #[func]

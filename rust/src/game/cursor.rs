@@ -27,7 +27,6 @@ impl INode3D for Cursor {
             base,
             position: Vector2::ZERO,
             clamped_position: Vector2::ZERO,
-            player: None,
             camera: None,
             sensitivity: 0.5,
             spin: false,

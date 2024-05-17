@@ -20,6 +20,8 @@ pub struct BeatmapSet {
     pub mappers: Vec<String>,
 
     pub music_path: String,
+
+    pub cover: Option<Vec<u8>>,
 }
 
 impl BeatmapSet {
@@ -51,7 +53,7 @@ impl BeatmapSet {
         }
 
         let music_path = meta["_music"].to_string();
-        
+
         Self {
             broken: false,
             version,
@@ -60,6 +62,7 @@ impl BeatmapSet {
             music_path,
             difficulties,
             path: folder_path,
+            cover: None,
             ..Default::default()
         }
     }
