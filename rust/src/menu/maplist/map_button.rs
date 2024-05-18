@@ -41,6 +41,7 @@ impl MapButton {
         titlelabel.set_text(mapset.bind().title.to_godot());
         difficultylabel.set_text(map.bind().name.to_godot());
         mapperlabel.set_text(mapset.bind().mappers.join(",").to_godot());
+
         let cover = mapset.bind().cover.clone();
         if  cover.is_some() {
             let bytes = cover.unwrap();
@@ -49,7 +50,9 @@ impl MapButton {
                 godot_warn!("failed to load png cover, skipping");
                 return;
             }
+
             let texture = ImageTexture::create_from_image(img).unwrap();
+            
             coverimage.set_texture(texture.upcast());
         }
     }
