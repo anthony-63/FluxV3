@@ -1,8 +1,8 @@
-use godot::{engine::{GridContainer, IGridContainer, LineEdit}, prelude::*};
+use godot::{engine::{GridContainer, IGridContainer, LineEdit, TextureRect}, prelude::*};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
 
-use super::map_button::MapButton;
+use super::{details::MapDetails, map_button::MapButton};
 
 #[derive(GodotClass)]
 #[class(base=GridContainer)]
@@ -10,6 +10,8 @@ pub struct MapContainer {
     base: Base<GridContainer>,
     audio_player: Option<Gd<AudioStreamPlayer>>,
     search_box: Option<Gd<LineEdit>>,
+    map_details: Option<Gd<MapDetails>>,
+    bg_blur: Option<Gd<TextureRect>>,
 }
 
 #[godot_api]
@@ -19,12 +21,16 @@ impl IGridContainer for MapContainer {
             base,
             audio_player: None,
             search_box: None,
+            map_details: None,
+            bg_blur: None,
         }
     }
 
     fn enter_tree(&mut self) {
         self.audio_player = Some(self.base().get_node_as::<AudioStreamPlayer>("../../Music"));
         self.search_box = Some(self.base().get_node_as::<LineEdit>("../../Filters/Search"));
+        self.map_details = Some(self.base().get_node_as::<MapDetails>("../../MapDetails"));
+        self.bg_blur = Some(self.base().get_node_as::<TextureRect>("../../BgBlur"));
 
         let entry_prefab = load::<PackedScene>("res://prefabs/map_button.tscn");
         unsafe {
@@ -82,14 +88,19 @@ impl MapContainer {
             FLUX.selected_map = Some(map.clone());
             FLUX.selected_mapset = Some(mapset.clone());
         }
-        self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/game.tscn".into_godot());
+        // self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/game.tscn".into_godot());
 
-        // let map_audio = mapset.bind().load_audio(true);
-        // if map_audio == None {
-        //     return;
-        // }
+        let map_audio = mapset.bind().load_audio(true);
+        if map_audio == None {
+            return;
+        }
 
-        // self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
-        // self.audio_player.as_mut().unwrap().play();
+        self.map_details.as_mut().unwrap().set_visible(true);
+        self.bg_blur.as_mut().unwrap().set_visible(true);
+
+        self.map_details.as_mut().unwrap().call("set_details".into(), &[Variant::from(map), Variant::from(mapset)]);
+
+        self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
+        self.audio_player.as_mut().unwrap().play();
     }
 }

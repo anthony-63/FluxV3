@@ -2,6 +2,7 @@ use godot::{engine::{Button, Control, IControl}, prelude::*};
 
 pub mod container;
 pub mod map_button;
+pub mod details;
 
 #[derive(GodotClass)]
 #[class(base=Control)]
