@@ -1,4 +1,4 @@
-use godot::{engine::{IProgressBar, ProgressBar, Tween}, prelude::*};
+use godot::{engine::{IProgressBar, ProgressBar}, prelude::*};
 
 
 #[derive(GodotClass)]
