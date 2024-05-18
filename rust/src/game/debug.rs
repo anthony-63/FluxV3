@@ -24,7 +24,7 @@ impl ILabel for DebugLabel {
             self.game = Some(game);
         }
 
-        if !self.game.clone().unwrap().bind().started {
+        if !self.game.clone().unwrap().bind().started_audio || !self.game.clone().unwrap().bind().started_notes {
             return;
         }
 

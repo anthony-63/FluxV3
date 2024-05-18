@@ -23,7 +23,8 @@ pub struct Game {
 
     pub health: f32,
     
-    started: bool,
+    started_audio: bool,
+    started_notes: bool,
 }
 
 #[godot_api]
@@ -37,7 +38,8 @@ impl INode3D for Game {
             sync_manager: None,
             note_manager: None,
             health: 10.,
-            started: false,
+            started_audio: false,
+            started_notes: false,
         }
     }
 
@@ -67,6 +69,10 @@ impl INode3D for Game {
 
     fn process(&mut self, _: f64) {
         self.try_start();
+
+        if self.health <= 0. {
+            self.end_game();
+        }
     }
 }
 
@@ -74,16 +80,24 @@ impl INode3D for Game {
 impl Game {
     #[func]
     fn try_start(&mut self) {
-        if !self.started {
+        let sync_manager = self.sync_manager.as_ref().unwrap().bind();
+
+        if !self.started_audio && sync_manager.start_timer > sync_manager.start_delay {
+            drop(sync_manager);
+            
             self.sync_manager.as_mut().unwrap().call("start".into(), &[(0.).to_variant()]);
-            self.note_manager.as_mut().unwrap().bind_mut().load_notes(self.loaded_map.as_ref().unwrap().bind().notes.clone());
-            self.note_manager.as_mut().unwrap().call("start".into(), &[]);
 
             unsafe {
                 FLUX.score = Some(Score::default());
             }
 
-            self.started = true;
+            self.started_audio = true;
+        }
+
+        if !self.started_notes {
+            self.note_manager.as_mut().unwrap().bind_mut().load_notes(self.loaded_map.as_ref().unwrap().bind().notes.clone());
+            self.note_manager.as_mut().unwrap().call("start".into(), &[]);
+            self.started_notes = true;
         }
     }
 
