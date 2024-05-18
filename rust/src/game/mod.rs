@@ -54,9 +54,12 @@ impl INode3D for Game {
 
         let audio_stream = self.loaded_mapset.as_ref().unwrap().bind().load_audio(false).unwrap();
 
+        unsafe {
+            FLUX.score = Some(Score::default());
+            FLUX.score.as_mut().unwrap().multiplier = 1;
+        }
+        
         sync_manager.call("set_stream".into(), &[audio_stream.to_variant()]);
-
-        unsafe { FLUX.score.as_mut().unwrap().multiplier = 1; }
 
         self.cursor = Some(cursor);
         self.sync_manager = Some(sync_manager);
@@ -88,10 +91,6 @@ impl Game {
             drop(sync_manager);
             
             self.sync_manager.as_mut().unwrap().call("start".into(), &[(0.).to_variant()]);
-
-            unsafe {
-                FLUX.score = Some(Score::default());
-            }
 
             self.started_audio = true;
         }
