@@ -84,7 +84,7 @@ impl AudioSettings {
         unsafe {
             FLUX.settings.as_mut().unwrap().audio.sfx_volume = value as f32;
             FLUX.settings.as_mut().unwrap().update(false);
-            self.music_label.as_mut().unwrap().set_text(format!("{}%", (value * 100.).ceil()).into());
+            self.sfx_label.as_mut().unwrap().set_text(format!("{}%", (value * 100.).ceil()).into());
         }
     }
 }
