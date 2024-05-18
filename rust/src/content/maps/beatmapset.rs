@@ -54,6 +54,12 @@ impl BeatmapSet {
 
         let music_path = meta["_music"].to_string();
 
+        let cover = if Path::new(&format!("{}/cover.png", folder_path)).exists() {
+            Some(std::fs::read(format!("{}/cover.png", folder_path)).unwrap())
+        } else {
+            None
+        };
+
         Self {
             broken: false,
             version,
@@ -62,7 +68,7 @@ impl BeatmapSet {
             music_path,
             difficulties,
             path: folder_path,
-            cover: None,
+            cover,
             ..Default::default()
         }
     }

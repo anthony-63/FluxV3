@@ -47,6 +47,8 @@ struct DataOffsets {
     marker_offset: u64,
     audio_offset: u64,
     audio_length: u64,
+    cover_offset: u64,
+    cover_length: u64
 }
 
 pub fn get_difficulty_title(v: usize) -> String {
@@ -67,10 +69,12 @@ pub fn get_difficulty_title(v: usize) -> String {
 enum BlockOffsets {
     Magic = 0x0,
     Version = 0x4,
+    HasCover = 0x2e,
     // MapLength = 0x1E,
     NoteCount = 0x22,
     Difficulty = 0x2a,
     DataOffsets = 0x30,
+    CoverOffset = 0x50,
     MarkerOffset = 0x70,
     IdOffset = 0x80,
 }
@@ -117,7 +121,13 @@ impl SSPMParser {
         
         godot_print!("loaded {} notes in {}ms", note_count, elapsed_notes.as_millis());
 
-        let audio_buffer: Vec<u8> = parser.get_audio_buffer(offsets.audio_offset, offsets.audio_length);
+        let audio_buffer: Vec<u8> = parser.get_buffer(offsets.audio_offset, offsets.audio_length);
+        
+        let cover_buffer: Option<Vec<u8>> = if parser.has_cover() {
+            Some(parser.get_buffer(offsets.cover_offset, offsets.cover_length))
+        } else {
+            None
+        };
 
         let mut mappers: Vec<String> = vec![];
         for m in mapper.split(" & ").collect::<Vec<&str>>() {
@@ -160,6 +170,19 @@ impl SSPMParser {
             _notes: notes_json,
         });
 
+        if cover_buffer.is_some() {
+            let mut cover_file = match std::fs::File::create(format!("{}/cover.png", folder_path)) {
+                Ok(file) => file,
+                Err(error) => {
+                    godot_error!("{}", error);
+                    return
+                }
+            };
+
+            cover_file.write_all(&cover_buffer.unwrap()).unwrap();
+            cover_file.flush().unwrap();
+        }
+
         let mut meta_file = match std::fs::File::create(format!("{}/meta.json", folder_path)) {
             Ok(file) => file,
             Err(error) => {
@@ -181,7 +204,7 @@ impl SSPMParser {
                 return
             }
         };
-        
+
         write!(meta_file, "{}", meta).unwrap();
         meta_file.flush().unwrap();
 
@@ -225,9 +248,15 @@ impl SSPMParser {
         self.buffer.seek(std::io::SeekFrom::Start(BlockOffsets::MarkerOffset as u64)).unwrap(); // offset where marker offset is stored
         let marker_offset = self.buffer.read_u64::<LittleEndian>().unwrap();
 
+        self.buffer.seek(std::io::SeekFrom::Start(BlockOffsets::CoverOffset as u64)).unwrap();
+        let cover_offset = self.buffer.read_u64::<LittleEndian>().unwrap();
+        let cover_length = self.buffer.read_u64::<LittleEndian>().unwrap();
+
         return DataOffsets {
             audio_offset,
             audio_length,
+            cover_offset,
+            cover_length,
             custom_offset,
             marker_offset,
         }
@@ -249,6 +278,11 @@ impl SSPMParser {
         self.buffer.seek(std::io::SeekFrom::Start(title_offset)).unwrap();
 
         return self.read_string();
+    }
+
+    fn has_cover(&mut self) -> bool {
+        self.buffer.seek(std::io::SeekFrom::Start(BlockOffsets::HasCover as u64)).unwrap();
+        return self.buffer.read_u8().unwrap() == 1;
     }
 
     fn get_mapper(&mut self) -> String {
@@ -322,15 +356,15 @@ impl SSPMParser {
         return notes;
     }
 
-    fn get_audio_buffer(&mut self, offset: u64, length: u64) -> Vec<u8> {
-        let mut audio: Vec<u8> = vec![];
+    fn get_buffer(&mut self, offset: u64, length: u64) -> Vec<u8> {
+        let mut buffer: Vec<u8> = vec![];
 
         self.buffer.seek(std::io::SeekFrom::Start(offset)).unwrap();
         for _ in 0..length {
-            audio.push(self.buffer.read_u8().unwrap());
+            buffer.push(self.buffer.read_u8().unwrap());
         }
 
-        return audio;
+        return buffer;
     }
 
     fn read_string(&mut self) -> String {
