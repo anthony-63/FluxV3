@@ -27,7 +27,7 @@ impl IGridContainer for MapContainer {
     }
 
     fn enter_tree(&mut self) {
-        self.audio_player = Some(self.base().get_node_as::<AudioStreamPlayer>("../../Music"));
+        self.audio_player = Some(self.base().get_node_as::<AudioStreamPlayer>("../../../../Music"));
         self.search_box = Some(self.base().get_node_as::<LineEdit>("../../Filters/Search"));
         self.map_details = Some(self.base().get_node_as::<MapDetails>("../../MapDetails"));
         self.bg_blur = Some(self.base().get_node_as::<TextureRect>("../../BgBlur"));
@@ -98,7 +98,7 @@ impl MapContainer {
         self.map_details.as_mut().unwrap().set_visible(true);
         self.bg_blur.as_mut().unwrap().set_visible(true);
 
-        self.map_details.as_mut().unwrap().call("set_details".into(), &[Variant::from(map), Variant::from(mapset)]);
+        self.map_details.as_mut().unwrap().call("set_details".into(), &[]);
 
         self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
         self.audio_player.as_mut().unwrap().play();

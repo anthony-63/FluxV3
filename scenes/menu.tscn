@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=34 format=3 uid="uid://dkq7fb6lkop1u"]
 
 [ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
@@ -8,9 +8,7 @@
 [ext_resource type="Shader" path="res://shaders/blur.gdshader" id="6_nkv8a"]
 [ext_resource type="Texture2D" uid="uid://nl3ol8uiu0bg" path="res://assets/images/blank.png" id="7_bt406"]
 [ext_resource type="Texture2D" uid="uid://c0l8mfawm6f5g" path="res://assets/skins/Default/cover_placeholder.png" id="8_yvl1d"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqxjy"]
-bg_color = Color(0.0562916, 0.0562916, 0.0562916, 1)
+[ext_resource type="Texture2D" uid="uid://ddj3iubybewy0" path="res://assets/skins/Default/pause_music.png" id="9_glbw7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6xr4h"]
 
@@ -137,6 +135,45 @@ corner_radius_bottom_left = 16
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j2bqa"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqxjy"]
+bg_color = Color(0.0562916, 0.0562916, 0.0562916, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_seiwh"]
+font_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_785n5"]
+bg_color = Color(0.0605303, 0.0605304, 0.0605303, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l3ofo"]
+bg_color = Color(0.10748, 0.10748, 0.10748, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6g112"]
+bg_color = Color(0.0253638, 0.0253638, 0.0253638, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="Menu" type="Viewports"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -163,21 +200,8 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.054902, 0.054902, 0.054902, 0.705882)
 
-[node name="TopPanel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 80.0
-grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_jqxjy")
-
-[node name="Logo" type="TextureRect" parent="TopPanel"]
-layout_mode = 1
-offset_right = 88.0
-offset_bottom = 80.0
-texture = ExtResource("2_vl1kh")
-expand_mode = 1
-stretch_mode = 4
+[node name="Music" type="AudioStreamPlayer" parent="."]
+bus = &"Music"
 
 [node name="Viewports" type="Node" parent="."]
 
@@ -185,15 +209,19 @@ stretch_mode = 4
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 80.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Buttons" type="VBoxContainer" parent="Viewports/Menu"]
 layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_left = 8.0
-offset_right = 329.0
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 16.0
+offset_top = -48.0
+offset_right = 337.0
+offset_bottom = 48.0
 grow_vertical = 2
 alignment = 1
 
@@ -244,6 +272,7 @@ visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 80.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -286,7 +315,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 16.0
-offset_top = 142.0
+offset_top = 63.0
 offset_right = -16.0
 offset_bottom = -60.0
 grow_horizontal = 2
@@ -299,15 +328,11 @@ size_flags_vertical = 3
 theme = SubResource("Theme_rg211")
 columns = 2
 
-[node name="Music" type="AudioStreamPlayer" parent="Viewports/Maplist"]
-bus = &"Music"
-
 [node name="Filters" type="Panel" parent="Viewports/Maplist"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 80.0
-offset_bottom = 139.0
+offset_bottom = 59.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_66esq")
 
@@ -329,7 +354,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 79.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("7_bt406")
@@ -815,3 +839,52 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_j2bqa")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_j2bqa")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_j2bqa")
 text = "X"
+
+[node name="TopPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 80.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jqxjy")
+
+[node name="Logo" type="TextureRect" parent="TopPanel"]
+layout_mode = 1
+offset_right = 88.0
+offset_bottom = 80.0
+texture = ExtResource("2_vl1kh")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SongName" type="Label" parent="TopPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 136.0
+offset_top = -14.0
+offset_right = 1023.0
+offset_bottom = 14.0
+grow_vertical = 2
+text = "Artist - Song Name"
+label_settings = SubResource("LabelSettings_seiwh")
+clip_text = true
+
+[node name="Pause" type="Button" parent="TopPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 86.0
+offset_top = -18.0
+offset_right = 126.0
+offset_bottom = 20.0
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_785n5")
+theme_override_styles/hover = SubResource("StyleBoxFlat_l3ofo")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6g112")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_785n5")
+theme_override_styles/focus = SubResource("StyleBoxFlat_785n5")
+icon = ExtResource("9_glbw7")
+icon_alignment = 1
+expand_icon = true

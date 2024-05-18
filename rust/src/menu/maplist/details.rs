@@ -1,6 +1,6 @@
 use godot::{engine::{global::{Error, MouseButton}, Button, IPanel, Image, ImageTexture, InputEvent, InputEventMouseButton, Label, Panel, TextureRect}, prelude::*};
 
-use crate::content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet};
+use crate::FLUX;
 
 #[derive(GodotClass)]
 #[class(base=Panel)]
@@ -53,8 +53,8 @@ impl IPanel for MapDetails {
             return;
         }
 
-        let cursor_pos = event.get_position();
-        if !self.base().get_rect().has_point(cursor_pos) {
+        let cursor_pos = event.get_global_position();
+        if !Rect2::new(self.base().get_global_position(), self.base().get_size()).has_point(cursor_pos) {
             self.base_mut().set_visible(false);
             self.bg_blur.as_mut().unwrap().set_visible(false);
         }
@@ -64,7 +64,10 @@ impl IPanel for MapDetails {
 #[godot_api]
 impl MapDetails {
     #[func]
-    pub fn set_details(&mut self, map: Gd<Beatmap>, mapset: Gd<BeatmapSet>) {
+    pub fn set_details(&mut self) {
+        let map = unsafe { FLUX.selected_map.as_ref().unwrap() };
+        let mapset = unsafe { FLUX.selected_mapset.as_ref().unwrap() };
+
         self.title.as_mut().unwrap().set_text(mapset.bind().title.clone().into());
         self.mapper.as_mut().unwrap().set_text(mapset.bind().mappers.join(", ").clone().into());
         self.difficulty.as_mut().unwrap().set_text(map.bind().name.clone().into());

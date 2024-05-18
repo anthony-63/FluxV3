@@ -1,7 +1,7 @@
 use std::{sync::{Arc, Mutex}, thread};
 
 use godot::{engine::{Label, Os, Time}, prelude::*};
-
+use rand::prelude::SliceRandom;
 use crate::{content::maploader::MapLoader, game::score::Score, settings::Settings, FLUX};
 
 #[derive(GodotClass)]
@@ -75,6 +75,12 @@ impl Startup {
 
         internal.lock().unwrap().stage = "Loading maps".to_string();
         Self::load_maps(user_dir.clone());
+
+        internal.lock().unwrap().stage = "Selecting map...".to_string();
+        unsafe { 
+            FLUX.selected_mapset = Some(Gd::from_object(FLUX.loaded_mapsets.choose(&mut rand::thread_rng()).unwrap().clone()));
+            FLUX.selected_map = Some(Gd::from_object(FLUX.selected_mapset.clone().unwrap().bind().difficulties.choose(&mut rand::thread_rng()).unwrap().clone()));
+        }
         internal.lock().unwrap().stage = "Done".to_string();
     }
 
