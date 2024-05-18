@@ -20,6 +20,9 @@ pub struct Game {
     sync_manager: Option<Gd<SyncManager>>,
     note_manager: Option<Gd<NoteManager>>,
     cursor: Option<Gd<Cursor>>,
+
+    pub health: f32,
+    
     started: bool,
 }
 
@@ -33,6 +36,7 @@ impl INode3D for Game {
             loaded_mapset: None,
             sync_manager: None,
             note_manager: None,
+            health: 10.,
             started: false,
         }
     }

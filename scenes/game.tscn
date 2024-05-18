@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://dd3hfhgjj3yvn"]
+[gd_scene load_steps=15 format=3 uid="uid://dd3hfhgjj3yvn"]
 
 [ext_resource type="Texture2D" uid="uid://45n06myc80yj" path="res://assets/skins/Default/grid.png" id="1_ju5r5"]
 [ext_resource type="Texture2D" uid="uid://cc5kpuab5r4pq" path="res://assets/skins/Default/cursor.png" id="2_hp5it"]
 [ext_resource type="PackedScene" uid="uid://bow41ovi3ktl0" path="res://prefabs/righthud.tscn" id="3_5me73"]
 [ext_resource type="PackedScene" uid="uid://gi3jmg8gqxa" path="res://prefabs/lefthud.tscn" id="4_662rr"]
+[ext_resource type="PackedScene" uid="uid://ea4do71tdqtl" path="res://prefabs/health.tscn" id="5_eivlr"]
 [ext_resource type="ArrayMesh" uid="uid://3xfo3b63i100" path="res://assets/skins/DefaultToCopy/mesh.obj" id="5_oqkyy"]
 [ext_resource type="AudioStream" uid="uid://llu1appq4j4r" path="res://assets/skins/Default/hit.mp3" id="6_46wqm"]
 
@@ -19,6 +20,9 @@ viewport_path = NodePath("HUD/RightViewport")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_2m5mu"]
 viewport_path = NodePath("HUD/LeftViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_47ks8"]
+viewport_path = NodePath("HUD/HealthViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_haxa0"]
 render_priority = -1
@@ -74,6 +78,10 @@ texture = SubResource("ViewportTexture_e51gt")
 transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -6, 0, -1)
 texture = SubResource("ViewportTexture_2m5mu")
 
+[node name="Health" type="Sprite3D" parent="HUD"]
+transform = Transform3D(1.09813, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.35896, 0)
+texture = SubResource("ViewportTexture_47ks8")
+
 [node name="RightViewport" type="SubViewport" parent="HUD"]
 transparent_bg = true
 handle_input_locally = false
@@ -89,6 +97,14 @@ size = Vector2i(360, 720)
 render_target_update_mode = 4
 
 [node name="HUD" parent="HUD/LeftViewport" instance=ExtResource("4_662rr")]
+
+[node name="HealthViewport" type="SubViewport" parent="HUD"]
+transparent_bg = true
+size = Vector2i(512, 20)
+
+[node name="Health" parent="HUD/HealthViewport" instance=ExtResource("5_eivlr")]
+max_value = 10.0
+value = 3.0
 
 [node name="NoteManager" type="NoteManager" parent="."]
 

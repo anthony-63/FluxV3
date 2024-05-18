@@ -103,6 +103,7 @@ impl INode for NoteManager {
         
         let sync_manager = self.sync_manager.as_mut().unwrap().bind();
         let cursor = self.cursor.as_mut().unwrap().bind();
+        let mut game = self.game.as_mut().unwrap().bind_mut();
 
         let mut to_process: Vec<Gd<Note>> = vec![];
         for i in self.start_process..self.ordered_notes.len() {
@@ -128,12 +129,16 @@ impl INode for NoteManager {
                     FLUX.score.as_mut().unwrap().total += 1;
                 }
 
+                game.health = (game.health + 1.25).min(10.);
+
                 self.hit_player.as_mut().unwrap().play();
             }
 
             if !bound.hit && !bound.in_hit_window(sync_manager.real_time, sync_manager.speed) {
                 did_hitreg = true;
                 bound.hit = true;
+
+                game.health = (game.health - 2.).max(0.);
 
                 unsafe {
                     FLUX.score.as_mut().unwrap().misses += 1;
