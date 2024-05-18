@@ -339,11 +339,11 @@ impl SSPMParser {
             
             let has_quantum = self.buffer.read_u8().unwrap() == 1;
             if has_quantum {
-                note.x = -(self.buffer.read_f32::<LittleEndian>().unwrap() - 1.);
-                note.y = -(self.buffer.read_f32::<LittleEndian>().unwrap() - 1.);
+                note.x = self.buffer.read_f32::<LittleEndian>().unwrap() - 1.;
+                note.y = self.buffer.read_f32::<LittleEndian>().unwrap() - 1.;
             } else {
-                note.x = -(self.buffer.read_u8().unwrap() as f32 - 1.);
-                note.y = -(self.buffer.read_u8().unwrap() as f32 - 1.);
+                note.x = self.buffer.read_u8().unwrap() as f32 - 1.;
+                note.y = self.buffer.read_u8().unwrap() as f32 - 1.;
             }
 
             notes.push(note);
