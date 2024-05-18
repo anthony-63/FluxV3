@@ -1,4 +1,4 @@
-use godot::{engine::{GridContainer, IGridContainer}, prelude::*};
+use godot::{engine::{GridContainer, IGridContainer, LineEdit}, prelude::*};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
 
@@ -9,6 +9,7 @@ use super::map_button::MapButton;
 pub struct MapContainer {
     base: Base<GridContainer>,
     audio_player: Option<Gd<AudioStreamPlayer>>,
+    search_box: Option<Gd<LineEdit>>,
 }
 
 #[godot_api]
@@ -17,11 +18,13 @@ impl IGridContainer for MapContainer {
         Self {
             base,
             audio_player: None,
+            search_box: None,
         }
     }
 
     fn enter_tree(&mut self) {
         self.audio_player = Some(self.base().get_node_as::<AudioStreamPlayer>("../../Music"));
+        self.search_box = Some(self.base().get_node_as::<LineEdit>("../../Filters/Search"));
 
         let entry_prefab = load::<PackedScene>("res://prefabs/map_button.tscn");
         unsafe {
@@ -34,6 +37,39 @@ impl IGridContainer for MapContainer {
                     self.base_mut().add_child(entry.upcast::<Node>());
                 }
             }
+        }
+
+    }
+
+    fn process(&mut self, _: f64) {
+        if self.search_box.is_none() {
+            return;
+        }
+
+        let search = self.search_box.as_ref().unwrap().get_text().to_string().to_lowercase();
+
+        for child_uncast in self.base().get_children().iter_shared() {
+            let mut child=  child_uncast.try_cast::<MapButton>().unwrap();
+            let button_ref = child.bind_mut();
+            
+            if search == "".to_string() {
+                button_ref.to_gd().set_visible(true);
+                continue;
+            }
+
+            let map = &button_ref.map.as_ref().unwrap().bind();
+            let mapset = &button_ref.mapset.as_ref().unwrap().bind();
+
+            let lower_mappers = mapset.mappers.iter().map(|x| x.to_lowercase()).collect::<Vec<String>>();
+            let contains_mapper = lower_mappers.iter().map(|x| x.contains(&search)).collect::<Vec<bool>>().contains(&true);
+
+            let visible = 
+                mapset.title.to_lowercase().contains(&search) || 
+                contains_mapper ||
+                map.name.to_lowercase().contains(&search) ||
+                mapset.artist.to_lowercase().contains(&search);
+
+            button_ref.to_gd().set_visible(visible);
         }
     }
 }

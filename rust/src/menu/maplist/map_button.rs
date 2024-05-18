@@ -6,8 +6,8 @@ use crate::content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet};
 #[class(base=Button)]
 pub struct MapButton {
     base: Base<Button>,
-    mapset: Option<Gd<BeatmapSet>>,
-    map: Option<Gd<Beatmap>>,
+    pub mapset: Option<Gd<BeatmapSet>>,
+    pub map: Option<Gd<Beatmap>>,
 }
 
 #[godot_api]

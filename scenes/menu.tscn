@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=15 format=3 uid="uid://dkq7fb6lkop1u"]
 
 [ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
@@ -17,6 +17,35 @@ bg_color = Color(0.0745098, 0.0745098, 0.0745098, 0.894118)
 [sub_resource type="Theme" id="Theme_rg211"]
 GridContainer/constants/h_separation = 12
 GridContainer/constants/v_separation = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66esq"]
+bg_color = Color(0.0295066, 0.0295066, 0.0295065, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3jjwm"]
+content_margin_left = 8.0
+bg_color = Color(0.0768358, 0.0768358, 0.0768358, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.241156, 0.241156, 0.241156, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vegsv"]
+content_margin_left = 8.0
+bg_color = Color(0.0475576, 0.0475577, 0.0475576, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.241156, 0.241156, 0.241156, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mjhed"]
 bg_color = Color(0.0728427, 0.0728426, 0.0728426, 1)
@@ -57,15 +86,13 @@ color = Color(0.054902, 0.054902, 0.054902, 0.705882)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 79.0
+offset_bottom = 80.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_jqxjy")
 
 [node name="Logo" type="TextureRect" parent="TopPanel"]
 layout_mode = 1
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 89.0
+offset_right = 88.0
 offset_bottom = 80.0
 texture = ExtResource("2_vl1kh")
 expand_mode = 1
@@ -145,7 +172,7 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -51.0
+offset_top = -52.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_patc4")
@@ -163,7 +190,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 1.0
+offset_top = 1.0
 offset_right = 1.0
+offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_3oxqr")
@@ -176,7 +205,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 16.0
-offset_top = 96.0
+offset_top = 142.0
 offset_right = -16.0
 offset_bottom = -60.0
 grow_horizontal = 2
@@ -191,6 +220,26 @@ columns = 2
 
 [node name="Music" type="AudioStreamPlayer" parent="Viewports/Maplist"]
 bus = &"Music"
+
+[node name="Filters" type="Panel" parent="Viewports/Maplist"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 80.0
+offset_bottom = 139.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_66esq")
+
+[node name="Search" type="LineEdit" parent="Viewports/Maplist/Filters"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 14.0
+offset_right = 555.0
+offset_bottom = 45.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_3jjwm")
+theme_override_styles/focus = SubResource("StyleBoxFlat_vegsv")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_3jjwm")
+placeholder_text = "Search"
 
 [node name="SettingsMenu" type="SettingsMenu" parent="Viewports"]
 visible = false
