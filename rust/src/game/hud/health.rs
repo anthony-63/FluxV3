@@ -5,7 +5,6 @@ use godot::{engine::{IProgressBar, ProgressBar, Tween}, prelude::*};
 #[class(base=ProgressBar)]
 pub struct HealthHUD {
     base: Base<ProgressBar>,
-    tween: Option<Gd<Tween>>,
     hp: f32,
 }
 
@@ -14,14 +13,8 @@ impl IProgressBar for HealthHUD {
     fn init(base: Base<ProgressBar>) -> Self {
         Self {
             base,
-            tween: None,
             hp: 0.,
         }
-    }
-
-    fn enter_tree(&mut self) {
-        let tween = self.base_mut().get_tree().unwrap().create_tween().unwrap();
-        self.tween = Some(tween);
     }
 }
 
