@@ -1,7 +1,7 @@
 use std::{io::{Cursor, Read, Seek, Write}, path::PathBuf};
 
 use byteorder::{LittleEndian, ReadBytesExt};
-use godot::prelude::*;
+use godot::{engine::Os, prelude::*};
 use json::{object, JsonValue};
 use super::beatmap::NoteData;
 
@@ -84,8 +84,11 @@ pub struct SSPMParser {
 }
 
 impl SSPMParser {
-    pub fn sspm_to_folder(path: &str) {
-        let folder_path = PathBuf::from(path).with_extension("").to_str().unwrap().to_string();
+    pub fn sspm_to_folder(path: &str, should_remove: bool) {
+        let user_dir = Os::singleton().get_user_data_dir().to_string();
+        let folder_name = PathBuf::from(path).with_extension("").file_name().unwrap().to_str().unwrap().to_string();
+
+        let folder_path = format!("{}/{}", user_dir, folder_name);
 
         godot_print!("parsing sspm: {} -> {}", path, folder_path);
 
@@ -214,7 +217,9 @@ impl SSPMParser {
         music_file.write_all(&audio_buffer).unwrap();
         music_file.flush().unwrap();
 
-        std::fs::remove_file(path).unwrap();
+        if should_remove {
+            std::fs::remove_file(path).unwrap();
+        }
     }
 
     fn magic_exists(&mut self) -> bool {

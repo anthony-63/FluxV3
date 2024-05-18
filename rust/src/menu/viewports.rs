@@ -1,5 +1,7 @@
 use godot::{engine::{Control, IControl, InputEvent}, prelude::*};
 
+use crate::content::maploader::MapLoader;
+
 use super::{maplist::Maplist, menu::Menu, settings::SettingsMenu};
 
 #[derive(GodotClass)]
@@ -39,6 +41,9 @@ impl IControl for Viewports {
         settings_view.connect("close_settings".into(), self.base_mut().callable("close_settings"));
         settings_view.set_visible(false);
 
+        let maps_dragged_callable = self.base_mut().callable("maps_dragged");
+        self.base_mut().get_viewport().unwrap().connect("files_dropped".into(), maps_dragged_callable);
+
         self.change_visibility(true, false);
     }
 
@@ -57,6 +62,14 @@ impl Viewports {
     #[func]
     fn change_to_maplist(&mut self) {
         self.change_visibility(false, true);
+    }
+
+    #[func]
+    fn maps_dragged(&mut self, maps: PackedStringArray) {
+        for path_gstr in maps.as_slice() {
+            let path = path_gstr.to_string();
+            MapLoader::add_map(path);
+        }
     }
 
     #[func]

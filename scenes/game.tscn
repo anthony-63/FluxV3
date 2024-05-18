@@ -103,7 +103,6 @@ transparent_bg = true
 size = Vector2i(512, 20)
 
 [node name="Health" parent="HUD/HealthViewport" instance=ExtResource("5_eivlr")]
-max_value = 10.0
 value = 3.0
 
 [node name="NoteManager" type="NoteManager" parent="."]

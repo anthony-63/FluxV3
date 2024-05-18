@@ -2,12 +2,15 @@ use godot::{engine::{AudioServer, AudioStream, Time}, prelude::*};
 
 use crate::game::Game;
 
+// status skip: ff6a5689
+// status paused: ffffffa0
+
 #[derive(GodotClass)]
 #[class(base=Node)]
 pub struct SyncManager {
     base: Base<Node>,
     game: Option<Gd<Game>>,
-    audio_player: Option<Gd<AudioStreamPlayer>>,
+    pub audio_player: Option<Gd<AudioStreamPlayer>>,
     pub speed: f32,
     
     last_time: f64,
@@ -87,6 +90,7 @@ impl SyncManager {
 
         self.last_time = Time::singleton().get_ticks_usec() as f64;
         self.real_time = from.min(from * self.speed as f64);
+        
         audio_player.seek(self.real_time as f32);
         audio_player.play();
         audio_player.set_pitch_scale(self.speed);

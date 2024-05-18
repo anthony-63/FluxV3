@@ -127,6 +127,13 @@ impl INode for NoteManager {
                 unsafe {
                     FLUX.score.as_mut().unwrap().hits += 1;
                     FLUX.score.as_mut().unwrap().total += 1;
+                    FLUX.score.as_mut().unwrap().combo += 1;
+                    FLUX.score.as_mut().unwrap().score += 25 * FLUX.score.as_ref().unwrap().multiplier;
+                    FLUX.score.as_mut().unwrap().miniplier += 1;
+                    if FLUX.score.as_mut().unwrap().miniplier >= 8 && FLUX.score.as_mut().unwrap().multiplier < 8 {
+                        FLUX.score.as_mut().unwrap().miniplier = 0;
+                        FLUX.score.as_mut().unwrap().multiplier = (FLUX.score.as_mut().unwrap().multiplier + 1).min(8);
+                    }
                 }
 
                 game.health = (game.health + 1.25).min(10.);
@@ -143,6 +150,9 @@ impl INode for NoteManager {
                 unsafe {
                     FLUX.score.as_mut().unwrap().misses += 1;
                     FLUX.score.as_mut().unwrap().total += 1;
+                    FLUX.score.as_mut().unwrap().combo = 0;
+                    FLUX.score.as_mut().unwrap().miniplier = 0;
+                    FLUX.score.as_mut().unwrap().multiplier = (FLUX.score.as_mut().unwrap().multiplier - 1).max(1);
                 }
             }
 
