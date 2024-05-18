@@ -152,7 +152,7 @@ impl INode for NoteManager {
                     FLUX.score.as_mut().unwrap().total += 1;
                     FLUX.score.as_mut().unwrap().combo = 0;
                     FLUX.score.as_mut().unwrap().miniplier = 0;
-                    FLUX.score.as_mut().unwrap().multiplier = (FLUX.score.as_mut().unwrap().multiplier - 1).max(1);
+                    FLUX.score.as_mut().unwrap().multiplier = (1_f32.max(FLUX.score.as_mut().unwrap().multiplier as f32 - 1.)) as usize;
                 }
             }
 

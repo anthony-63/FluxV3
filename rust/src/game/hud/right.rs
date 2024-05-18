@@ -12,6 +12,7 @@ pub struct RightHUD {
     time_progress: Option<Gd<ProgressBar>>,
     score_multiplier: Option<Gd<TextureProgressBar>>,
     score_multiplier_text: Option<Gd<Label>>,
+    miniplier_prev: usize,
 }
 
 #[godot_api]
@@ -25,6 +26,7 @@ impl IControl for RightHUD {
             time_progress: None,
             score_multiplier: None,
             score_multiplier_text: None,
+            miniplier_prev: 7,
         }
     }
 
@@ -53,7 +55,16 @@ impl RightHUD {
         self.combo.as_mut().unwrap().set_text(format!("{}", score.combo).into());
         self.misses.as_mut().unwrap().set_text(format!("{}", score.misses).into());
         self.score_multiplier_text.as_mut().unwrap().set_text(format!("{}", score.multiplier).into());
-        self.score_multiplier.as_mut().unwrap().set_value(score.miniplier as f64);
+    
+        if self.miniplier_prev == score.miniplier {
+            return;
+        }
+        let mut tween = self.base_mut().get_tree().unwrap().create_tween().unwrap();
+        
+        tween.stop();
+        tween.tween_property(self.score_multiplier.clone().unwrap().upcast(), "value".into(), Variant::from(score.miniplier as f64), 0.1);
+        self.miniplier_prev = score.miniplier;
+        tween.play();
     }
 
     pub fn update_timer(&mut self, current: f32, length: f32) {

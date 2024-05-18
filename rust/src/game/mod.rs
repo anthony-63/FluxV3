@@ -56,6 +56,8 @@ impl INode3D for Game {
 
         sync_manager.call("set_stream".into(), &[audio_stream.to_variant()]);
 
+        unsafe { FLUX.score.as_mut().unwrap().multiplier = 1; }
+
         self.cursor = Some(cursor);
         self.sync_manager = Some(sync_manager);
         self.note_manager = Some(note_manager);
