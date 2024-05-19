@@ -6,11 +6,6 @@ use crate::FLUX;
 #[class(base=Panel)]
 pub struct MapDetails {
     base: Base<Panel>,
-    title: Option<Gd<Label>>,
-    mapper: Option<Gd<Label>>,
-    difficulty: Option<Gd<Label>>,
-    notes: Option<Gd<Label>>,
-    cover: Option<Gd<TextureRect>>,
     bg_blur: Option<Gd<TextureRect>>,
 }
 
@@ -19,22 +14,11 @@ impl IPanel for MapDetails {
     fn init(base: Base<Panel>) -> Self {
         Self {
             base,
-            title: None,
             bg_blur: None,
-            difficulty: None,
-            mapper: None,
-            notes: None,
-            cover: None,
         }
     }
 
     fn enter_tree(&mut self) {
-        self.title = Some(self.base().get_node_as::<Label>("Details/VBoxContainer/Title"));
-        self.mapper = Some(self.base().get_node_as::<Label>("Details/VBoxContainer/Mapper"));
-        self.difficulty = Some(self.base().get_node_as::<Label>("Details/VBoxContainer/Difficulty"));
-        self.notes = Some(self.base().get_node_as::<Label>("Details/VBoxContainer/Notes"));
-        self.cover = Some(self.base().get_node_as::<TextureRect>("Cover"));
-
         self.bg_blur = Some(self.base().get_node_as::<TextureRect>("../BgBlur"));
         
         let mut play_button = self.base().get_node_as::<Button>("Play");
@@ -65,13 +49,19 @@ impl IPanel for MapDetails {
 impl MapDetails {
     #[func]
     pub fn set_details(&mut self) {
+        let mut title = self.base().get_node_as::<Label>("Details/VBoxContainer/Title");
+        let mut mapper = self.base().get_node_as::<Label>("Details/VBoxContainer/Mapper");
+        let mut difficulty = self.base().get_node_as::<Label>("Details/VBoxContainer/Difficulty");
+        let mut notes = self.base().get_node_as::<Label>("Details/VBoxContainer/Notes");
+        let mut cover_rect = self.base().get_node_as::<TextureRect>("Cover");
+
         let map = unsafe { FLUX.selected_map.as_ref().unwrap() };
         let mapset = unsafe { FLUX.selected_mapset.as_ref().unwrap() };
 
-        self.title.as_mut().unwrap().set_text(mapset.bind().title.clone().into());
-        self.mapper.as_mut().unwrap().set_text(mapset.bind().mappers.join(", ").clone().into());
-        self.difficulty.as_mut().unwrap().set_text(map.bind().name.clone().into());
-        self.notes.as_mut().unwrap().set_text(format!("{} notes", map.bind().notes.len()).into());
+        title.set_text(mapset.bind().title.clone().into());
+        mapper.set_text(mapset.bind().mappers.join(", ").clone().into());
+        difficulty.set_text(map.bind().name.clone().into());
+        notes.set_text(format!("{} notes", map.bind().notes.len()).into());
         
         let cover = mapset.bind().cover.clone();
         if cover.is_some() {
@@ -84,9 +74,9 @@ impl MapDetails {
 
             let texture = ImageTexture::create_from_image(img).unwrap();
             
-            self.cover.as_mut().unwrap().set_texture(texture.upcast());
+            cover_rect.set_texture(texture.upcast());
         } else {
-            self.cover.as_mut().unwrap().set_texture(load("res://assets/skins/Default/cover_placeholder.png"));
+            cover_rect.set_texture(load("res://assets/skins/Default/cover_placeholder.png"));
         }
     }
 

@@ -1,9 +1,9 @@
-use godot::{engine::{Button, Control, IControl, InputEvent, Label}, prelude::*};
+use godot::{engine::{Button, Control, IControl, InputEvent, Label, TextureRect}, prelude::*};
 
 use crate::{content::maploader::MapLoader, FLUX};
 use rand::prelude::SliceRandom;
 
-use super::{maplist::Maplist, menu::Menu, settings::SettingsMenu};
+use super::{maplist::{details::MapDetails, Maplist}, menu::Menu, settings::SettingsMenu};
 
 #[derive(GodotClass)]
 #[class(base=Control)]
@@ -28,6 +28,7 @@ impl IControl for Viewports {
     }
 
     fn enter_tree(&mut self) {
+        
         self.menu_view = Some(self.base().get_node_as::<Menu>("Viewports/Menu"));
         self.maplist_view = Some(self.base().get_node_as::<Maplist>("Viewports/Maplist"));
         self.settings_view = Some(self.base().get_node_as::<SettingsMenu>("Viewports/SettingsMenu"));
@@ -53,7 +54,24 @@ impl IControl for Viewports {
         let mut skip_button: Gd<Button> = self.base().get_node_as::<Button>("TopPanel/MusicPlayer/Skip");
         skip_button.connect("pressed".into(), self.base_mut().callable("skip_music"));
 
-        self.change_visibility(true, false);
+        let mut map_details = Some(self.base().get_node_as::<MapDetails>("Viewports/Maplist/MapDetails"));
+        let mut bg_blur = Some(self.base().get_node_as::<TextureRect>("Viewports/Maplist/BgBlur"));
+        
+        if unsafe { FLUX.should_open_details && FLUX.selected_mapset.is_some() } {
+            self.change_visibility(false, true);
+
+            match map_details.as_mut().unwrap().try_call("set_details".into(), &[]) {
+                Ok(_) => {},
+                Err(e) => godot_print!("{}", e),
+            }
+
+            map_details.as_mut().unwrap().set_visible(true);
+            bg_blur.as_mut().unwrap().set_visible(true);
+
+            unsafe { FLUX.should_open_details = false; }
+        } else {
+            self.change_visibility(true, false);
+        }
     }
 
     fn process(&mut self, _: f64) {

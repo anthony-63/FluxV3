@@ -17,6 +17,7 @@ static mut FLUX: Flux = Flux {
     selected_mapset: None,
     score: None,
     fullscreen: false,
+    should_open_details: false,
 };
 
 #[gdextension]

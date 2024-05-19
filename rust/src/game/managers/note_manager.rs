@@ -52,7 +52,26 @@ impl INode for NoteManager {
             pushback: false,
 
             ordered_notes: vec![],
-            colors: vec![Color::from_html("#5d3fd3").unwrap(), Color::from_html("#ffe4ed").unwrap()]
+            colors: vec![
+                Color::from_html("#ffb2b2").unwrap(),
+                Color::from_html("#ffcdb2").unwrap(),
+                Color::from_html("#ffe8b2").unwrap(),
+                Color::from_html("#faffb2").unwrap(),
+                Color::from_html("#dfffb2").unwrap(),
+                Color::from_html("#c4ffb2").unwrap(),
+                Color::from_html("#b2ffbb").unwrap(),
+                Color::from_html("#b2ffd6").unwrap(),
+                Color::from_html("#b2fff1").unwrap(),
+                Color::from_html("#b2f1ff").unwrap(),
+                Color::from_html("#b2d6ff").unwrap(),
+                Color::from_html("#b2bbff").unwrap(),
+                Color::from_html("#c4b2ff").unwrap(),
+                Color::from_html("#dfb2ff").unwrap(),
+                Color::from_html("#fab2ff").unwrap(),
+                Color::from_html("#ffb2e8").unwrap(),
+                Color::from_html("#ffb2cd").unwrap(),
+                Color::from_html("#ffb2b2").unwrap(),
+            ],
         }
     }
 

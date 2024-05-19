@@ -104,6 +104,7 @@ impl Game {
 
     fn end_game(&mut self) {
         Input::singleton().set_mouse_mode(MouseMode::VISIBLE);
+        unsafe { FLUX.should_open_details = true };
         self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/menu.tscn".into_godot());
     }
 }
