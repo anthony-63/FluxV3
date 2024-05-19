@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=36 format=3 uid="uid://dkq7fb6lkop1u"]
 
 [ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
@@ -8,6 +8,7 @@
 [ext_resource type="Shader" path="res://shaders/blur.gdshader" id="6_nkv8a"]
 [ext_resource type="Texture2D" uid="uid://nl3ol8uiu0bg" path="res://assets/images/blank.png" id="7_bt406"]
 [ext_resource type="Texture2D" uid="uid://c0l8mfawm6f5g" path="res://assets/skins/Default/cover_placeholder.png" id="8_yvl1d"]
+[ext_resource type="Texture2D" uid="uid://cditv1m3ihd0q" path="res://assets/skins/Default/skip_song.png" id="9_c5t8x"]
 [ext_resource type="Texture2D" uid="uid://ddj3iubybewy0" path="res://assets/skins/Default/pause_music.png" id="9_glbw7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6xr4h"]
@@ -137,6 +138,17 @@ corner_radius_bottom_left = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqxjy"]
 bg_color = Color(0.0562916, 0.0562916, 0.0562916, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bbnk3"]
+bg_color = Color(0.0980392, 0.0980392, 0.0980392, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="LabelSettings" id="LabelSettings_seiwh"]
 font_size = 20
@@ -856,29 +868,60 @@ texture = ExtResource("2_vl1kh")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="SongName" type="Label" parent="TopPanel"]
+[node name="MusicPlayer" type="Panel" parent="TopPanel"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 136.0
-offset_top = -14.0
-offset_right = 1023.0
-offset_bottom = 14.0
+offset_left = 88.0
+offset_top = -24.0
+offset_right = 928.0
+offset_bottom = 24.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bbnk3")
+
+[node name="SongName" type="Label" parent="TopPanel/MusicPlayer"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 108.0
+offset_top = -15.0
+offset_right = 838.0
+offset_bottom = 13.0
 grow_vertical = 2
 text = "Artist - Song Name"
 label_settings = SubResource("LabelSettings_seiwh")
 clip_text = true
 
-[node name="Pause" type="Button" parent="TopPanel"]
+[node name="Skip" type="Button" parent="TopPanel/MusicPlayer"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 86.0
-offset_top = -18.0
-offset_right = 126.0
-offset_bottom = 20.0
+offset_left = 56.0
+offset_top = -19.0
+offset_right = 96.0
+offset_bottom = 19.0
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_785n5")
+theme_override_styles/hover = SubResource("StyleBoxFlat_l3ofo")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6g112")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_785n5")
+theme_override_styles/focus = SubResource("StyleBoxFlat_785n5")
+icon = ExtResource("9_c5t8x")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Pause" type="Button" parent="TopPanel/MusicPlayer"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -19.0
+offset_right = 48.0
+offset_bottom = 19.0
 grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_785n5")
 theme_override_styles/hover = SubResource("StyleBoxFlat_l3ofo")

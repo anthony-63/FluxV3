@@ -1,6 +1,7 @@
 use godot::{engine::{Button, Control, IControl, InputEvent, Label}, prelude::*};
 
 use crate::{content::maploader::MapLoader, FLUX};
+use rand::prelude::SliceRandom;
 
 use super::{maplist::Maplist, menu::Menu, settings::SettingsMenu};
 
@@ -30,7 +31,7 @@ impl IControl for Viewports {
         self.menu_view = Some(self.base().get_node_as::<Menu>("Viewports/Menu"));
         self.maplist_view = Some(self.base().get_node_as::<Maplist>("Viewports/Maplist"));
         self.settings_view = Some(self.base().get_node_as::<SettingsMenu>("Viewports/SettingsMenu"));
-        self.song_name = Some(self.base().get_node_as::<Label>("TopPanel/SongName"));
+        self.song_name = Some(self.base().get_node_as::<Label>("TopPanel/MusicPlayer/SongName"));
 
         let mut menu_view = self.menu_view.clone().unwrap();
         let mut maplist_view = self.maplist_view.clone().unwrap();
@@ -38,7 +39,7 @@ impl IControl for Viewports {
 
         menu_view.connect("change_to_maplist".into(), self.base_mut().callable("change_to_maplist"));
         menu_view.connect("open_settings".into(), self.base_mut().callable("toggle_settings"));
-        
+
         maplist_view.connect("change_to_menu".into(), self.base_mut().callable("change_to_menu"));
 
         settings_view.connect("close_settings".into(), self.base_mut().callable("close_settings"));
@@ -47,8 +48,10 @@ impl IControl for Viewports {
         let maps_dragged_callable = self.base_mut().callable("maps_dragged");
         self.base_mut().get_viewport().unwrap().connect("files_dropped".into(), maps_dragged_callable);
 
-        let mut pause_button: Gd<Button> = self.base().get_node_as::<Button>("TopPanel/Pause");
+        let mut pause_button: Gd<Button> = self.base().get_node_as::<Button>("TopPanel/MusicPlayer/Pause");
         pause_button.connect("pressed".into(), self.base_mut().callable("toggle_music"));
+        let mut skip_button: Gd<Button> = self.base().get_node_as::<Button>("TopPanel/MusicPlayer/Skip");
+        skip_button.connect("pressed".into(), self.base_mut().callable("skip_music"));
 
         self.change_visibility(true, false);
     }
@@ -105,6 +108,22 @@ impl Viewports {
             music.set_stream_paused(true);
         } else {
             music.set_stream_paused(false);
+        }
+    }
+
+    #[func]
+    fn skip_music(&mut self) {
+        let mut music = self.base().get_node_as::<AudioStreamPlayer>("Music");
+
+        unsafe { 
+            FLUX.selected_mapset = Some(Gd::from_object(FLUX.loaded_mapsets.choose(&mut rand::thread_rng()).unwrap().clone()));
+            FLUX.selected_map = Some(Gd::from_object(FLUX.selected_mapset.clone().unwrap().bind().difficulties.choose(&mut rand::thread_rng()).unwrap().clone()));
+        }
+        
+        let music_stream = unsafe {  FLUX.selected_mapset.clone().unwrap().bind().load_audio(true) };
+        if music_stream.is_some() {
+            music.set_stream(music_stream.unwrap());
+            music.play();
         }
     }
 
