@@ -88,7 +88,7 @@ impl SSPMParser {
         let user_dir = Os::singleton().get_user_data_dir().to_string();
         let folder_name = PathBuf::from(path).with_extension("").file_name().unwrap().to_str().unwrap().to_string();
 
-        let folder_path = format!("{}/{}", user_dir, folder_name);
+        let folder_path = format!("{}/maps/{}", user_dir, folder_name);
 
         godot_print!("parsing sspm: {} -> {}", path, folder_path);
 
@@ -344,11 +344,11 @@ impl SSPMParser {
             
             let has_quantum = self.buffer.read_u8().unwrap() == 1;
             if has_quantum {
-                note.x = self.buffer.read_f32::<LittleEndian>().unwrap() - 1.;
-                note.y = self.buffer.read_f32::<LittleEndian>().unwrap() - 1.;
+                note.x = -(self.buffer.read_f32::<LittleEndian>().unwrap() - 1.);
+                note.y = -(self.buffer.read_f32::<LittleEndian>().unwrap() - 1.);
             } else {
-                note.x = self.buffer.read_u8().unwrap() as f32 - 1.;
-                note.y = self.buffer.read_u8().unwrap() as f32 - 1.;
+                note.x = -(self.buffer.read_u8().unwrap() as f32 - 1.);
+                note.y = -(self.buffer.read_u8().unwrap() as f32 - 1.);
             }
 
             notes.push(note);

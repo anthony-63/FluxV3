@@ -77,10 +77,13 @@ impl Startup {
         Self::load_maps(user_dir.clone());
 
         internal.lock().unwrap().stage = "Selecting map...".to_string();
-        unsafe { 
-            FLUX.selected_mapset = Some(Gd::from_object(FLUX.loaded_mapsets.choose(&mut rand::thread_rng()).unwrap().clone()));
-            FLUX.selected_map = Some(Gd::from_object(FLUX.selected_mapset.clone().unwrap().bind().difficulties.choose(&mut rand::thread_rng()).unwrap().clone()));
+        unsafe {
+            if FLUX.loaded_mapsets.len() > 0 {
+                FLUX.selected_mapset = Some(Gd::from_object(FLUX.loaded_mapsets.choose(&mut rand::thread_rng()).unwrap().clone()));
+                FLUX.selected_map = Some(Gd::from_object(FLUX.selected_mapset.clone().unwrap().bind().difficulties.choose(&mut rand::thread_rng()).unwrap().clone()));
+            }
         }
+        
         internal.lock().unwrap().stage = "Done".to_string();
     }
 

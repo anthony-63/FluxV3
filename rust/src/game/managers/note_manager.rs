@@ -182,7 +182,7 @@ impl NoteManager {
             let mut note = Note::new_gd();
 
             note.bind_mut().time = note_data.time as f64;
-            note.bind_mut().x = note_data.x as f64;
+            note.bind_mut().x = -note_data.x as f64;
             note.bind_mut().y = note_data.y as f64;
             note.bind_mut().index = i;
             note.bind_mut().color = *self.colors.get(i % self.colors.len()).unwrap();

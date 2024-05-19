@@ -65,15 +65,19 @@ impl IControl for Viewports {
                 self.song_name.as_mut().unwrap().set_text("Not playing anything.".into());
             }
         }
-
-        let mut music = self.base().get_node_as::<AudioStreamPlayer>("Music");
-        if !music.is_playing() && !music.get_stream_paused() {
-            let music_stream = unsafe {  FLUX.selected_mapset.clone().unwrap().bind().load_audio(true) };
-            if music_stream.is_some() {
-                music.set_stream(music_stream.unwrap());
-                music.play();
+        unsafe {
+            if FLUX.loaded_mapsets.len() > 0 {
+                let mut music = self.base().get_node_as::<AudioStreamPlayer>("Music");
+                if !music.is_playing() && !music.get_stream_paused() {
+                    let music_stream = FLUX.selected_mapset.clone().unwrap().bind().load_audio(true);
+                    if music_stream.is_some() {
+                        music.set_stream(music_stream.unwrap());
+                        music.play();
+                    }
+                }
             }
         }
+
     }
 
     fn input(&mut self, _: Gd<InputEvent>) {
