@@ -280,6 +280,7 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Maplist" type="Maplist" parent="Viewports"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -419,7 +420,7 @@ layout_mode = 0
 offset_top = 2.0
 offset_right = 368.0
 offset_bottom = 25.0
-text = "Personal Best"
+text = "Last Play"
 label_settings = SubResource("LabelSettings_a2wjn")
 horizontal_alignment = 1
 
@@ -442,6 +443,7 @@ offset_bottom = 23.0
 text = "99.99%"
 
 [node name="MaxCombo" type="Label" parent="Viewports/Maplist/MapDetails/PB/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Max Combo: "
 

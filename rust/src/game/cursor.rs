@@ -54,7 +54,7 @@ impl INode3D for Cursor {
         self.camera = Some(camera);
 
         Input::singleton().set_mouse_mode(MouseMode::CAPTURED);
-
+        Input::singleton().set_use_accumulated_input(false);
     }
 
     fn input(&mut self, event: Gd<InputEvent>) {
