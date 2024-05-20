@@ -55,6 +55,10 @@ impl MapDetails {
         let mut notes = self.base().get_node_as::<Label>("Details/VBoxContainer/Notes");
         let mut cover_rect = self.base().get_node_as::<TextureRect>("Cover");
 
+        let mut pb_status = self.base().get_node_as::<Label>("PB/Status");
+        let mut pb_rank = self.base().get_node_as::<Label>("PB/Rank");
+        let mut score_info = self.base().get_node_as::<Label>("PB/VBoxContainer");
+
         let map = unsafe { FLUX.selected_map.as_ref().unwrap() };
         let mapset = unsafe { FLUX.selected_mapset.as_ref().unwrap() };
 

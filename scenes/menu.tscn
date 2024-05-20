@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=37 format=3 uid="uid://dkq7fb6lkop1u"]
 
 [ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
@@ -90,6 +90,9 @@ font_size = 20
 
 [sub_resource type="LabelSettings" id="LabelSettings_b8mcq"]
 font_size = 65
+
+[sub_resource type="LabelSettings" id="LabelSettings_3luik"]
+font_size = 32
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g7yte"]
 bg_color = Color(0.0383972, 0.0383972, 0.0383971, 1)
@@ -280,7 +283,6 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Maplist" type="Maplist" parent="Viewports"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -477,6 +479,19 @@ offset_bottom = 146.0
 grow_horizontal = 0
 text = "SS"
 label_settings = SubResource("LabelSettings_b8mcq")
+
+[node name="Status" type="Label" parent="Viewports/Maplist/MapDetails/PB"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "No Score"
+label_settings = SubResource("LabelSettings_3luik")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Play" type="Button" parent="Viewports/Maplist/MapDetails"]
 layout_mode = 1

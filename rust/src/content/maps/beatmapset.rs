@@ -1,6 +1,9 @@
-use std::path::Path;
+use std::{hash::Hasher, path::Path};
 
 use godot::{engine::{audio_stream_wav::LoopMode, AudioStream, AudioStreamMp3, AudioStreamWav}, prelude::*};
+use gxhash::GxHasher;
+
+use crate::STAGE2_MAP_SEED;
 
 use super::{beatmap::Beatmap, sspm::AudioType};
 
@@ -50,6 +53,7 @@ impl BeatmapSet {
         let mut difficulties: Vec<Beatmap> = vec![];
         for difficulty in meta["_difficulties"].members() {
             difficulties.push(Beatmap::from_file(format!("{}/{}", folder_path, difficulty.to_string())));
+            
         }
 
         let music_path = meta["_music"].to_string();
@@ -60,6 +64,20 @@ impl BeatmapSet {
             None
         };
 
+        let mut hasher = GxHasher::with_seed(STAGE2_MAP_SEED);
+
+        hasher.write(&[version]);
+        hasher.write(meta_json.as_bytes());
+        hasher.write(folder_path.as_bytes());
+
+        difficulties.clone().into_iter().for_each(|diff| {
+            hasher.write(diff.name.as_bytes());
+            hasher.write(diff.path.as_bytes());
+        });
+
+        let hash = hasher.finish();
+        godot_print!("{}: {}", title, hash);
+
         Self {
             broken: false,
             version,
@@ -68,6 +86,7 @@ impl BeatmapSet {
             music_path,
             difficulties,
             path: folder_path,
+            hash: hash.to_string(),
             cover,
             ..Default::default()
         }

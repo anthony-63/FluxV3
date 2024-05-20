@@ -47,7 +47,3 @@ impl INode for HudManager {
                                 game.sync_manager.as_ref().unwrap().bind().audio_player.as_ref().unwrap().get_stream().unwrap().get_length() as f32);
     }
 }
-
-#[godot_api]
-impl HudManager {
-}

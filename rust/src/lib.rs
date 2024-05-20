@@ -10,6 +10,8 @@ pub mod game;
 
 struct MyExtension;
 
+const STAGE2_MAP_SEED: i64 = 1775906128188434359;
+
 static mut FLUX: Flux = Flux {
     loaded_mapsets: vec![],
     settings: None,

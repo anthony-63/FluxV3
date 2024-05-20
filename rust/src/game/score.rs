@@ -3,6 +3,7 @@ use std::ops::Div;
 
 #[derive(Clone, Default)]
 pub struct Score {
+    pub song_id: usize,
     pub hits: usize,
     pub misses: usize,
     pub total: usize,
