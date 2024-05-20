@@ -36,7 +36,7 @@ impl INode for SyncManager {
             playing: false,
             start_timer: 0.,
             start_delay: 1.,
-            speed: 1.35,
+            speed: 1.0,
         }
     }
 
