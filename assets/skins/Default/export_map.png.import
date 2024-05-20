@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpo7ct52jrg81"
-path="res://.godot/imported/openmods.png-73789181b422df164df9803742f40783.ctex"
+uid="uid://dsg8qlgs644jn"
+path="res://.godot/imported/export_map.png-7f746d465678e3a201acc83a8e953902.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/skins/Default/openmods.png"
-dest_files=["res://.godot/imported/openmods.png-73789181b422df164df9803742f40783.ctex"]
+source_file="res://assets/skins/Default/export_map.png"
+dest_files=["res://.godot/imported/export_map.png-7f746d465678e3a201acc83a8e953902.ctex"]
 
 [params]
 

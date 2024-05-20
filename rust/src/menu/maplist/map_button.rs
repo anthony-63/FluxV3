@@ -34,14 +34,16 @@ impl MapButton {
         self.mapset = Some(mapset.clone());
 
         let mut titlelabel = self.base().get_node_as::<Label>("ArtistSongName");
-        let mut difficultylabel = self.base().get_node_as::<Label>("Difficulty");
-        let mut mapperlabel = self.base().get_node_as::<Label>("Mapper");
-        let mut coverimage = self.base().get_node_as::<TextureRect>("Cover");
-
         titlelabel.set_text(mapset.bind().title.to_godot());
+
+        let mut difficultylabel = self.base().get_node_as::<Label>("Difficulty");
         difficultylabel.set_text(map.bind().name.to_godot());
+
+        let mut mapperlabel = self.base().get_node_as::<Label>("Mapper");
         mapperlabel.set_text(mapset.bind().mappers.join(",").to_godot());
 
+        let mut coverimage = self.base().get_node_as::<TextureRect>("Cover");
+        
         let cover = mapset.bind().cover.clone();
         if  cover.is_some() {
             let bytes = cover.unwrap();

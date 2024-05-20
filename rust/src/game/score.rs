@@ -1,6 +1,8 @@
 use core::f64;
 use std::ops::Div;
 
+use super::mods::AllMods;
+
 #[derive(Clone, Default)]
 pub struct Score {
     pub map_id: String,
@@ -14,6 +16,7 @@ pub struct Score {
     pub max_combo: usize,
     pub multiplier: usize,
     pub miniplier: usize,
+    pub mods_used: AllMods,
 }
 
 impl Score {

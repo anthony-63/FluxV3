@@ -1,4 +1,5 @@
 use flux::Flux;
+use game::mods::{speed::SpeedMod, AllMods};
 use godot::prelude::*;
 
 pub mod flux;
@@ -20,6 +21,13 @@ static mut FLUX: Flux = Flux {
     score: None,
     fullscreen: false,
     should_open_details: false,
+    
+    mods: AllMods {
+        speed: SpeedMod {
+            value: 1.,
+            enabled: false,
+        }
+    }
 };
 
 #[gdextension]

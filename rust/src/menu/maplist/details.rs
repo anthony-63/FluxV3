@@ -2,6 +2,8 @@ use godot::{engine::{global::{Error, MouseButton}, Button, IPanel, Image, ImageT
 
 use crate::FLUX;
 
+use crate::menu::mods::ModPanel;
+
 #[derive(GodotClass)]
 #[class(base=Panel)]
 pub struct MapDetails {
@@ -21,6 +23,9 @@ impl IPanel for MapDetails {
     fn enter_tree(&mut self) {
         self.bg_blur = Some(self.base().get_node_as::<TextureRect>("../BgBlur"));
         
+        let mut open_mods = self.base().get_node_as::<Button>("Mods");
+        open_mods.connect("pressed".into(), self.base_mut().callable("open_mods"));
+
         let mut play_button = self.base().get_node_as::<Button>("Play");
         play_button.connect("pressed".into(), self.base_mut().callable("play_map"));
     }
@@ -88,6 +93,7 @@ impl MapDetails {
             if FLUX.score.is_some() && FLUX.score.as_ref().unwrap().map_id == FLUX.selected_map.as_ref().unwrap().bind().id {
                 let mut accuracy = score_info.get_node_as::<Label>("Accuracy/Count");
                 let mut misses = score_info.get_node_as::<Label>("Misses/Count");
+                let mut mods = score_info.get_node_as::<Label>("Mods/List");
                 
                 let score = FLUX.score.as_ref().unwrap();
 
@@ -97,6 +103,14 @@ impl MapDetails {
 
                 accuracy.set_text(format!("{:.02}%", score.get_accuracy()).into());
                 misses.set_text(format!("{}", score.misses).into());
+                
+                let mut mod_text = String::from("None");
+
+                if score.mods_used.speed.enabled {
+                    mod_text = format!("S{}", (score.mods_used.speed.value * 100.).floor());
+                }
+
+                mods.set_text(mod_text.into());
 
                 pb_status.set_text(if score.failed {
                     pb_rank.set_text("F".into());
@@ -120,5 +134,10 @@ impl MapDetails {
     #[func]
     fn play_map(&mut self) {
         self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/game.tscn".into_godot());
+    }
+
+    #[func]
+    fn open_mods(&mut self) {
+        self.base_mut().get_node_as::<ModPanel>("../ModPanel").set_visible(true);
     }
 }

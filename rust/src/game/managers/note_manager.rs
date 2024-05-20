@@ -82,7 +82,7 @@ impl INode for NoteManager {
         let cursor = self.base().get_node_as::<Cursor>("../Player/Cursor");
         let hit_player  = self.base().get_node_as::<AudioStreamPlayer>("../Hit");
 
-        self.approach_time = unsafe { FLUX.settings.clone().unwrap().note.approach_time as f64 } * sync_manager.bind().speed as f64;
+        self.approach_time = unsafe { FLUX.settings.clone().unwrap().note.approach_time as f64 };
 
         self.pushback = unsafe { FLUX.settings.as_ref().unwrap().note.pushback };
 
@@ -104,10 +104,10 @@ impl INode for NoteManager {
         let mut to_render: Vec<Gd<Note>> = vec![];
         for i in self.start_process..self.ordered_notes.len() {
             let note = (&self.ordered_notes[i]).bind();
-            if note.is_visible(sync_manager.real_time, sync_manager.speed, self.approach_time, self.pushback) {
+            if note.is_visible(sync_manager.real_time, sync_manager.speed, self.approach_time  * sync_manager.speed as f64, self.pushback) {
                 to_render.push(note.to_gd());
             }
-            if note.time > sync_manager.real_time + self.approach_time { break; }
+            if note.time > sync_manager.real_time + self.approach_time  * sync_manager.speed as f64 { break; }
         }
         self.notes_processing = to_render.len();
 
@@ -127,10 +127,10 @@ impl INode for NoteManager {
         let mut to_process: Vec<Gd<Note>> = vec![];
         for i in self.start_process..self.ordered_notes.len() {
             let note = (&self.ordered_notes[i]).bind();
-            if note.calculate_time(sync_manager.real_time, self.approach_time) <= 0. && !note.hit {
+            if note.calculate_time(sync_manager.real_time, self.approach_time  * sync_manager.speed as f64) <= 0. && !note.hit {
                 to_process.push(note.to_gd());
             }
-            if note.time > sync_manager.real_time + self.approach_time {
+            if note.time > sync_manager.real_time + self.approach_time  * sync_manager.speed as f64 {
                 break;
             }
         }

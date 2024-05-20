@@ -29,7 +29,7 @@ impl IMultiMeshInstance3D for NoteRenderer {
     fn enter_tree(&mut self) {
         let sync_manager = self.base().get_node_as::<SyncManager>("../../SyncManager");
 
-        self.approach_time = unsafe { FLUX.settings.clone().unwrap().note.approach_time as f64 } * sync_manager.bind().speed as f64;
+        self.approach_time = unsafe { FLUX.settings.clone().unwrap().note.approach_time as f64 };
         self.approach_distance = unsafe { FLUX.settings.clone().unwrap().note.approach_distance as f64 };
 
         let mut mesh = self.base_mut().get_multimesh().unwrap();
@@ -48,7 +48,7 @@ impl IMultiMeshInstance3D for NoteRenderer {
         for (i, note) in (&self.notes).into_iter().enumerate() {
             let bound = note.bind();
 
-            let note_time = bound.calculate_time(sync_manager.real_time, self.approach_time);
+            let note_time = bound.calculate_time(sync_manager.real_time, self.approach_time * sync_manager.speed as f64);
             let note_distance = note_time * self.approach_distance;
             mesh.set_instance_transform(i as i32, Transform3D::new(Basis::IDENTITY, Vector3::new(bound.x as f32 * 2., bound.y as f32 * 2., -note_distance as f32)));
             mesh.set_instance_color(i as i32, bound.color);

@@ -1,6 +1,6 @@
 use godot::obj::Gd;
 
-use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, game::score::Score, settings::Settings};
+use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, game::{mods::AllMods, score::Score}, settings::Settings};
 
 pub struct Flux {
     pub loaded_mapsets: Vec<BeatmapSet>,
@@ -13,4 +13,6 @@ pub struct Flux {
     pub selected_map: Option<Gd<Beatmap>>,
 
     pub should_open_details: bool,
+
+    pub mods: AllMods,
 }

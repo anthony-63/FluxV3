@@ -1,6 +1,6 @@
 use godot::{engine::{AudioServer, AudioStream, Time}, prelude::*};
 
-use crate::game::Game;
+use crate::{game::Game, FLUX};
 
 // status skip: ff6a5689
 // status paused: ffffffa0
@@ -43,6 +43,12 @@ impl INode for SyncManager {
     fn enter_tree(&mut self) {
         let game = self.base_mut().get_node_as::<Game>("../GameManager");
         let audio_player = self.base_mut().get_node_as::<AudioStreamPlayer>("Music");
+
+        unsafe {
+            if FLUX.mods.speed.enabled {
+                self.speed = FLUX.mods.speed.value;
+            }
+        }
 
         self.audio_player = Some(audio_player);
         self.game = Some(game);

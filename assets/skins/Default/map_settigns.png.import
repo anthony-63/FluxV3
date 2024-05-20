@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpo7ct52jrg81"
-path="res://.godot/imported/openmods.png-73789181b422df164df9803742f40783.ctex"
+uid="uid://b17dhoch0sdwy"
+path="res://.godot/imported/map_settigns.png-199097814125e452fee7d3d561819551.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/skins/Default/openmods.png"
-dest_files=["res://.godot/imported/openmods.png-73789181b422df164df9803742f40783.ctex"]
+source_file="res://assets/skins/Default/map_settigns.png"
+dest_files=["res://.godot/imported/map_settigns.png-199097814125e452fee7d3d561819551.ctex"]
 
 [params]
 

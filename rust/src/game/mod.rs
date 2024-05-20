@@ -10,6 +10,7 @@ pub mod debug;
 pub mod note;
 pub mod hud;
 pub mod score;
+pub mod mods;
 
 #[derive(GodotClass)]
 #[class(base=Node3D)]
@@ -116,6 +117,7 @@ impl Game {
         Input::singleton().set_mouse_mode(MouseMode::VISIBLE);
         unsafe { 
             FLUX.should_open_details = true;
+            FLUX.score.as_mut().unwrap().mods_used = FLUX.mods.clone();
             FLUX.score.as_mut().unwrap().map_id = FLUX.selected_mapset.as_ref().unwrap().bind().hash.clone() + "/" + &FLUX.selected_map.as_ref().unwrap().bind().name;
         };
         self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/menu.tscn".into_godot());
