@@ -97,13 +97,14 @@ impl MapDetails {
 
                 accuracy.set_text(format!("{:.02}%", score.get_accuracy()).into());
                 misses.set_text(format!("{}", score.misses).into());
-                pb_rank.set_text(score.get_rank().into());
 
                 pb_status.set_text(if score.failed {
+                    pb_rank.set_text("F".into());
                     String::from("Failed at ") + format!("{:01}:{:02}",
                                                     (score.fail_time / 60.).floor() as usize,
                                                     (score.fail_time % 60.).floor() as usize).as_str()
                 } else {
+                    pb_rank.set_text(score.get_rank().into());
                     String::from("Passed")
                 }.into());
 
