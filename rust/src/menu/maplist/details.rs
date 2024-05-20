@@ -111,6 +111,7 @@ impl MapDetails {
             } else {
                 pb_no_score.set_visible(true);
                 pb_rank.set_visible(false);
+                pb_status.set_visible(false);
                 score_info.set_visible(false);
             }
         }
