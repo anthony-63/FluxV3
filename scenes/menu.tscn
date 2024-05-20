@@ -373,7 +373,6 @@ grow_vertical = 2
 texture = ExtResource("7_bt406")
 
 [node name="MapDetails" type="MapDetails" parent="Viewports/Maplist"]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -417,20 +416,20 @@ offset_bottom = 222.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_54lf5")
 
-[node name="Label" type="Label" parent="Viewports/Maplist/MapDetails/PB"]
+[node name="Name" type="Label" parent="Viewports/Maplist/MapDetails/PB"]
 layout_mode = 0
+offset_left = 12.0
 offset_top = 2.0
 offset_right = 368.0
-offset_bottom = 25.0
+offset_bottom = 30.0
 text = "Last Play"
 label_settings = SubResource("LabelSettings_a2wjn")
-horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Viewports/Maplist/MapDetails/PB"]
 layout_mode = 0
-offset_left = 8.0
+offset_left = 12.0
 offset_top = 40.0
-offset_right = 232.0
+offset_right = 236.0
 offset_bottom = 200.0
 
 [node name="Accuracy" type="Label" parent="Viewports/Maplist/MapDetails/PB/VBoxContainer"]
@@ -480,7 +479,7 @@ grow_horizontal = 0
 text = "SS"
 label_settings = SubResource("LabelSettings_b8mcq")
 
-[node name="Status" type="Label" parent="Viewports/Maplist/MapDetails/PB"]
+[node name="NoScore" type="Label" parent="Viewports/Maplist/MapDetails/PB"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -492,6 +491,14 @@ text = "No Score"
 label_settings = SubResource("LabelSettings_3luik")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Status" type="Label" parent="Viewports/Maplist/MapDetails/PB"]
+offset_top = 2.0
+offset_right = 358.0
+offset_bottom = 30.0
+text = "Passed"
+label_settings = SubResource("LabelSettings_a2wjn")
+horizontal_alignment = 2
 
 [node name="Play" type="Button" parent="Viewports/Maplist/MapDetails"]
 layout_mode = 1

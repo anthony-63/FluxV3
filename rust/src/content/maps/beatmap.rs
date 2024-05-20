@@ -8,7 +8,7 @@ pub struct NoteData {
     pub time: f32,
 }
 
-#[derive(GodotClass, Clone, Debug)]
+#[derive(GodotClass, Clone, Debug, Default)]
 #[class(base=RefCounted, no_init)]
 pub struct Beatmap {
     pub broken: bool,
@@ -16,6 +16,7 @@ pub struct Beatmap {
     pub path: String,
     pub name: String,
     pub notes: Vec<NoteData>,
+    pub id: String,
 }
 
 impl Beatmap {
@@ -41,6 +42,7 @@ impl Beatmap {
             path,
             name,
             notes,
+            ..Default::default()
         }
     }
 }

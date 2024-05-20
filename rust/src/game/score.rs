@@ -3,7 +3,9 @@ use std::ops::Div;
 
 #[derive(Clone, Default)]
 pub struct Score {
-    pub song_id: usize,
+    pub map_id: String,
+    pub failed: bool,
+    pub fail_time: f64,
     pub hits: usize,
     pub misses: usize,
     pub total: usize,

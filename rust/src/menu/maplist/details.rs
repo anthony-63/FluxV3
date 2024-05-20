@@ -1,4 +1,4 @@
-use godot::{engine::{global::{Error, MouseButton}, Button, IPanel, Image, ImageTexture, InputEvent, InputEventMouseButton, Label, Panel, TextureRect}, prelude::*};
+use godot::{engine::{global::{Error, MouseButton}, Button, IPanel, Image, ImageTexture, InputEvent, InputEventMouseButton, Label, Panel, TextureRect, VBoxContainer}, prelude::*};
 
 use crate::FLUX;
 
@@ -55,9 +55,10 @@ impl MapDetails {
         let mut notes = self.base().get_node_as::<Label>("Details/VBoxContainer/Notes");
         let mut cover_rect = self.base().get_node_as::<TextureRect>("Cover");
 
+        let mut pb_no_score = self.base().get_node_as::<Label>("PB/NoScore");
         let mut pb_status = self.base().get_node_as::<Label>("PB/Status");
         let mut pb_rank = self.base().get_node_as::<Label>("PB/Rank");
-        let mut score_info = self.base().get_node_as::<Label>("PB/VBoxContainer");
+        let mut score_info = self.base().get_node_as::<VBoxContainer>("PB/VBoxContainer");
 
         let map = unsafe { FLUX.selected_map.as_ref().unwrap() };
         let mapset = unsafe { FLUX.selected_mapset.as_ref().unwrap() };
@@ -81,6 +82,36 @@ impl MapDetails {
             cover_rect.set_texture(texture.upcast());
         } else {
             cover_rect.set_texture(load("res://assets/skins/Default/cover_placeholder.png"));
+        }
+
+        unsafe {
+            if FLUX.score.is_some() && FLUX.score.as_ref().unwrap().map_id == FLUX.selected_map.as_ref().unwrap().bind().id {
+                let mut accuracy = score_info.get_node_as::<Label>("Accuracy/Count");
+                let mut misses = score_info.get_node_as::<Label>("Misses/Count");
+                
+                let score = FLUX.score.as_ref().unwrap();
+
+                pb_no_score.set_visible(false);
+                pb_rank.set_visible(true);
+                score_info.set_visible(true);
+
+                accuracy.set_text(format!("{:.02}%", score.get_accuracy()).into());
+                misses.set_text(format!("{}", score.misses).into());
+                pb_rank.set_text(score.get_rank().into());
+
+                pb_status.set_text(if score.failed {
+                    String::from("Failed at ") + format!("{:01}:{:02}",
+                                                    (score.fail_time / 60.).floor() as usize,
+                                                    (score.fail_time % 60.).floor() as usize).as_str()
+                } else {
+                    String::from("Passed")
+                }.into());
+
+            } else {
+                pb_no_score.set_visible(true);
+                pb_rank.set_visible(false);
+                score_info.set_visible(false);
+            }
         }
     }
 

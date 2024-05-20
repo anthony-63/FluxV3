@@ -73,7 +73,6 @@ impl RightHUD {
                                                             (current % 60.).floor() as usize,
                                                             (length / 60.).floor() as usize,
                                                             (length % 60.).floor() as usize).into());
-
         self.time_progress.as_mut().unwrap().set_max(length as f64);
         self.time_progress.as_mut().unwrap().set_value(current as f64);
     }

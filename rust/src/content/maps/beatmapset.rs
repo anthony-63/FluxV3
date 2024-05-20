@@ -53,7 +53,6 @@ impl BeatmapSet {
         let mut difficulties: Vec<Beatmap> = vec![];
         for difficulty in meta["_difficulties"].members() {
             difficulties.push(Beatmap::from_file(format!("{}/{}", folder_path, difficulty.to_string())));
-            
         }
 
         let music_path = meta["_music"].to_string();
@@ -76,8 +75,11 @@ impl BeatmapSet {
         });
 
         let hash = hasher.finish();
-        godot_print!("{}: {}", title, hash);
-
+        
+        difficulties.as_mut_slice().into_iter().for_each(|diff| {
+            diff.id = hash.to_string() + "/" + &diff.name;
+        });
+        
         Self {
             broken: false,
             version,

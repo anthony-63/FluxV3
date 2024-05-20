@@ -49,8 +49,10 @@ impl INode3D for Game {
 
         let cursor = self.base_mut().get_node_as::<Cursor>("../Player/Cursor");
 
-        unsafe { self.loaded_map = FLUX.selected_map.clone(); }
-        unsafe { self.loaded_mapset = FLUX.selected_mapset.clone(); }
+        unsafe { 
+            self.loaded_map = FLUX.selected_map.clone();
+            self.loaded_mapset = FLUX.selected_mapset.clone();
+        }
 
         let audio_stream = self.loaded_mapset.as_ref().unwrap().bind().load_audio(false).unwrap();
 
@@ -68,7 +70,7 @@ impl INode3D for Game {
 
     fn input(&mut self, _: Gd<InputEvent>) {
         if Input::singleton().is_action_just_pressed("end_map".into()) {
-            self.end_game();
+            self.fail_score();
         }
     }
 
@@ -76,7 +78,7 @@ impl INode3D for Game {
         self.try_start();
 
         if self.health <= 0. {
-            self.end_game();
+            self.fail_score();
         }
     }
 }
@@ -102,9 +104,20 @@ impl Game {
         }
     }
 
+    fn fail_score(&mut self) {
+        unsafe { 
+            FLUX.score.as_mut().unwrap().failed = true; 
+            FLUX.score.as_mut().unwrap().fail_time = self.sync_manager.as_ref().unwrap().bind().real_time;
+        }
+        self.end_game();
+    }
+
     fn end_game(&mut self) {
         Input::singleton().set_mouse_mode(MouseMode::VISIBLE);
-        unsafe { FLUX.should_open_details = true };
+        unsafe { 
+            FLUX.should_open_details = true;
+            FLUX.score.as_mut().unwrap().map_id = FLUX.selected_mapset.as_ref().unwrap().bind().hash.clone() + "/" + &FLUX.selected_map.as_ref().unwrap().bind().name;
+        };
         self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/menu.tscn".into_godot());
     }
 }
