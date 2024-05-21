@@ -4,6 +4,7 @@ use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, game::{mo
 
 pub struct Flux {
     pub loaded_mapsets: Vec<BeatmapSet>,
+
     pub total_diff_count: usize,
 
     pub settings: Option<Settings>,

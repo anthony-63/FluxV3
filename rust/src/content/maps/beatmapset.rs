@@ -12,6 +12,8 @@ use super::{beatmap::Beatmap, sspm::AudioType};
 pub struct BeatmapSet {
     pub broken: bool,
 
+    pub loaded: bool,
+
     pub version: u8,
     pub hash: String,
     pub path: String,
@@ -87,6 +89,7 @@ impl BeatmapSet {
             title,
             mappers,
             music_path,
+            loaded: true,
             difficulties,
             path: folder_path,
             hash: hash.to_string(),

@@ -15,6 +15,7 @@ const STAGE2_MAP_SEED: i64 = 1775906128188434359;
 
 static mut FLUX: Flux = Flux {
     loaded_mapsets: vec![],
+    
     total_diff_count: 0,
     settings: None,
     selected_map: None,
