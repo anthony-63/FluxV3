@@ -15,7 +15,6 @@ pub struct Flux {
     pub selected_mapset: Option<Gd<BeatmapSet>>,
     pub selected_map: Option<Gd<Beatmap>>,
 
-
     pub should_open_details: bool,
 
     pub mods: AllMods,

@@ -1,6 +1,6 @@
 use std::{hash::Hasher, path::Path};
 
-use godot::{engine::{audio_stream_wav::LoopMode, AudioStream, AudioStreamMp3, AudioStreamWav}, prelude::*};
+use godot::{engine::{audio_stream_wav::LoopMode, AudioStream, AudioStreamMp3, AudioStreamOggVorbis, AudioStreamWav}, prelude::*};
 use gxhash::GxHasher;
 
 use crate::{FLUX, STAGE2_MAP_SEED};
@@ -124,7 +124,61 @@ impl BeatmapSet {
                 });
                 return Some(stream.upcast());
             },
+            AudioType::OGG => {
+                let mut stream: Gd<AudioStreamOggVorbis> = AudioStreamOggVorbis::load_from_buffer(audio_bytes.as_slice().into()).unwrap().into();
+                
+                stream.set_loop(should_loop);
+                // set the streams data somehow?
+                return Some(stream.upcast());
+            },
             _ => return None
         }
     }
 }
+
+
+/*
+func get_ogg_packet_sequence(data:PackedByteArray):
+	var packets: Array = []
+	var granule_positions: Array = []
+	var sampling_rate: int = 0
+	var pos: int  = 0
+	while pos < data.size():
+		var header = data.slice(pos, pos + 27)
+		pos += 27
+		if header.slice(0, 4) != "OggS".to_ascii_buffer():
+			break
+
+		var packet_type = header.decode_u8(5)
+		var granule_position = header.decode_u64(6)
+
+		granule_positions.append(granule_position)
+
+		var segment_table_length = header.decode_u8(26)
+
+		var segment_table = data.slice(pos, pos + segment_table_length)
+		pos += segment_table_length
+
+		var packet_data = []
+		var appending = false
+		for i in range(segment_table_length):
+			var segment_size = segment_table.decode_u8(i)
+			var segment = data.slice(pos, pos + segment_size)
+			if appending: packet_data.back().append_array(segment)
+			else: packet_data.append(segment)
+			appending = segment_size == 255
+			pos += segment_size
+
+		packets.append(packet_data)
+		if sampling_rate == 0 and packet_type == 2:
+			var info_header = packet_data[0]
+			if info_header.slice(1, 7).get_string_from_ascii() != "vorbis":
+				break
+			sampling_rate = info_header.decode_u32(12)
+	var packet_sequence = OggPacketSequence.new()
+	packet_sequence.sampling_rate = sampling_rate
+	packet_sequence.granule_positions = granule_positions
+	packet_sequence.packet_data = packets
+	return packet_sequence
+
+*/
