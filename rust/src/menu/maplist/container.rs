@@ -1,4 +1,6 @@
-use godot::{engine::{GridContainer, IGridContainer, LineEdit, TextureRect}, prelude::*};
+use std::{sync::mpsc::{Receiver, Sender}, thread};
+
+use godot::{engine::{global::Error, GridContainer, IGridContainer, Image, ImageTexture, LineEdit, TextureRect}, obj::WithBaseField, prelude::*};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
 
@@ -12,6 +14,8 @@ pub struct MapContainer {
     search_box: Option<Gd<LineEdit>>,
     map_details: Option<Gd<MapDetails>>,
     bg_blur: Option<Gd<TextureRect>>,
+
+    cover_reciever: Option<Receiver<(String, InstanceId)>>, 
 }
 
 #[godot_api]
@@ -23,6 +27,7 @@ impl IGridContainer for MapContainer {
             search_box: None,
             map_details: None,
             bg_blur: None,
+            cover_reciever: None,
         }
     }
 
@@ -33,6 +38,14 @@ impl IGridContainer for MapContainer {
         self.bg_blur = Some(self.base().get_node_as::<TextureRect>("../../BgBlur"));
 
         let entry_prefab = load::<PackedScene>("res://prefabs/map_button.tscn");
+
+        let (mut sender, reciever) = std::sync::mpsc::channel();
+        self.cover_reciever = Some(reciever);
+
+        thread::spawn(move || {
+            Self::load_covers_threaded(&mut sender);
+        });
+        
         unsafe {
             for map in FLUX.loaded_mapsets.clone() {
                 for diff in map.difficulties.clone() {
@@ -44,7 +57,6 @@ impl IGridContainer for MapContainer {
                 }
             }
         }
-
     }
 
     fn process(&mut self, _: f64) {
@@ -53,6 +65,31 @@ impl IGridContainer for MapContainer {
         }
 
         let search = self.search_box.as_ref().unwrap().get_text().to_string().to_lowercase();
+
+        if self.cover_reciever.is_some() {
+            match self.cover_reciever.as_ref().unwrap().try_recv() {
+                Ok(cover) => {
+
+                    for child_uncast in self.base().get_children().iter_shared() {
+                        let mut child=  child_uncast.try_cast::<MapButton>().unwrap();
+                        let mut button_ref = child.bind_mut();
+
+                        if button_ref.mapset.as_ref().unwrap().bind().hash == cover.0 {
+                            let texture: Gd<ImageTexture> = match Gd::try_from_instance_id(cover.1) {
+                                Ok(tex) => tex,
+                                Err(e) => {
+                                    godot_print!("Cover instance error: {}", e);
+                                    continue;
+                                }
+                            };
+                            button_ref.set_cover(texture.clone());
+                            godot_print!("{}: {}", button_ref.mapset.as_ref().unwrap().bind().title, cover.0);
+                        }
+                    }
+                },
+                Err(_) => {},
+            }
+        }
 
         for child_uncast in self.base().get_children().iter_shared() {
             let mut child=  child_uncast.try_cast::<MapButton>().unwrap();
@@ -102,5 +139,25 @@ impl MapContainer {
 
         self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
         self.audio_player.as_mut().unwrap().play();
+    }
+
+    pub fn load_covers_threaded(sender: &mut Sender<(String, InstanceId)>) {
+        for mapset in unsafe { FLUX.loaded_mapsets.clone() } {
+            godot_print!("loading cover: {}", mapset.title);
+            let cover = mapset.cover.as_ref();
+            if  cover.is_some() {
+                let bytes = cover.unwrap();
+                let mut img = Image::new_gd();
+                if img.load_png_from_buffer(bytes.as_slice().into()) != Error::OK {
+                    godot_warn!("failed to load png cover, skipping");
+                    return;
+                }
+                let texture = ImageTexture::create_from_image(img).unwrap();
+
+                unsafe { FLUX.covers_instance_holder.push(texture.clone()) };
+
+                let _ = sender.send((mapset.hash, texture.instance_id()));
+            }
+        }
     }
 }

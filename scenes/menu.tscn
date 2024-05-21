@@ -337,6 +337,7 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Maplist" type="Maplist" parent="Viewports"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -427,6 +428,7 @@ grow_vertical = 2
 texture = ExtResource("7_bt406")
 
 [node name="MapDetails" type="MapDetails" parent="Viewports/Maplist"]
+visible = false
 custom_minimum_size = Vector2(610, 568)
 layout_mode = 1
 anchors_preset = 8

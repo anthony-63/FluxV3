@@ -79,6 +79,8 @@ impl BeatmapSet {
         difficulties.as_mut_slice().into_iter().for_each(|diff| {
             diff.id = hash.to_string() + "/" + &diff.name;
         });
+
+        godot_print!("{}: {}", title, hash);
         
         Self {
             broken: false,

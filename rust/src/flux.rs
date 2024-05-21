@@ -1,4 +1,4 @@
-use godot::obj::Gd;
+use godot::{engine::ImageTexture, obj::Gd};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, game::{mods::AllMods, score::Score}, settings::Settings};
 
@@ -15,4 +15,6 @@ pub struct Flux {
     pub should_open_details: bool,
 
     pub mods: AllMods,
+
+    pub covers_instance_holder: Vec<Gd<ImageTexture>>,
 }

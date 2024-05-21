@@ -22,6 +22,8 @@ static mut FLUX: Flux = Flux {
     fullscreen: false,
     should_open_details: false,
     
+    covers_instance_holder: vec![],
+
     mods: AllMods {
         speed: SpeedMod {
             value: 1.,
