@@ -23,8 +23,6 @@ impl IButton for MapButton {
     fn enter_tree(&mut self,) {
         let run_selected_map = self.base_mut().callable("run_selected_map");
         self.base_mut().connect("pressed".into(), run_selected_map);
-
-
     }
 }
 

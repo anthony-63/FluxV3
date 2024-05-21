@@ -142,6 +142,8 @@ impl MapContainer {
     }
 
     pub fn load_covers_threaded(sender: &mut Sender<(String, InstanceId)>) {
+        unsafe { FLUX.covers_instance_holder.clear() };
+
         for mapset in unsafe { FLUX.loaded_mapsets.clone() } {
             godot_print!("loading cover: {}", mapset.title);
             let cover = mapset.cover.as_ref();
