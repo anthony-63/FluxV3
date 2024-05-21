@@ -1,6 +1,6 @@
 use std::{sync::mpsc::{Receiver, Sender}, thread};
 
-use godot::{engine::{global::Error, GridContainer, IGridContainer, Image, ImageTexture, LineEdit, TextureRect}, obj::WithBaseField, prelude::*};
+use godot::{engine::{global::Error, Button, GridContainer, IGridContainer, Image, ImageTexture, LineEdit, TextureRect}, obj::WithBaseField, prelude::*};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
 
@@ -141,17 +141,24 @@ impl MapContainer {
         // self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/game.tscn".into_godot());
 
         let map_audio = mapset.bind().load_audio(true);
-        if map_audio == None {
-            return;
-        }
 
         self.map_details.as_mut().unwrap().set_visible(true);
         self.bg_blur.as_mut().unwrap().set_visible(true);
 
         self.map_details.as_mut().unwrap().call("set_details".into(), &[]);
+        let mut play_button = self.map_details.as_mut().unwrap().get_node_as::<Button>("Play");
 
-        self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
-        self.audio_player.as_mut().unwrap().play();
+        if map_audio == None {
+            self.audio_player.as_mut().unwrap().stop();
+            play_button.set_text("BROKEN".into());
+            play_button.set_disabled(true);
+        } else {
+            self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
+            self.audio_player.as_mut().unwrap().play();
+            play_button.set_text("Play".into());
+            play_button.set_disabled(false);
+        }
+
     }
 
     pub fn load_covers_threaded(sender: &mut Sender<(String, InstanceId)>) {
