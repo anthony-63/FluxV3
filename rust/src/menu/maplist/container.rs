@@ -16,6 +16,7 @@ pub struct MapContainer {
     bg_blur: Option<Gd<TextureRect>>,
 
     cover_reciever: Option<Receiver<(String, InstanceId)>>, 
+    map_button_reciever: Option<Receiver<(String, InstanceId)>>, 
 }
 
 #[godot_api]
@@ -28,6 +29,7 @@ impl IGridContainer for MapContainer {
             map_details: None,
             bg_blur: None,
             cover_reciever: None,
+            map_button_reciever: None,
         }
     }
 
@@ -37,26 +39,21 @@ impl IGridContainer for MapContainer {
         self.map_details = Some(self.base().get_node_as::<MapDetails>("../../MapDetails"));
         self.bg_blur = Some(self.base().get_node_as::<TextureRect>("../../BgBlur"));
 
-        let entry_prefab = load::<PackedScene>("res://prefabs/map_button.tscn");
-
-        let (mut sender, reciever) = std::sync::mpsc::channel();
-        self.cover_reciever = Some(reciever);
+        let (mut cover_sender, cover_reciever) = std::sync::mpsc::channel();
+        let (mut button_sender, button_reciever) = std::sync::mpsc::channel();
+        
+        self.cover_reciever = Some(cover_reciever);
+        self.map_button_reciever = Some(button_reciever);
 
         thread::spawn(move || {
-            Self::load_covers_threaded(&mut sender);
+            let _ = thread::spawn(move || {
+                Self::load_buttons_threaded(&mut button_sender)
+            }).join();
+            let _ = thread::spawn(move || {
+                Self::load_covers_threaded(&mut cover_sender);
+            }).join();
         });
-        
-        unsafe {
-            for map in FLUX.loaded_mapsets.clone() {
-                for diff in map.difficulties.clone() {
-                    let mut entry = entry_prefab.instantiate_as::<MapButton>();
-                    entry.call("set_data".into(), &[Gd::from_object(diff).to_variant(), Gd::from_object(map.clone()).to_variant()]);
-                    entry.set_visible(true);
-                    entry.connect("selected_map".into(), self.base_mut().callable("selected_map"));
-                    self.base_mut().add_child(entry.upcast::<Node>());
-                }
-            }
-        }
+    
     }
 
     fn process(&mut self, _: f64) {
@@ -65,6 +62,23 @@ impl IGridContainer for MapContainer {
         }
 
         let search = self.search_box.as_ref().unwrap().get_text().to_string().to_lowercase();
+
+        if self.map_button_reciever.is_some() {
+            match self.map_button_reciever.as_ref().unwrap().try_recv() {
+                Ok(button) => {
+                    let mut entry: Gd<MapButton> = match Gd::try_from_instance_id(button.1) {
+                        Ok(button) => button,
+                        Err(e) => {
+                            godot_print!("Button instance error: {}", e);
+                            return;
+                        }
+                    };
+                    entry.connect("selected_map".into(), self.base_mut().callable("selected_map"));
+                    self.base_mut().add_child(entry.upcast::<Node>());
+                },
+                Err(_) => {},
+            }
+        }
 
         if self.cover_reciever.is_some() {
             match self.cover_reciever.as_ref().unwrap().try_recv() {
@@ -83,7 +97,6 @@ impl IGridContainer for MapContainer {
                                 }
                             };
                             button_ref.set_cover(texture.clone());
-                            godot_print!("{}: {}", button_ref.mapset.as_ref().unwrap().bind().title, cover.0);
                         }
                     }
                 },
@@ -145,7 +158,6 @@ impl MapContainer {
         unsafe { FLUX.covers_instance_holder.clear() };
 
         for mapset in unsafe { FLUX.loaded_mapsets.clone() } {
-            godot_print!("loading cover: {}", mapset.title);
             let cover = mapset.cover.as_ref();
             if  cover.is_some() {
                 let bytes = cover.unwrap();
@@ -156,10 +168,26 @@ impl MapContainer {
                 }
                 let texture = ImageTexture::create_from_image(img).unwrap();
 
-                unsafe { FLUX.covers_instance_holder.push(texture.clone()) };
-
                 let _ = sender.send((mapset.hash, texture.instance_id()));
+                unsafe { FLUX.covers_instance_holder.push(texture) };
             }
         }
+    }
+
+    pub fn load_buttons_threaded(sender: &mut Sender<(String, InstanceId)>) {
+        let entry_prefab = load::<PackedScene>("res://prefabs/map_button.tscn");
+
+        unsafe {
+            for map in FLUX.loaded_mapsets.clone() {
+                for diff in map.difficulties.clone() {
+                    let mut entry = entry_prefab.instantiate_as::<MapButton>();
+                    entry.call("set_data".into(), &[Gd::from_object(diff.clone()).to_variant(), Gd::from_object(map.clone()).to_variant()]);
+                    entry.set_visible(true);
+                    
+                    let _ = sender.send((diff.id, entry.instance_id()));
+                }
+            }
+        }
+        
     }
 }

@@ -3,7 +3,7 @@ use std::{hash::Hasher, path::Path};
 use godot::{engine::{audio_stream_wav::LoopMode, AudioStream, AudioStreamMp3, AudioStreamWav}, prelude::*};
 use gxhash::GxHasher;
 
-use crate::STAGE2_MAP_SEED;
+use crate::{FLUX, STAGE2_MAP_SEED};
 
 use super::{beatmap::Beatmap, sspm::AudioType};
 
@@ -52,6 +52,7 @@ impl BeatmapSet {
         
         let mut difficulties: Vec<Beatmap> = vec![];
         for difficulty in meta["_difficulties"].members() {
+            unsafe{ FLUX.total_diff_count += 1 };
             difficulties.push(Beatmap::from_file(format!("{}/{}", folder_path, difficulty.to_string())));
         }
 
@@ -79,8 +80,6 @@ impl BeatmapSet {
         difficulties.as_mut_slice().into_iter().for_each(|diff| {
             diff.id = hash.to_string() + "/" + &diff.name;
         });
-
-        godot_print!("{}: {}", title, hash);
         
         Self {
             broken: false,
