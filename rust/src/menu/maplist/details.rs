@@ -1,4 +1,4 @@
-use godot::{engine::{global::{Error, MouseButton}, Button, IPanel, Image, ImageTexture, InputEvent, InputEventMouseButton, Label, Panel, TextureRect, VBoxContainer}, prelude::*};
+use godot::{engine::{global::{Error, MouseButton}, Button, HSlider, IPanel, Image, ImageTexture, InputEvent, InputEventMouseButton, Label, Panel, TextureRect, VBoxContainer}, prelude::*};
 
 use crate::FLUX;
 
@@ -28,6 +28,9 @@ impl IPanel for MapDetails {
 
         let mut play_button = self.base().get_node_as::<Button>("Play");
         play_button.connect("pressed".into(), self.base_mut().callable("play_map"));
+
+        let mut start_from_slider = self.base().get_node_as::<HSlider>("StartFrom");
+        start_from_slider.connect("value_changed".into(), self.base_mut().callable("update_start_from"));
     }
 
     fn process(&mut self, _: f64) {
@@ -60,6 +63,9 @@ impl MapDetails {
         let mut notes = self.base().get_node_as::<Label>("Details/VBoxContainer/Notes");
         let mut length = self.base().get_node_as::<Label>("Details/VBoxContainer/Length");
         let mut cover_rect = self.base().get_node_as::<TextureRect>("Cover");
+        
+        let mut start_from_slider = self.base().get_node_as::<HSlider>("StartFrom");
+        let mut start_from_label = self.base().get_node_as::<Label>("StartFrom/Count");
 
         let mut pb_no_score = self.base().get_node_as::<Label>("PB/NoScore");
         let mut pb_status = self.base().get_node_as::<Label>("PB/Status");
@@ -74,14 +80,22 @@ impl MapDetails {
         difficulty.set_text(map.bind().name.clone().into());
         notes.set_text(format!("{} notes", map.bind().notes.len()).into());
         
+        start_from_slider.set_value(unsafe { FLUX.start_from });
+
         if map.bind().notes.len() > 0 {
             let last_note_time = map.bind().notes.last().unwrap().time;
+            start_from_slider.set_max(last_note_time as f64);
             length.set_text(format!("{:01}:{:02}",
                             (last_note_time / 60.).floor() as usize,
                             (last_note_time % 60.).floor() as usize).as_str().into())
         } else {
             length.set_text("0:00".into());
+            start_from_slider.set_max(0.);
         }
+
+        start_from_label.set_text(format!("{:01}:{:02}",
+                                    (start_from_slider.get_value() / 60.).floor() as usize,
+                                    (start_from_slider.get_value() % 60.).floor() as usize).as_str().into());
         
         let cover = mapset.bind().cover.clone();
         if cover.is_some() {
@@ -149,5 +163,17 @@ impl MapDetails {
     #[func]
     fn open_mods(&mut self) {
         self.base_mut().get_node_as::<ModPanel>("../ModPanel").set_visible(true);
+    }
+
+    #[func]
+    fn update_start_from(&mut self, value: f64) {
+        let mut start_from_label = self.base().get_node_as::<Label>("StartFrom/Count");
+        let mut audio_player = self.base().get_node_as::<AudioStreamPlayer>("../../../Music");
+
+        start_from_label.set_text(format!("{:01}:{:02}",
+                                    (value / 60.).floor() as usize,
+                                    (value % 60.).floor() as usize).as_str().into());
+        unsafe { FLUX.start_from = value };
+        audio_player.seek(value as f32);
     }
 }

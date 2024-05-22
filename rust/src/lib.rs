@@ -15,15 +15,20 @@ const STAGE2_MAP_SEED: i64 = 1775906128188434359;
 
 static mut FLUX: Flux = Flux {
     loaded_mapsets: vec![],
-    
     total_diff_count: 0,
+    
     settings: None,
+    
     selected_map: None,
     selected_mapset: None,
+
     score: None,
+
     fullscreen: false,
     should_open_details: false,
     
+    start_from: 0.,
+
     covers_instance_holder: vec![],
 
     mods: AllMods {

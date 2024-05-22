@@ -19,7 +19,7 @@ pub struct NoteManager {
     last_note: Option<Gd<Note>>,
 
     approach_time: f64,
-    _skipped_notes: usize,
+    skipped_notes: usize,
     pub notes_processing: usize,
     pub start_process: usize,
 
@@ -46,7 +46,7 @@ impl INode for NoteManager {
 
             approach_time: 0.,
             notes_processing: 0,
-            _skipped_notes: 0,
+            skipped_notes: 0,
             start_process: 0,
             hit_player: None,
             pushback: false,
@@ -198,6 +198,12 @@ impl NoteManager {
         notes.sort_by(|a, b| a.time.partial_cmp(&b.time).unwrap());
 
         for (i, note_data) in notes.into_iter().enumerate() {
+
+            if note_data.time < unsafe { FLUX.start_from as f32 } {
+                self.skipped_notes += 1;
+                continue;
+            }
+
             let mut note = Note::new_gd();
 
             note.bind_mut().time = note_data.time as f64;

@@ -100,8 +100,10 @@ impl SyncManager {
     }
 
     #[func]
-    pub fn start(&mut self, from: f64) {
+    pub fn start(&mut self, from_cbn: f64) {
         let audio_player = self.audio_player.as_mut().unwrap();
+
+        let from = from_cbn.max(0.);
 
         self.last_time = Time::singleton().get_ticks_usec() as f64;
         self.real_time = from.min(from * self.speed as f64);
