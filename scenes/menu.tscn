@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=47 format=3 uid="uid://dkq7fb6lkop1u"]
 
 [ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
@@ -135,6 +135,32 @@ corner_radius_bottom_left = 8
 
 [sub_resource type="LabelSettings" id="LabelSettings_kr03c"]
 font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_bfl46"]
+font_size = 18
+font_color = Color(1, 1, 1, 0.541176)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_68bav"]
+bg_color = Color(0.0475577, 0.0475577, 0.0475576, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_top = 8.0
+expand_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o6rhi"]
+bg_color = Color(0.307854, 0.41438, 0.563187, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_top = 7.0
+expand_margin_bottom = 7.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_6avf5"]
 font_size = 24
@@ -275,6 +301,7 @@ bus = &"Music"
 [node name="Viewports" type="Node" parent="."]
 
 [node name="Menu" type="Menu" parent="Viewports"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -337,7 +364,6 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Maplist" type="Maplist" parent="Viewports"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -428,7 +454,6 @@ grow_vertical = 2
 texture = ExtResource("7_bt406")
 
 [node name="MapDetails" type="MapDetails" parent="Viewports/Maplist"]
-visible = false
 custom_minimum_size = Vector2(610, 568)
 layout_mode = 1
 anchors_preset = 8
@@ -597,16 +622,21 @@ anchor_right = 1.0
 offset_left = -602.0
 offset_top = 232.0
 offset_right = -7.0
-offset_bottom = 496.0
+offset_bottom = 469.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_54lf5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Viewports/Maplist/MapDetails/Details"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 584.0
-offset_bottom = 256.0
+offset_right = -10.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Title" type="Label" parent="Viewports/Maplist/MapDetails/Details/VBoxContainer"]
 layout_mode = 2
@@ -617,18 +647,24 @@ clip_text = true
 [node name="Mapper" type="Label" parent="Viewports/Maplist/MapDetails/Details/VBoxContainer"]
 layout_mode = 2
 text = "Mapper"
-label_settings = SubResource("LabelSettings_kr03c")
+label_settings = SubResource("LabelSettings_bfl46")
 clip_text = true
 
 [node name="Difficulty" type="Label" parent="Viewports/Maplist/MapDetails/Details/VBoxContainer"]
 layout_mode = 2
 text = "Difficulty Name"
-label_settings = SubResource("LabelSettings_kr03c")
+label_settings = SubResource("LabelSettings_bfl46")
 clip_text = true
 
 [node name="Notes" type="Label" parent="Viewports/Maplist/MapDetails/Details/VBoxContainer"]
 layout_mode = 2
 text = "99,999,999 notes"
+label_settings = SubResource("LabelSettings_bfl46")
+clip_text = true
+
+[node name="Length" type="Label" parent="Viewports/Maplist/MapDetails/Details/VBoxContainer"]
+layout_mode = 2
+text = "99:99"
 label_settings = SubResource("LabelSettings_kr03c")
 clip_text = true
 
@@ -679,6 +715,37 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_g7yte")
 icon = ExtResource("9_xisrb")
 icon_alignment = 1
 expand_icon = true
+
+[node name="StartFrom" type="HSlider" parent="Viewports/Maplist/MapDetails"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 47.0
+offset_top = -88.0
+offset_right = -292.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_icons/grabber = ExtResource("7_bt406")
+theme_override_icons/grabber_highlight = ExtResource("7_bt406")
+theme_override_icons/grabber_disabled = ExtResource("7_bt406")
+theme_override_styles/slider = SubResource("StyleBoxFlat_68bav")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_o6rhi")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_o6rhi")
+
+[node name="Count" type="Label" parent="Viewports/Maplist/MapDetails/StartFrom"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -11.5
+offset_right = 5.0
+offset_bottom = 11.5
+grow_vertical = 2
+text = "0:00"
 
 [node name="ModPanel" type="ModPanel" parent="Viewports/Maplist"]
 visible = false

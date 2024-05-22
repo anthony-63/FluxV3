@@ -2,6 +2,8 @@ use godot::{engine::{AudioServer, AudioStream, Time}, prelude::*};
 
 use crate::{game::Game, FLUX};
 
+use super::note_manager::NoteManager;
+
 // status skip: ff6a5689
 // status paused: ffffffa0
 
@@ -11,6 +13,7 @@ pub struct SyncManager {
     base: Base<Node>,
     game: Option<Gd<Game>>,
     pub audio_player: Option<Gd<AudioStreamPlayer>>,
+    pub note_manager: Option<Gd<NoteManager>>,
     pub speed: f32,
     
     last_time: f64,
@@ -30,6 +33,7 @@ impl INode for SyncManager {
             base,
             game: None,
             audio_player: None,
+            note_manager: None,
             last_time: 0.,
             real_time: 0.,
             time_delay: 0.,
@@ -88,6 +92,11 @@ impl SyncManager {
 
         self.time_delay = AudioServer::singleton().get_time_to_next_mix() + AudioServer::singleton().get_output_latency();
         audio_player.seek((self.real_time + self.time_delay) as f32);
+    }
+
+    #[func]
+    pub fn can_skip(&mut self) {
+        
     }
 
     #[func]

@@ -58,6 +58,7 @@ impl MapDetails {
         let mut mapper = self.base().get_node_as::<Label>("Details/VBoxContainer/Mapper");
         let mut difficulty = self.base().get_node_as::<Label>("Details/VBoxContainer/Difficulty");
         let mut notes = self.base().get_node_as::<Label>("Details/VBoxContainer/Notes");
+        let mut length = self.base().get_node_as::<Label>("Details/VBoxContainer/Length");
         let mut cover_rect = self.base().get_node_as::<TextureRect>("Cover");
 
         let mut pb_no_score = self.base().get_node_as::<Label>("PB/NoScore");
@@ -72,6 +73,15 @@ impl MapDetails {
         mapper.set_text(mapset.bind().mappers.join(", ").clone().into());
         difficulty.set_text(map.bind().name.clone().into());
         notes.set_text(format!("{} notes", map.bind().notes.len()).into());
+        
+        if map.bind().notes.len() > 0 {
+            let last_note_time = map.bind().notes.last().unwrap().time;
+            length.set_text(format!("{:01}:{:02}",
+                            (last_note_time / 60.).floor() as usize,
+                            (last_note_time % 60.).floor() as usize).as_str().into())
+        } else {
+            length.set_text("0:00".into());
+        }
         
         let cover = mapset.bind().cover.clone();
         if cover.is_some() {
