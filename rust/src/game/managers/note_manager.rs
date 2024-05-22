@@ -99,6 +99,7 @@ impl INode for NoteManager {
         }
 
         let sync_manager = self.sync_manager.as_mut().unwrap().bind();
+
         let mut note_renderer = self.note_renderer.as_mut().unwrap().bind_mut();
 
         let mut to_render: Vec<Gd<Note>> = vec![];
@@ -137,6 +138,7 @@ impl INode for NoteManager {
 
         for mut note in to_process.into_iter() {
             let mut did_hitreg = false;
+            
             let mut bound = note.bind_mut();
 
             if bound.is_touching(cursor.clamped_position) {
@@ -177,8 +179,26 @@ impl INode for NoteManager {
 
             if did_hitreg {
                 self.last_note = Some(bound.to_gd());
-                self.next_note = Some(self.ordered_notes[bound.index].clone());
-                self.start_process += 1;
+                if bound.index < self.ordered_notes.len() - 1 {
+                    self.next_note = Some(self.ordered_notes[bound.index].clone());
+                    self.start_process += 1;
+                } else if bound.index >= self.ordered_notes.len() - 1 {
+                    self.next_note = None;
+                }
+            }
+
+        }
+        if self.last_note.is_some() {
+            let last_note = self.last_note.as_ref().unwrap().bind();
+
+            if self.next_note == None && sync_manager.real_time - last_note.time as f64 >= 1. {
+                drop(last_note);
+                drop(sync_manager);
+                drop(cursor);
+                drop(game);
+                self.base_mut().emit_signal("game_ended".into(), &[]);
+                self.started = false;
+                return;
             }
         }
     }
@@ -190,6 +210,9 @@ impl NoteManager {
     pub fn start(&mut self) {
         self.started = true;
     }
+
+    #[signal]
+    fn game_ended();
 }
 
 impl NoteManager {
@@ -221,4 +244,5 @@ impl NoteManager {
 
         godot_print!("built {} notes", self.ordered_notes.len());
     }
+
 }

@@ -46,7 +46,9 @@ impl INode3D for Game {
 
     fn enter_tree(&mut self) {
         let mut sync_manager = self.base_mut().get_node_as::<SyncManager>("../SyncManager");
-        let note_manager = self.base_mut().get_node_as::<NoteManager>("../NoteManager");
+        let mut note_manager = self.base_mut().get_node_as::<NoteManager>("../NoteManager");
+
+        note_manager.connect("game_ended".into(), self.base_mut().callable("note_manager_ended"));
 
         let cursor = self.base_mut().get_node_as::<Cursor>("../Player/Cursor");
 
@@ -98,11 +100,16 @@ impl Game {
             self.started_audio = true;
         }
 
-        if !self.started_notes {
+        if !self.started_notes {            
             self.note_manager.as_mut().unwrap().bind_mut().load_notes(self.loaded_map.as_ref().unwrap().bind().notes.clone());
             self.note_manager.as_mut().unwrap().call("start".into(), &[]);
             self.started_notes = true;
         }
+    }
+
+    #[func]
+    fn note_manager_ended(&mut self) {
+        self.end_game();
     }
 
     fn fail_score(&mut self) {
