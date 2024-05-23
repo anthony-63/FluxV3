@@ -29,11 +29,11 @@ impl Score {
 
         match acc {
             99_f64..=f64::MAX => return "SS".into(),
-            95_f64..=f64::MAX => return "S".into(),
-            90_f64..=f64::MAX => return "A".into(),
-            85_f64..=f64::MAX => return "B".into(),
-            75_f64..=f64::MAX => return "C".into(),
-            65_f64..=f64::MAX => return "D".into(),
+            97.5_f64..=f64::MAX => return "S".into(),
+            95_f64..=f64::MAX => return "A".into(),
+            90_f64..=f64::MAX => return "B".into(),
+            80_f64..=f64::MAX => return "C".into(),
+            70_f64..=f64::MAX => return "D".into(),
             _ => return "F".into(),
         }
     }
