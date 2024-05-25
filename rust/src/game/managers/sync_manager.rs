@@ -19,6 +19,7 @@ pub struct SyncManager {
     last_time: f64,
     time_delay: f64,
     playing: bool,
+    end_time: f32,
     
     pub start_timer: f32,
     pub start_delay: f32,
@@ -37,6 +38,7 @@ impl INode for SyncManager {
             last_time: 0.,
             real_time: 0.,
             time_delay: 0.,
+            end_time: 0.,
             playing: false,
             start_timer: 0.,
             start_delay: 1.,
@@ -53,6 +55,8 @@ impl INode for SyncManager {
                 self.speed = FLUX.mods.speed.value;
             }
         }
+
+        self.end_time = game.bind().loaded_map.as_ref().unwrap().bind().notes.last().unwrap().time;
 
         self.audio_player = Some(audio_player);
         self.game = Some(game);
@@ -71,6 +75,10 @@ impl INode for SyncManager {
         let time = self.speed as f64 * (now - self.last_time) * 0.000001;
         self.last_time = now;
         self.real_time += time;
+
+        if self.real_time + 1. > self.end_time as f64 {
+            self.base_mut().emit_signal("game_ended".into(), &[]);
+        }
     }
 }
 
@@ -114,4 +122,7 @@ impl SyncManager {
         self.set_offset();
         self.playing = true;
     }
+    
+    #[signal]
+    fn game_ended();
 }

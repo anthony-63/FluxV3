@@ -43,7 +43,7 @@ impl INode for NoteManager {
 
             next_note: None,
             last_note: None,
-
+            
             approach_time: 0.,
             notes_processing: 0,
             skipped_notes: 0,
@@ -189,14 +189,13 @@ impl INode for NoteManager {
 
         }
         if self.last_note.is_some() {
-            let last_note = self.last_note.as_ref().unwrap().bind();
+            let last_note: GdRef<Note> = self.last_note.as_ref().unwrap().bind();
 
             if self.next_note == None && sync_manager.real_time - last_note.time as f64 >= 1. {
                 drop(last_note);
                 drop(sync_manager);
                 drop(cursor);
                 drop(game);
-                self.base_mut().emit_signal("game_ended".into(), &[]);
                 self.started = false;
                 return;
             }
@@ -210,9 +209,6 @@ impl NoteManager {
     pub fn start(&mut self) {
         self.started = true;
     }
-
-    #[signal]
-    fn game_ended();
 }
 
 impl NoteManager {

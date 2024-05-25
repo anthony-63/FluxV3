@@ -49,7 +49,7 @@ impl INode3D for Game {
 
     fn enter_tree(&mut self) {
         let mut sync_manager = self.base_mut().get_node_as::<SyncManager>("../SyncManager");
-        let mut note_manager = self.base_mut().get_node_as::<NoteManager>("../NoteManager");
+        let note_manager = self.base_mut().get_node_as::<NoteManager>("../NoteManager");
 
         unsafe { 
             self.loaded_map = FLUX.selected_map.clone();
@@ -62,7 +62,7 @@ impl INode3D for Game {
                 .start(SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() as i64 as i64)
                 .end(SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() as i64 + self.loaded_map.as_ref().unwrap().bind().notes.last().unwrap().time as i64 - unsafe { FLUX.start_from } as i64)));
 
-        note_manager.connect("game_ended".into(), self.base_mut().callable("note_manager_ended"));
+        sync_manager.connect("game_ended".into(), self.base_mut().callable("note_manager_ended"));
 
         let cursor = self.base_mut().get_node_as::<Cursor>("../Player/Cursor");
 
