@@ -35,6 +35,7 @@ pub struct CursorSettings {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct CameraSettings {
     pub spin: bool,
+    pub parallax: f32,
 }
 
 #[derive(GodotClass, Clone, Debug, Serialize, Deserialize)]
@@ -66,6 +67,7 @@ impl Settings {
             },
             camera: CameraSettings {
                 spin: false,
+                parallax: 10.,
             },
         }
     }

@@ -18,15 +18,19 @@ impl IControl for CursorSettings {
 
     fn enter_tree(&mut self) {
         let mut sensitivity_spinbox = self.base_mut().get_node_as::<SpinBox>("GridContainer/Cursor/Sensitivity");
+        let mut parallax_spinbox = self.base_mut().get_node_as::<SpinBox>("GridContainer/Cursor/Parallax");
         let mut spin_checkbox = self.base_mut().get_node_as::<CheckButton>("GridContainer/Cursor/Spin");
 
         let sensitivty = unsafe {FLUX.settings.as_ref().unwrap().cursor.sensitivity};
+        let parallax = unsafe {FLUX.settings.as_ref().unwrap().camera.parallax};
         let spin = unsafe {FLUX.settings.as_ref().unwrap().camera.spin};
 
         sensitivity_spinbox.set_value(sensitivty as f64);
+        parallax_spinbox.set_value(parallax as f64);
         spin_checkbox.set_pressed(spin);
 
         sensitivity_spinbox.connect("value_changed".into(), self.base_mut().callable("change_sensitivity"));
+        parallax_spinbox.connect("value_changed".into(), self.base_mut().callable("change_parallax"));
         spin_checkbox.connect("toggled".into(), self.base_mut().callable("change_spin"));
     }
 }
@@ -37,6 +41,14 @@ impl CursorSettings {
     fn change_sensitivity(&mut self, value: f64) {
         unsafe {
             FLUX.settings.as_mut().unwrap().cursor.sensitivity = value as f32;
+            FLUX.settings.as_mut().unwrap().update(false);
+        }
+    }
+
+    #[func]
+    fn change_parallax(&mut self, value: f64) {
+        unsafe {
+            FLUX.settings.as_mut().unwrap().camera.parallax = value as f32;
             FLUX.settings.as_mut().unwrap().update(false);
         }
     }

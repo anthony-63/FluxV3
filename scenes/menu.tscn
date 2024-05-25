@@ -301,7 +301,6 @@ bus = &"Music"
 [node name="Viewports" type="Node" parent="."]
 
 [node name="Menu" type="Menu" parent="Viewports"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -364,6 +363,7 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Maplist" type="Maplist" parent="Viewports"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -831,7 +831,6 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_g7yte")
 text = "Close"
 
 [node name="SettingsMenu" type="SettingsMenu" parent="Viewports"]
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -1114,12 +1113,29 @@ offset_right = -68.0
 offset_bottom = 26.0
 text = "Sensitivity"
 
+[node name="Parallax" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
+offset_left = 198.0
+offset_top = 63.0
+offset_right = 281.063
+offset_bottom = 94.0
+max_value = 1000.0
+step = 0.01
+value = 10.0
+
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/Parallax"]
+layout_mode = 0
+offset_left = -182.0
+offset_top = 3.0
+offset_right = -68.0
+offset_bottom = 26.0
+text = "Parallax"
+
 [node name="Spin" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
 layout_mode = 0
 offset_left = 192.0
-offset_top = 63.0
+offset_top = 111.0
 offset_right = 236.0
-offset_bottom = 94.0
+offset_bottom = 142.0
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/Spin"]
 layout_mode = 0
