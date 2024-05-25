@@ -133,7 +133,7 @@ impl IGridContainer for MapContainer {
 #[godot_api]
 impl MapContainer {
     #[func]
-    pub fn selected_map(&mut self, mapset: Gd<BeatmapSet>, map: Gd<Beatmap>) {
+    pub fn selected_map(&mut self, mapset: Gd<BeatmapSet>, map: Gd<Beatmap>, restart_music: bool) {
         unsafe {
             FLUX.selected_map = Some(map.clone());
             FLUX.selected_mapset = Some(mapset.clone());
@@ -153,8 +153,10 @@ impl MapContainer {
             play_button.set_text("BROKEN".into());
             play_button.set_disabled(true);
         } else {
-            self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
-            self.audio_player.as_mut().unwrap().play();
+            if restart_music {
+                self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
+                self.audio_player.as_mut().unwrap().play();
+            }
             play_button.set_text("Play".into());
             play_button.set_disabled(false);
         }

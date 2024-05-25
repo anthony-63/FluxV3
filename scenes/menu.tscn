@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=48 format=3 uid="uid://dkq7fb6lkop1u"]
 
 [ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
@@ -232,6 +232,9 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jbosf"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="LabelSettings" id="LabelSettings_seiwh"]
 font_size = 20
@@ -1188,14 +1191,29 @@ offset_bottom = 24.0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bbnk3")
 
+[node name="OpenMap" type="Button" parent="TopPanel/MusicPlayer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.116667
+anchor_top = 0.0208333
+anchor_right = 1.0
+anchor_bottom = 0.979167
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_jbosf")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jbosf")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_jbosf")
+theme_override_styles/focus = SubResource("StyleBoxFlat_jbosf")
+metadata/_edit_use_anchors_ = true
+
 [node name="SongName" type="Label" parent="TopPanel/MusicPlayer"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 108.0
+offset_left = 101.0
 offset_top = -15.0
-offset_right = 838.0
+offset_right = 831.0
 offset_bottom = 13.0
 grow_vertical = 2
 text = "Artist - Song Name"

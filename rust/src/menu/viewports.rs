@@ -3,7 +3,7 @@ use godot::{engine::{Button, Control, IControl, InputEvent, Label, TextureRect},
 use crate::{content::maploader::MapLoader, FLUX};
 use rand::prelude::SliceRandom;
 
-use super::{maplist::{details::MapDetails, Maplist}, menu::Menu, settings::SettingsMenu};
+use super::{maplist::{container::MapContainer, details::MapDetails, Maplist}, menu::Menu, settings::SettingsMenu};
 
 #[derive(GodotClass)]
 #[class(base=Control)]
@@ -53,6 +53,8 @@ impl IControl for Viewports {
         pause_button.connect("pressed".into(), self.base_mut().callable("toggle_music"));
         let mut skip_button: Gd<Button> = self.base().get_node_as::<Button>("TopPanel/MusicPlayer/Skip");
         skip_button.connect("pressed".into(), self.base_mut().callable("skip_music"));
+        let mut open_map_button: Gd<Button> = self.base().get_node_as::<Button>("TopPanel/MusicPlayer/OpenMap");
+        open_map_button.connect("pressed".into(), self.base_mut().callable("open_map"));
 
         let mut map_details = Some(self.base().get_node_as::<MapDetails>("Viewports/Maplist/MapDetails"));
         let mut bg_blur = Some(self.base().get_node_as::<TextureRect>("Viewports/Maplist/BgBlur"));
@@ -131,6 +133,13 @@ impl Viewports {
         } else {
             music.set_stream_paused(false);
         }
+    }
+
+    #[func]
+    fn open_map(&mut self) {
+        self.change_visibility(false, true);
+        let mut map_container = self.base_mut().get_node_as::<MapContainer>("Viewports/Maplist/MapList/Container");
+        map_container.bind_mut().selected_map(unsafe{ FLUX.selected_mapset.clone().unwrap() }, unsafe { FLUX.selected_map.clone().unwrap() }, false);
     }
 
     #[func]
