@@ -1117,6 +1117,7 @@ offset_bottom = 26.0
 text = "Sensitivity"
 
 [node name="Parallax" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
+layout_mode = 0
 offset_left = 198.0
 offset_top = 63.0
 offset_right = 281.063

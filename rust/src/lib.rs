@@ -26,6 +26,8 @@ static mut FLUX: Flux = Flux {
 
     fullscreen: false,
     should_open_details: false,
+
+    discord_client: None,
     
     start_from: 0.,
 

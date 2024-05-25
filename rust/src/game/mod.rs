@@ -1,6 +1,9 @@
+use std::time::{SystemTime, UNIX_EPOCH};
+
+use discord_rich_presence::activity::Timestamps;
 use godot::{engine::{input::MouseMode, InputEvent}, prelude::*};
 
-use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
+use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, flux::{flux_activity, set_activity}, FLUX};
 
 use self::{cursor::Cursor, managers::{note_manager::NoteManager, sync_manager::SyncManager}, score::Score};
 
@@ -48,14 +51,20 @@ impl INode3D for Game {
         let mut sync_manager = self.base_mut().get_node_as::<SyncManager>("../SyncManager");
         let mut note_manager = self.base_mut().get_node_as::<NoteManager>("../NoteManager");
 
-        note_manager.connect("game_ended".into(), self.base_mut().callable("note_manager_ended"));
-
-        let cursor = self.base_mut().get_node_as::<Cursor>("../Player/Cursor");
-
         unsafe { 
             self.loaded_map = FLUX.selected_map.clone();
             self.loaded_mapset = FLUX.selected_mapset.clone();
         }
+
+        set_activity(flux_activity()
+            .details(format!("Playing {}", self.loaded_mapset.as_ref().unwrap().bind().title).as_str())
+            .timestamps(Timestamps::new()
+                .start(SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() as i64 as i64)
+                .end(SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() as i64 + self.loaded_map.as_ref().unwrap().bind().notes.last().unwrap().time as i64 - unsafe { FLUX.start_from } as i64)));
+
+        note_manager.connect("game_ended".into(), self.base_mut().callable("note_manager_ended"));
+
+        let cursor = self.base_mut().get_node_as::<Cursor>("../Player/Cursor");
 
         let audio_stream = self.loaded_mapset.as_ref().unwrap().bind().load_audio(false).unwrap();
 

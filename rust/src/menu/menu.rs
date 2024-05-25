@@ -1,6 +1,6 @@
 use godot::{engine::{window, Button, Control, IControl, InputEvent}, prelude::*};
 
-use crate::FLUX;
+use crate::{flux::{flux_activity, set_activity}, FLUX};
 
 #[derive(GodotClass)]
 #[class(base=Control)]
@@ -24,6 +24,8 @@ impl IControl for Menu {
 
         singleplayer.connect("pressed".into(), self.base_mut().callable("singleplayer_pressed"));
         settings.connect("pressed".into(), self.base_mut().callable("settings_pressed"));
+
+        set_activity(flux_activity().details("Browsing maps"));
     }
 
     fn input(&mut self, _: Gd<InputEvent>) {

@@ -1,8 +1,9 @@
 use std::{sync::{Arc, Mutex}, thread};
 
+use discord_rich_presence::{DiscordIpc, DiscordIpcClient};
 use godot::{engine::{Label, Os, Time}, prelude::*};
 use rand::prelude::SliceRandom;
-use crate::{content::maploader::MapLoader, game::score::Score, settings::Settings, FLUX};
+use crate::{content::maploader::MapLoader, flux::{flux_activity, set_activity}, game::score::Score, settings::Settings, FLUX};
 
 #[derive(GodotClass)]
 #[class(base=Node)]
@@ -68,6 +69,18 @@ impl INode for Startup {
 
 impl Startup { 
     fn run_load(internal: Arc<Mutex<StartupInternal>>) {
+        unsafe { 
+            FLUX.discord_client = Some(DiscordIpcClient::new("1231849122336604171").unwrap());
+            match FLUX.discord_client.as_mut().unwrap().connect() {
+                Ok(_) => {},
+                Err(e) => {
+                    godot_print!("failed to setup rpc with error {}", e);
+                }
+            }
+        }
+
+        set_activity(flux_activity().details("Starting Up"));
+
         let user_dir = Os::singleton().get_user_data_dir().to_string();
 
         internal.lock().unwrap().stage = "Loading settings".to_string();
@@ -83,6 +96,7 @@ impl Startup {
                 FLUX.selected_map = Some(Gd::from_object(FLUX.selected_mapset.clone().unwrap().bind().difficulties.choose(&mut rand::thread_rng()).unwrap().clone()));
             }
         }
+
         
         internal.lock().unwrap().stage = "Done".to_string();
     }
