@@ -186,19 +186,6 @@ impl INode for NoteManager {
                     self.next_note = None;
                 }
             }
-
-        }
-        if self.last_note.is_some() {
-            let last_note: GdRef<Note> = self.last_note.as_ref().unwrap().bind();
-
-            if self.next_note == None && sync_manager.real_time - last_note.time as f64 >= 1. {
-                drop(last_note);
-                drop(sync_manager);
-                drop(cursor);
-                drop(game);
-                self.started = false;
-                return;
-            }
         }
     }
 }
