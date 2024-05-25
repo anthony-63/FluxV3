@@ -157,7 +157,7 @@ impl INode for NoteManager {
                     }
                 }
 
-                game.health = (game.health + 1.).min(6.);
+                game.health = (game.health + 0.5).min(5.);
 
                 self.hit_player.as_mut().unwrap().play();
             }
