@@ -71,11 +71,11 @@ far = 500.0
 texture = ExtResource("1_ju5r5")
 
 [node name="RightHUD" type="Sprite3D" parent="HUD"]
-transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 6, 0, -2)
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 6, 0, -3)
 texture = SubResource("ViewportTexture_e51gt")
 
 [node name="LeftHUD" type="Sprite3D" parent="HUD"]
-transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -6, 0, -2)
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -6, 0, -3)
 texture = SubResource("ViewportTexture_2m5mu")
 
 [node name="Health" type="Sprite3D" parent="HUD"]

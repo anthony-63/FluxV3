@@ -90,15 +90,13 @@ impl INode3D for Cursor {
         transform.origin.y = self.clamped_position.y;
         self.base_mut().set_transform(transform);
         
-        let clamped = self.clamped_position;
-
         let camera = self.camera.as_mut().unwrap();
-
         
         if !self.spin {
             let mut camera_transform = camera.get_transform();
-            camera_transform.origin.x = clamped.x * 0.1;
-            camera_transform.origin.y = clamped.y * 0.1;
+            camera_transform.origin.x = (self.clamped_position.x * 10.) / 10.;
+            camera_transform.origin.y = (self.clamped_position.y * 10.) / 10.;
+            camera_transform.origin /= Vector3::ONE * 4. + camera_transform.basis.rows[2] / 2.;
             camera.set_transform(camera_transform);
         } else {
             let prev_rot = camera.get_rotation_degrees();
