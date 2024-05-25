@@ -92,10 +92,12 @@ impl INode3D for Cursor {
         
         let camera = self.camera.as_mut().unwrap();
         
+        let parallax = unsafe { FLUX.settings.as_ref().unwrap().camera.parallax };
+
         if !self.spin {
             let mut camera_transform = camera.get_transform();
-            camera_transform.origin.x = (self.clamped_position.x * 10.) / 10.;
-            camera_transform.origin.y = (self.clamped_position.y * 10.) / 10.;
+            camera_transform.origin.x = (self.clamped_position.x * parallax) / 10.;
+            camera_transform.origin.y = (self.clamped_position.y * parallax) / 10.;
             camera_transform.origin /= Vector3::ONE * 4. + camera_transform.basis.rows[2] / 2.;
             camera.set_transform(camera_transform);
         } else {
