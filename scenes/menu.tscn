@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=54 format=3 uid="uid://dkq7fb6lkop1u"]
 
 [ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
@@ -209,6 +209,70 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_13b3q"]
+bg_color = Color(0.0728427, 0.0728426, 0.0728426, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ejy4"]
+bg_color = Color(0.0383972, 0.0383972, 0.0383971, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rsv41"]
+content_margin_left = 28.0
+content_margin_right = 28.0
+bg_color = Color(0.147672, 0.147672, 0.147672, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5x3ke"]
+content_margin_left = 28.0
+content_margin_right = 28.0
+bg_color = Color(0.165656, 0.165656, 0.165656, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ijbli"]
+content_margin_left = 28.0
+content_margin_right = 28.0
+bg_color = Color(0.114897, 0.114897, 0.114897, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ye0bj"]
+bg_color = Color(0.14902, 0.14902, 0.14902, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mjhed"]
 bg_color = Color(0.0728427, 0.0728426, 0.0728426, 1)
@@ -855,16 +919,32 @@ offset_right = 358.0
 offset_bottom = 197.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_13b3q")
+
+[node name="Panel" type="Panel" parent="Viewports/SettingsMenu/Settings"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 714.0
+offset_bottom = 39.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8ejy4")
 
 [node name="Tabs" type="TabContainer" parent="Viewports/SettingsMenu/Settings"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 3.0
+offset_left = 2.0
+offset_top = 7.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/side_margin = 15
 theme_override_font_sizes/font_size = 12
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_rsv41")
+theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_5x3ke")
+theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_ijbli")
+theme_override_styles/tab_focus = SubResource("StyleBoxFlat_rsv41")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ye0bj")
 current_tab = 2
 
 [node name="Note" type="NoteSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
@@ -1154,8 +1234,10 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -30.0
-offset_bottom = 31.0
+offset_left = -39.0
+offset_top = 4.0
+offset_right = -9.0
+offset_bottom = 35.0
 grow_horizontal = 0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_j2bqa")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_j2bqa")
