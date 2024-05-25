@@ -38,7 +38,7 @@ impl INode3D for Game {
             loaded_mapset: None,
             sync_manager: None,
             note_manager: None,
-            health: 10.,
+            health: 6.,
             started_audio: false,
             started_notes: false,
         }

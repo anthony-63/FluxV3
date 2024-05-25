@@ -157,7 +157,7 @@ impl INode for NoteManager {
                     }
                 }
 
-                game.health = (game.health + 1.25).min(10.);
+                game.health = (game.health + 1.).min(6.);
 
                 self.hit_player.as_mut().unwrap().play();
             }
@@ -166,7 +166,7 @@ impl INode for NoteManager {
                 did_hitreg = true;
                 bound.hit = true;
 
-                game.health = (game.health - 2.).max(0.);
+                game.health = (game.health - 1.).max(0.);
 
                 unsafe {
                     FLUX.score.as_mut().unwrap().misses += 1;

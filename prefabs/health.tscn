@@ -14,6 +14,5 @@ offset_right = 753.0
 offset_bottom = 27.0
 size_flags_horizontal = 3
 theme = SubResource("Theme_pofj5")
-max_value = 10.0
-step = 0.1
+max_value = 6.0
 show_percentage = false
