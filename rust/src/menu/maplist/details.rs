@@ -85,6 +85,10 @@ impl MapDetails {
         if map.bind().notes.len() > 0 {
             let last_note_time = map.bind().notes.last().unwrap().time;
             start_from_slider.set_max(last_note_time as f64);
+            unsafe { 
+                FLUX.start_from = FLUX.start_from.min(last_note_time as f64);
+            }
+            
             length.set_text(format!("{:01}:{:02}",
                             (last_note_time / 60.).floor() as usize,
                             (last_note_time % 60.).floor() as usize).as_str().into())
