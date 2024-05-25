@@ -92,6 +92,10 @@ impl IControl for Viewports {
                     let music_stream = FLUX.selected_mapset.clone().unwrap().bind().load_audio(true);
                     if music_stream.is_some() {
                         music.set_stream(music_stream.unwrap());
+                        if FLUX.mods.speed.enabled {
+                            music.set_pitch_scale(FLUX.mods.speed.value);
+                        }
+                        music.seek(FLUX.start_from as f32);
                         music.play();
                     }
                 }

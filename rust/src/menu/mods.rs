@@ -45,6 +45,12 @@ impl ModPanel {
     fn toggle_speed(&mut self, toggled: bool) {
         unsafe {
             FLUX.mods.speed.enabled = toggled;
+            let mut audio_player = self.base().get_node_as::<AudioStreamPlayer>("../../../Music");
+            if toggled {
+                audio_player.set_pitch_scale(FLUX.mods.speed.value);
+            } else {
+                audio_player.set_pitch_scale(1.);
+            }
         }
     }
 
@@ -52,6 +58,10 @@ impl ModPanel {
     fn change_speed(&mut self, value: f64) {
         unsafe {
             FLUX.mods.speed.value = (value / 100.) as f32;
+            if FLUX.mods.speed.enabled {
+                let mut audio_player = self.base().get_node_as::<AudioStreamPlayer>("../../../Music");
+                audio_player.set_pitch_scale(FLUX.mods.speed.value);
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 use std::{sync::mpsc::{Receiver, Sender}, thread};
 
-use godot::{engine::{global::Error, Button, GridContainer, IGridContainer, Image, ImageTexture, LineEdit, TextureRect}, obj::WithBaseField, prelude::*};
+use godot::{engine::{global::Error, Button, GridContainer, HSlider, IGridContainer, Image, ImageTexture, LineEdit, TextureRect}, obj::WithBaseField, prelude::*};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
 
@@ -148,6 +148,8 @@ impl MapContainer {
         self.map_details.as_mut().unwrap().call("set_details".into(), &[]);
         let mut play_button = self.map_details.as_mut().unwrap().get_node_as::<Button>("Play");
 
+        let start_from_slider = self.map_details.as_ref().unwrap().get_node_as::<HSlider>("StartFrom");
+
         if map_audio == None {
             self.audio_player.as_mut().unwrap().stop();
             play_button.set_text("BROKEN".into());
@@ -155,6 +157,12 @@ impl MapContainer {
         } else {
             if restart_music {
                 self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
+                self.audio_player.as_mut().unwrap().seek(start_from_slider.get_value() as f32);
+                unsafe { 
+                    if FLUX.mods.speed.enabled {
+                        self.audio_player.as_mut().unwrap().set_pitch_scale(FLUX.mods.speed.value);
+                    }
+                }
                 self.audio_player.as_mut().unwrap().play();
             }
             play_button.set_text("Play".into());
