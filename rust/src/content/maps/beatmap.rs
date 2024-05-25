@@ -36,6 +36,8 @@ impl Beatmap {
             });
         }
 
+        notes.sort_by(|a, b| a.time.partial_cmp(&b.time).unwrap());
+
         Self {
             broken: false,
             version,
