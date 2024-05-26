@@ -1,6 +1,6 @@
 use std::{sync::mpsc::{Receiver, Sender}, thread};
 
-use godot::{engine::{global::Error, Button, GridContainer, HSlider, IGridContainer, Image, ImageTexture, LineEdit, TextureRect}, obj::WithBaseField, prelude::*};
+use godot::{engine::{global::{Error, MouseButton}, node::ProcessMode, Button, GridContainer, HSlider, IGridContainer, Image, ImageTexture, InputEvent, InputEventMouseButton, LineEdit, TextureRect}, obj::WithBaseField, prelude::*};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
 
@@ -14,6 +14,8 @@ pub struct MapContainer {
     search_box: Option<Gd<LineEdit>>,
     map_details: Option<Gd<MapDetails>>,
     bg_blur: Option<Gd<TextureRect>>,
+
+    ignore_click: bool,
 
     cover_reciever: Option<Receiver<(String, InstanceId)>>, 
     map_button_reciever: Option<Receiver<(String, InstanceId)>>, 
@@ -30,6 +32,8 @@ impl IGridContainer for MapContainer {
             bg_blur: None,
             cover_reciever: None,
             map_button_reciever: None,
+
+            ignore_click: false,
         }
     }
 
@@ -54,6 +58,21 @@ impl IGridContainer for MapContainer {
             }).join();
         });
     
+    }
+
+    fn unhandled_input(&mut self, ev: Gd<InputEvent>) {
+        let Ok(event) = ev.try_cast::<InputEventMouseButton>() else {
+            return;
+        };
+        if !event.is_released() && (event.get_button_index() != MouseButton::LEFT && event.get_button_index() != MouseButton::RIGHT) {
+            return;
+        }
+
+        if self.ignore_click {
+            self.ignore_click = false;
+        } else {
+            self.set_children_process(true);
+        }
     }
 
     fn process(&mut self, _: f64) {
@@ -141,6 +160,8 @@ impl MapContainer {
 
         let map_audio = mapset.bind().load_audio(true);
 
+        self.set_children_process(false);
+        self.ignore_click = true;
         self.map_details.as_mut().unwrap().set_visible(true);
         self.bg_blur.as_mut().unwrap().set_visible(true);
 
@@ -157,7 +178,7 @@ impl MapContainer {
             if restart_music {
                 self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
                 self.audio_player.as_mut().unwrap().seek(start_from_slider.get_value() as f32);
-                unsafe { 
+                unsafe {
                     if FLUX.mods.speed.enabled {
                         self.audio_player.as_mut().unwrap().set_pitch_scale(FLUX.mods.speed.value);
                     }
@@ -168,6 +189,16 @@ impl MapContainer {
             play_button.set_disabled(false);
         }
 
+    }
+
+    pub fn set_children_process(&mut self, should: bool) {
+        for mut child in self.base_mut().get_children().iter_shared() {
+            if should {
+                child.set_process_mode(ProcessMode::INHERIT);
+            } else {
+                child.set_process_mode(ProcessMode::DISABLED);
+            }
+        }
     }
 
     pub fn load_covers_threaded(sender: &mut Sender<(String, InstanceId)>) {
@@ -192,7 +223,7 @@ impl MapContainer {
 
     pub fn load_buttons_threaded(sender: &mut Sender<(String, InstanceId)>) {
         let entry_prefab = load::<PackedScene>("res://prefabs/map_button.tscn");
-        
+
         unsafe {
             for map in FLUX.loaded_mapsets.clone() {
                 for diff in map.difficulties.clone() {
