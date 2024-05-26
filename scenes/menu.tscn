@@ -53,7 +53,7 @@ corner_radius_bottom_left = 8
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hgeyy"]
 shader = ExtResource("6_nkv8a")
-shader_parameter/lod = 0.786
+shader_parameter/lod = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lyhwq"]
 bg_color = Color(0.0392157, 0.0392157, 0.0392157, 1)
@@ -368,6 +368,7 @@ bus = &"Music"
 [node name="Viewports" type="Node" parent="."]
 
 [node name="Menu" type="Menu" parent="Viewports"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -430,7 +431,6 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Maplist" type="Maplist" parent="Viewports"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -510,7 +510,6 @@ theme_override_styles/read_only = SubResource("StyleBoxFlat_3jjwm")
 placeholder_text = "Search"
 
 [node name="BgBlur" type="TextureRect" parent="Viewports/Maplist"]
-visible = false
 material = SubResource("ShaderMaterial_hgeyy")
 layout_mode = 1
 anchors_preset = 15
@@ -898,6 +897,7 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_g7yte")
 text = "Close"
 
 [node name="SettingsMenu" type="SettingsMenu" parent="Viewports"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

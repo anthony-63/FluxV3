@@ -40,7 +40,7 @@ impl MapButton {
         difficultylabel.set_text(map.bind().name.to_godot());
 
         let mut mapperlabel = self.base().get_node_as::<Label>("Mapper");
-        mapperlabel.set_text(mapset.bind().mappers.join(",").to_godot());
+        mapperlabel.set_text(mapset.bind().mappers.join(", ").to_godot());
     }
 
     #[func]

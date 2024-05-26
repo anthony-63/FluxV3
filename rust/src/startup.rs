@@ -121,7 +121,6 @@ impl Startup {
             }
         }
 
-        
         internal.lock().unwrap().stage = "Done".to_string();
     }
 
