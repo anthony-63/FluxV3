@@ -110,6 +110,8 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+expand_margin_left = 2.0
+expand_margin_right = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_56dir"]
 bg_color = Color(0.0807833, 0.0807834, 0.0807832, 1)
@@ -431,6 +433,7 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Maplist" type="Maplist" parent="Viewports"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -510,6 +513,7 @@ theme_override_styles/read_only = SubResource("StyleBoxFlat_3jjwm")
 placeholder_text = "Search"
 
 [node name="BgBlur" type="TextureRect" parent="Viewports/Maplist"]
+visible = false
 material = SubResource("ShaderMaterial_hgeyy")
 layout_mode = 1
 anchors_preset = 15
@@ -521,6 +525,7 @@ mouse_filter = 0
 texture = ExtResource("7_bt406")
 
 [node name="MapDetails" type="MapDetails" parent="Viewports/Maplist"]
+visible = false
 custom_minimum_size = Vector2(610, 568)
 layout_mode = 1
 anchors_preset = 8
@@ -852,6 +857,7 @@ offset_right = -7.0
 offset_bottom = -56.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 12
 
 [node name="Speed" type="SpinBox" parent="Viewports/Maplist/ModPanel/VBoxContainer"]
 layout_mode = 2
@@ -876,6 +882,15 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_56dir")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ewrny")
 toggle_mode = true
 text = "Toggle Speed"
+
+[node name="NoFail" type="Button" parent="Viewports/Maplist/ModPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_g7yte")
+theme_override_styles/hover = SubResource("StyleBoxFlat_56dir")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ewrny")
+toggle_mode = true
+text = "Toggle NoFail"
 
 [node name="Close" type="Button" parent="Viewports/Maplist/ModPanel"]
 layout_mode = 1

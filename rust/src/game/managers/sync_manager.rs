@@ -71,6 +71,15 @@ impl INode for SyncManager {
             return
         }
 
+        if !self.audio_player.as_ref().unwrap().is_playing() && self.real_time > 0. {
+            let audio_player = self.audio_player.as_mut().unwrap();
+
+            audio_player.seek(self.real_time as f32);
+            audio_player.play();
+
+            self.set_offset();
+        }
+
         let now = Time::singleton().get_ticks_usec() as f64;
         let time = self.speed as f64 * (now - self.last_time) * 0.000001;
         self.last_time = now;
@@ -108,18 +117,14 @@ impl SyncManager {
     }
 
     #[func]
-    pub fn start(&mut self, from_cbn: f64) {
+    pub fn start(&mut self, from: f64) {
         let audio_player = self.audio_player.as_mut().unwrap();
-
-        let from = from_cbn.max(0.);
 
         self.last_time = Time::singleton().get_ticks_usec() as f64;
         self.real_time = from.min(from * self.speed as f64);
         
-        audio_player.seek(self.real_time as f32);
-        audio_player.play();
         audio_player.set_pitch_scale(self.speed);
-        self.set_offset();
+
         self.playing = true;
     }
     

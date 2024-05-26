@@ -27,6 +27,10 @@ impl IPanel for ModPanel {
         let mut toggle_speed = speed_spinbox.get_node_as::<Button>("Toggle");
         toggle_speed.set_pressed(unsafe { FLUX.mods.speed.enabled });
         toggle_speed.connect("toggled".into(), self.base_mut().callable("toggle_speed"));
+
+        let mut toggle_nofail = self.base().get_node_as::<Button>("VBoxContainer/NoFail");
+        toggle_nofail.set_pressed(unsafe { FLUX.mods.nofail.enabled });
+        toggle_nofail.connect("toggled".into(), self.base_mut().callable("toggle_nofail"));
     }
 
     fn process(&mut self, _: f64) {
@@ -51,6 +55,13 @@ impl ModPanel {
             } else {
                 audio_player.set_pitch_scale(1.);
             }
+        }
+    }
+
+    #[func]
+    fn toggle_nofail(&mut self, toggled: bool) {
+        unsafe {
+            FLUX.mods.nofail.enabled = toggled;
         }
     }
 

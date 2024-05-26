@@ -89,8 +89,14 @@ impl INode3D for Game {
     fn process(&mut self, _: f64) {
         self.try_start();
 
-        if self.health <= 0. {
-            self.fail_score();
+        if self.health <= 0. && unsafe { !FLUX.score.as_ref().unwrap().failed } {
+            if unsafe { FLUX.mods.nofail.enabled } {
+                unsafe {
+                    FLUX.score.as_mut().unwrap().failed = true;
+                }
+            } else {
+                self.fail_score();
+            }
         }
     }
 }
@@ -122,7 +128,7 @@ impl Game {
     }
 
     fn fail_score(&mut self) {
-        unsafe { 
+        unsafe {
             FLUX.score.as_mut().unwrap().failed = true; 
             FLUX.score.as_mut().unwrap().fail_time = self.sync_manager.as_ref().unwrap().bind().real_time;
         }
@@ -131,7 +137,7 @@ impl Game {
 
     fn end_game(&mut self) {
         Input::singleton().set_mouse_mode(MouseMode::VISIBLE);
-        unsafe { 
+        unsafe {
             FLUX.should_open_details = true;
             FLUX.score.as_mut().unwrap().mods_used = FLUX.mods.clone();
             FLUX.score.as_mut().unwrap().map_id = FLUX.selected_mapset.as_ref().unwrap().bind().hash.clone() + "/" + &FLUX.selected_map.as_ref().unwrap().bind().name;

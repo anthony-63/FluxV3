@@ -1,5 +1,5 @@
 use flux::Flux;
-use game::mods::{speed::SpeedMod, AllMods};
+use game::mods::{nofail::NoFailMod, speed::SpeedMod, AllMods};
 use godot::prelude::*;
 
 pub mod flux;
@@ -36,6 +36,9 @@ static mut FLUX: Flux = Flux {
     mods: AllMods {
         speed: SpeedMod {
             value: 1.,
+            enabled: false,
+        },
+        nofail: NoFailMod {
             enabled: false,
         }
     }
