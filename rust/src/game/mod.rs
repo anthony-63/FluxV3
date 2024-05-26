@@ -107,7 +107,7 @@ impl Game {
     fn try_start(&mut self) {
         let sync_manager = self.sync_manager.as_ref().unwrap().bind();
 
-        if !self.started_audio && sync_manager.start_timer > sync_manager.start_delay {
+        if !self.started_audio {
             drop(sync_manager);
             
             self.sync_manager.as_mut().unwrap().call("start".into(), &[(unsafe { FLUX.start_from - 1. }).to_variant()]);

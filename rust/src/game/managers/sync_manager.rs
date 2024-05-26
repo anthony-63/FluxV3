@@ -20,10 +20,7 @@ pub struct SyncManager {
     time_delay: f64,
     playing: bool,
     end_time: f32,
-    
-    pub start_timer: f32,
-    pub start_delay: f32,
-    
+        
     pub real_time: f64,
 }
 
@@ -40,8 +37,6 @@ impl INode for SyncManager {
             time_delay: 0.,
             end_time: 0.,
             playing: false,
-            start_timer: 0.,
-            start_delay: 1.,
             speed: 1.0,
         }
     }
@@ -62,11 +57,7 @@ impl INode for SyncManager {
         self.game = Some(game);
     }
 
-    fn process(&mut self, dt: f64) {
-        if self.start_timer < self.start_delay {
-            self.start_timer += dt as f32;
-        }
-
+    fn process(&mut self, _: f64) {
         if !self.playing {
             return
         }
