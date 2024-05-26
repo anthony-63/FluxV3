@@ -883,6 +883,30 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_ewrny")
 toggle_mode = true
 text = "Toggle Speed"
 
+[node name="Ghost" type="SpinBox" parent="Viewports/Maplist/ModPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = SubResource("Theme_v3ux2")
+max_value = 5000.0
+value = 32.0
+suffix = "%"
+
+[node name="Toggle" type="Button" parent="Viewports/Maplist/ModPanel/VBoxContainer/Ghost"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -14.5
+offset_right = -10.0
+offset_bottom = 14.5
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_g7yte")
+theme_override_styles/hover = SubResource("StyleBoxFlat_56dir")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ewrny")
+toggle_mode = true
+text = "Toggle Ghost"
+
 [node name="NoFail" type="Button" parent="Viewports/Maplist/ModPanel/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4

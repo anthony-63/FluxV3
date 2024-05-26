@@ -27,7 +27,6 @@ viewport_path = NodePath("HUD/HealthViewport")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_haxa0"]
 render_priority = -1
 transparency = 4
-depth_draw_mode = 1
 shading_mode = 0
 specular_mode = 2
 disable_ambient_light = true

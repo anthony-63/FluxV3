@@ -28,6 +28,16 @@ impl IPanel for ModPanel {
         toggle_speed.set_pressed(unsafe { FLUX.mods.speed.enabled });
         toggle_speed.connect("toggled".into(), self.base_mut().callable("toggle_speed"));
 
+
+        let mut ghost_spinbox = self.base().get_node_as::<SpinBox>("VBoxContainer/Ghost");
+        ghost_spinbox.set_value(unsafe { FLUX.mods.ghost.value as f64 });
+        ghost_spinbox.connect("value_changed".into(), self.base_mut().callable("change_ghost"));
+
+        let mut toggle_ghost = ghost_spinbox.get_node_as::<Button>("Toggle");
+        toggle_ghost.set_pressed(unsafe { FLUX.mods.ghost.enabled });
+        toggle_ghost.connect("toggled".into(), self.base_mut().callable("toggle_ghost"));
+
+
         let mut toggle_nofail = self.base().get_node_as::<Button>("VBoxContainer/NoFail");
         toggle_nofail.set_pressed(unsafe { FLUX.mods.nofail.enabled });
         toggle_nofail.connect("toggled".into(), self.base_mut().callable("toggle_nofail"));
@@ -59,13 +69,6 @@ impl ModPanel {
     }
 
     #[func]
-    fn toggle_nofail(&mut self, toggled: bool) {
-        unsafe {
-            FLUX.mods.nofail.enabled = toggled;
-        }
-    }
-
-    #[func]
     fn change_speed(&mut self, value: f64) {
         unsafe {
             FLUX.mods.speed.value = (value / 100.) as f32;
@@ -73,6 +76,27 @@ impl ModPanel {
                 let mut audio_player = self.base().get_node_as::<AudioStreamPlayer>("../../../Music");
                 audio_player.set_pitch_scale(FLUX.mods.speed.value);
             }
+        }
+    }
+
+    #[func]
+    fn toggle_ghost(&mut self, toggled: bool) {
+        unsafe {
+            FLUX.mods.ghost.enabled = toggled;
+        }
+    }
+
+    #[func]
+    fn change_ghost(&mut self, value: f64) {
+        unsafe {
+            FLUX.mods.ghost.value = value as f32;
+        }
+    }
+
+    #[func]
+    fn toggle_nofail(&mut self, toggled: bool) {
+        unsafe {
+            FLUX.mods.nofail.enabled = toggled;
         }
     }
 }
