@@ -31,6 +31,8 @@ pub struct AudioSettings {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct CursorSettings {
     pub sensitivity: f32,
+    pub absolute_scale: f32,
+    pub absolute: bool,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -66,6 +68,8 @@ impl Settings {
             },
             cursor: CursorSettings {
                 sensitivity: 0.5,
+                absolute: false,
+                absolute_scale: 1.,
             },
             camera: CameraSettings {
                 spin: false,

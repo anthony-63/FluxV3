@@ -128,7 +128,7 @@ impl BeatmapSet {
                 let mut stream: Gd<AudioStreamOggVorbis> = AudioStreamOggVorbis::load_from_buffer(audio_bytes.as_slice().into()).unwrap().into();
                 
                 stream.set_loop(should_loop);
-                // set the streams data somehow?
+
                 return Some(stream.upcast());
             },
             _ => return None

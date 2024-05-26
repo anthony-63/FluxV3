@@ -64,6 +64,8 @@ fov = 70.0
 near = 0.001
 far = 500.0
 
+[node name="AbsCamera" type="Camera3D" parent="Player"]
+
 [node name="HUD" type="HudManager" parent="."]
 
 [node name="Grid" type="Sprite3D" parent="HUD"]

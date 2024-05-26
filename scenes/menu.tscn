@@ -937,7 +937,6 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_g7yte")
 text = "Close"
 
 [node name="SettingsMenu" type="SettingsMenu" parent="Viewports"]
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -1236,12 +1235,28 @@ offset_right = -68.0
 offset_bottom = 26.0
 text = "Sensitivity"
 
-[node name="Parallax" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
-layout_mode = 0
+[node name="AbsoluteScale" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
 offset_left = 198.0
 offset_top = 63.0
 offset_right = 281.063
 offset_bottom = 94.0
+max_value = 1000.0
+step = 0.01
+
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/AbsoluteScale"]
+layout_mode = 0
+offset_left = -182.0
+offset_top = 3.0
+offset_right = -68.0
+offset_bottom = 26.0
+text = "Absoulte Scale"
+
+[node name="Parallax" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
+layout_mode = 0
+offset_left = 198.0
+offset_top = 111.0
+offset_right = 281.063
+offset_bottom = 142.0
 max_value = 1000.0
 step = 0.01
 value = 10.0
@@ -1257,9 +1272,9 @@ text = "Parallax"
 [node name="Spin" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
 layout_mode = 0
 offset_left = 192.0
-offset_top = 111.0
+offset_top = 159.0
 offset_right = 236.0
-offset_bottom = 142.0
+offset_bottom = 190.0
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/Spin"]
 layout_mode = 0
@@ -1268,6 +1283,20 @@ offset_top = 4.0
 offset_right = -32.0
 offset_bottom = 27.0
 text = "Spin"
+
+[node name="AbsoluteMode" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
+offset_left = 192.0
+offset_top = 207.0
+offset_right = 236.0
+offset_bottom = 238.0
+
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/AbsoluteMode"]
+layout_mode = 0
+offset_left = -178.0
+offset_top = 4.0
+offset_right = -32.0
+offset_bottom = 27.0
+text = "Absolute Mode"
 
 [node name="Close" type="Button" parent="Viewports/SettingsMenu/Settings"]
 layout_mode = 1

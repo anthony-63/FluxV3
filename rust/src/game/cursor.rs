@@ -12,9 +12,12 @@ pub struct Cursor {
     pub clamped_position: Vector2,
 
     camera: Option<Gd<Camera3D>>,
+    abs_camera: Option<Gd<Camera3D>>,
 
     sensitivity: f32,
+    absolute_scale: f32,
     spin: bool,
+    
 
     pub yaw: f32,
     pub pitch: f32,
@@ -28,7 +31,9 @@ impl INode3D for Cursor {
             position: Vector2::ZERO,
             clamped_position: Vector2::ZERO,
             camera: None,
+            abs_camera: None,
             sensitivity: 0.5,
+            absolute_scale: 1.,
             spin: false,
             pitch: 0.,
             yaw: 0.,
@@ -38,23 +43,42 @@ impl INode3D for Cursor {
     fn enter_tree(&mut self) {
         unsafe {
             self.sensitivity = FLUX.settings.as_ref().unwrap().cursor.sensitivity;
+            self.absolute_scale = FLUX.settings.as_ref().unwrap().cursor.absolute_scale;
             self.spin = FLUX.settings.as_ref().unwrap().camera.spin;
         }
 
         let mut camera = self.base_mut().get_node_as::<Camera3D>("../Camera");
+        let mut abs_camera = self.base_mut().get_node_as::<Camera3D>("../AbsCamera");
         
         camera.set_keep_aspect_mode(KeepAspect::HEIGHT);
+        abs_camera.set_keep_aspect_mode(KeepAspect::HEIGHT);
         
         if !self.spin {
             let mut cam_transform = camera.get_transform();
             cam_transform.origin.z = 0.5;
             camera.set_transform(cam_transform);
+
+            let mut abs_cam_transform = abs_camera.get_transform();
+            abs_cam_transform.origin.z = 0.5;
+            abs_camera.set_transform(abs_cam_transform);
+        }
+
+        if unsafe { FLUX.settings.as_ref().unwrap().cursor.absolute } {
+            Input::singleton().set_mouse_mode(MouseMode::CONFINED);
+        } else {
+            Input::singleton().set_mouse_mode(MouseMode::CAPTURED);
         }
 
         self.camera = Some(camera);
+        self.abs_camera = Some(abs_camera);
 
-        Input::singleton().set_mouse_mode(MouseMode::CAPTURED);
         Input::singleton().set_use_accumulated_input(false);
+        Input::singleton().set_custom_mouse_cursor(load("res://assets/images/blank.png"));
+    }
+
+    fn exit_tree(&mut self) {
+        // Input::singleton().set_custom_mouse_cursor()
+        Input::singleton().set_mouse_mode(MouseMode::VISIBLE);
     }
 
     fn input(&mut self, event: Gd<InputEvent>) {
@@ -64,18 +88,33 @@ impl INode3D for Cursor {
 
         let relative = event_motion.get_relative() * (self.sensitivity / 4.);
 
-        if self.spin {
-            let camera = self.camera.as_ref().unwrap();
-            let camera_trans = camera.get_transform();
-            let camera_rot = camera.get_rotation();
-
-            let rot_vec = Vector2::new(-camera_rot.y, camera_rot.x);
-            let pos_vec = Vector2::new(camera_trans.origin.x, camera_trans.origin.y);
-            self.position = pos_vec + rot_vec * -(camera_trans.origin.z + self.base().get_transform().origin.z);
+        if unsafe { FLUX.settings.as_ref().unwrap().cursor.absolute } {
+            if self.spin {
+                let pos = self.abs_camera.as_ref().unwrap().project_position(event_motion.get_position(), 3.5) * (self.absolute_scale * 2.);
+                self.position = Vector2::new(pos.x, pos.y);
+                self.camera.as_mut().unwrap().look_at(Vector3::new(pos.x, pos.y, 0.));
+            } else {
+                let pos = self.abs_camera.as_ref().unwrap().project_position(event_motion.get_position(), 3.75) * (self.absolute_scale * 2.);
+                self.position = Vector2::new(pos.x, pos.y);
+            }
         } else {
-            self.pitch = 0.;
-            self.yaw = 0.;
-            self.position += Vector2::new(relative.x, -relative.y) * 0.1675;
+            if self.spin {
+                let camera = self.camera.as_mut().unwrap();
+                camera.set_rotation_degrees(Vector3::new(self.pitch, self.yaw, 0.));
+
+                let camera_trans = camera.get_global_transform();
+                let basis = camera.get_global_basis();
+
+                let look = Vector3::new(basis.rows[0].z, basis.rows[1].z, basis.rows[2].z);
+
+                let pos_vec = Vector2::new(camera_trans.origin.x, camera_trans.origin.y);
+
+                self.position = pos_vec - Vector2::new(look.x, look.y) * (camera_trans.origin.z / look.z);
+            } else {
+                self.pitch = 0.;
+                self.yaw = 0.;
+                self.position += Vector2::new(relative.x, -relative.y) * 0.1675;
+            }
         }
 
         self.clamped_position = Vector2::new(
@@ -101,8 +140,11 @@ impl INode3D for Cursor {
             camera_transform.origin /= Vector3::ONE * 4. + camera_transform.basis.rows[2] / 2.;
             camera.set_transform(camera_transform);
         } else {
-            let prev_rot = camera.get_rotation_degrees();
-            camera.set_rotation_degrees(prev_rot - Vector3::new(relative.y, relative.x, 0.));
+            self.pitch -= relative.y * self.sensitivity;
+            self.yaw -= relative.x * self.sensitivity;
+
+            self.pitch = self.pitch.clamp(-90., 90.);
+            self.yaw = self.yaw.clamp(-180., 180.);
         }
 
     }
