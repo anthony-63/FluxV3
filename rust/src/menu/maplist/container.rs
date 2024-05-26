@@ -188,7 +188,6 @@ impl MapContainer {
             play_button.set_text("Play".into());
             play_button.set_disabled(false);
         }
-
     }
 
     pub fn set_children_process(&mut self, should: bool) {
