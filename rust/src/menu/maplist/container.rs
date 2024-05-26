@@ -83,7 +83,6 @@ impl IGridContainer for MapContainer {
         if self.cover_reciever.is_some() {
             match self.cover_reciever.as_ref().unwrap().try_recv() {
                 Ok(cover) => {
-
                     for child_uncast in self.base().get_children().iter_shared() {
                         let mut child=  child_uncast.try_cast::<MapButton>().unwrap();
                         let mut button_ref = child.bind_mut();
@@ -193,7 +192,7 @@ impl MapContainer {
 
     pub fn load_buttons_threaded(sender: &mut Sender<(String, InstanceId)>) {
         let entry_prefab = load::<PackedScene>("res://prefabs/map_button.tscn");
-
+        
         unsafe {
             for map in FLUX.loaded_mapsets.clone() {
                 for diff in map.difficulties.clone() {

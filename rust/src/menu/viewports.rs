@@ -28,7 +28,6 @@ impl IControl for Viewports {
     }
 
     fn enter_tree(&mut self) {
-        
         self.menu_view = Some(self.base().get_node_as::<Menu>("Viewports/Menu"));
         self.maplist_view = Some(self.base().get_node_as::<Maplist>("Viewports/Maplist"));
         self.settings_view = Some(self.base().get_node_as::<SettingsMenu>("Viewports/SettingsMenu"));

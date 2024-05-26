@@ -59,8 +59,8 @@ impl RightHUD {
         if self.miniplier_prev == score.miniplier {
             return;
         }
+
         let mut tween = self.base_mut().get_tree().unwrap().create_tween().unwrap();
-        
         tween.stop();
         tween.tween_property(self.score_multiplier.clone().unwrap().upcast(), "value".into(), Variant::from(score.miniplier as f64), 0.1);
         self.miniplier_prev = score.miniplier;

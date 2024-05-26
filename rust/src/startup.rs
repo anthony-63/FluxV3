@@ -1,7 +1,7 @@
 use std::{sync::{Arc, Mutex}, thread};
 
 use discord_rich_presence::{DiscordIpc, DiscordIpcClient};
-use godot::{engine::{Label, Os, Time}, prelude::*};
+use godot::{engine::{Label, Os, ProgressBar, Time}, prelude::*};
 use rand::prelude::SliceRandom;
 use crate::{content::maploader::MapLoader, flux::{flux_activity, set_activity}, game::score::Score, settings::Settings, FLUX};
 
@@ -13,8 +13,12 @@ pub struct Startup {
     dot_timer: f64,
 }
 
-struct StartupInternal {
+pub struct StartupInternal {
     stage: String,
+    substatus: String,
+    progress_count: usize,
+    progress_total: usize,
+    has_progress: bool,
 }
 
 
@@ -23,7 +27,13 @@ impl INode for Startup {
     fn init(base: Base<Node>) -> Self {
         let startup = Self {
             base,
-            internal: Arc::new(Mutex::new(StartupInternal{ stage: "Loading Flux".to_string() })),
+            internal: Arc::new(Mutex::new(StartupInternal{ 
+                stage: "Loading Flux".to_string(),
+                substatus: "".to_string(), 
+                progress_count: 0, 
+                progress_total: 0,
+                has_progress: false,
+            })),
             dot_timer: 0.,
         };
 
@@ -33,10 +43,17 @@ impl INode for Startup {
     fn process(&mut self, delta: f64,) {
         self.dot_timer += delta;
         let mut label = self.base().get_node_as::<Label>("../Stage");
+        let mut substatus = self.base().get_node_as::<Label>("../SubStatus");
+        let mut progress = self.base().get_node_as::<ProgressBar>("../Progress");
 
         let mut internal = self.internal.lock().unwrap();
 
+        progress.set_max(internal.progress_total as f64);
+        progress.set_value(internal.progress_count as f64);
+        progress.set_visible(internal.has_progress);
+
         label.set_text(internal.stage.clone().into_godot());
+        substatus.set_text(internal.substatus.clone().into_godot());
 
         if self.dot_timer > 0.2 {
             if internal.stage.contains("...") {
@@ -87,9 +104,16 @@ impl Startup {
         Self::load_settings();
 
         internal.lock().unwrap().stage = "Loading maps".to_string();
-        Self::load_maps(user_dir.clone());
+        internal.lock().unwrap().has_progress = true;
+        fn update_substatus(name: String, count: usize, total: usize, internal: Arc<Mutex<StartupInternal>>) {
+            internal.lock().unwrap().substatus = name;
+            internal.lock().unwrap().progress_count = count;
+            internal.lock().unwrap().progress_total = total;
+        }
+        Self::load_maps(user_dir.clone(), update_substatus, internal.clone());
 
         internal.lock().unwrap().stage = "Selecting map...".to_string();
+        internal.lock().unwrap().has_progress = false;
         unsafe {
             if FLUX.loaded_mapsets.len() > 0 {
                 FLUX.selected_mapset = Some(Gd::from_object(FLUX.loaded_mapsets.choose(&mut rand::thread_rng()).unwrap().clone()));
@@ -108,11 +132,12 @@ impl Startup {
         }
     }
 
-    fn load_maps(user_dir: String) {
+    fn load_maps(user_dir: String, update_label: fn(String, usize, usize, Arc<Mutex<StartupInternal>>), internal: Arc<Mutex<StartupInternal>>) {
         let time = Time::singleton();
 
         let start = time.get_ticks_usec();
-        MapLoader::load_all_from_dir(format!("{}/maps", user_dir));
+
+        MapLoader::load_all_from_dir(format!("{}/maps", user_dir), update_label, internal);
         let end = time.get_ticks_usec();
         godot_print!("Loaded maps in {}ms", (end - start) / 1000);
     }

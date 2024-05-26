@@ -1,23 +1,26 @@
-use std::path::{Path, PathBuf};
+use std::{path::{Path, PathBuf}, sync::{Arc, Mutex}};
 
 use godot::{engine::Os, prelude::*};
 
-use crate::{content::maps::{beatmapset::BeatmapSet, sspm::SSPMParser}, FLUX};
+use crate::{content::maps::{beatmapset::BeatmapSet, sspm::SSPMParser}, startup::StartupInternal, FLUX};
 
 pub struct MapLoader;
+
 impl MapLoader {
-    pub fn load_all_from_dir(path: String) {
+    pub fn load_all_from_dir(path: String, update_label: fn(String, usize, usize, Arc<Mutex<StartupInternal>>), internal: Arc<Mutex<StartupInternal>>) {
         godot_print!("loading all maps from {}", path);
 
+        let map_count = std::fs::read_dir(path.clone()).unwrap().count();
         let map_folders = std::fs::read_dir(path).unwrap();
 
-        for filename in map_folders {
+        for (index, filename) in map_folders.into_iter().enumerate() {
             let file: std::fs::DirEntry = filename.unwrap();
 
             if file.path().is_dir() {
                 unsafe {
                     FLUX.loaded_mapsets.push(BeatmapSet::from_folder(file.path().to_str().unwrap().to_string()));
                 }
+                update_label(file.file_name().to_string_lossy().to_string(), index, map_count, internal.clone());
             } else {
                 godot_print!("{}", file.path().to_string_lossy());
                 if file.path().to_string_lossy().ends_with(".sspm") {
@@ -25,6 +28,7 @@ impl MapLoader {
                     unsafe {
                         FLUX.loaded_mapsets.push(BeatmapSet::from_folder(file.path().with_extension("").to_str().unwrap().to_string()));
                     }
+                    update_label(file.file_name().to_string_lossy().to_string(), index, map_count, internal.clone());
                     continue
                 }
             }

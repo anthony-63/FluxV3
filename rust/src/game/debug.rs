@@ -24,10 +24,6 @@ impl ILabel for DebugLabel {
             self.game = Some(game);
         }
 
-        // if !self.game.clone().unwrap().bind().started_audio || !self.game.clone().unwrap().bind().started_notes {
-        //     return;
-        // }
-
         let fps_monitor = Performance::singleton().get_monitor(Monitor::TIME_FPS);
         let game = self.game.as_ref().unwrap().bind();
         let game_time = game.sync_manager.as_ref().unwrap().bind().real_time;
