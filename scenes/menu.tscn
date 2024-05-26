@@ -984,10 +984,8 @@ theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_5x3ke")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_ijbli")
 theme_override_styles/tab_focus = SubResource("StyleBoxFlat_rsv41")
 theme_override_styles/panel = SubResource("StyleBoxFlat_ye0bj")
-current_tab = 2
 
 [node name="Note" type="NoteSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
-visible = false
 layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="Viewports/SettingsMenu/Settings/Tabs/Note"]
@@ -1082,12 +1080,29 @@ offset_right = -38.0
 offset_bottom = 27.0
 text = "Approach Distance"
 
+[node name="FadeIn" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
+offset_left = 198.0
+offset_top = 207.0
+offset_right = 281.063
+offset_bottom = 238.0
+step = 0.01
+value = 50.0
+suffix = "%"
+
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/FadeIn"]
+layout_mode = 0
+offset_left = -184.0
+offset_top = 4.0
+offset_right = -38.0
+offset_bottom = 27.0
+text = "Fade In Percent"
+
 [node name="Pushback" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
 layout_mode = 0
 offset_left = 192.0
-offset_top = 207.0
+offset_top = 255.0
 offset_right = 236.0
-offset_bottom = 238.0
+offset_bottom = 286.0
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/Pushback"]
 layout_mode = 0
@@ -1198,6 +1213,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Cursor & Camera" type="CursorSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
+visible = false
 layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera"]
@@ -1249,7 +1265,7 @@ offset_left = -182.0
 offset_top = 3.0
 offset_right = -68.0
 offset_bottom = 26.0
-text = "Absoulte Scale"
+text = "Absolute Scale"
 
 [node name="Parallax" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
 layout_mode = 0
