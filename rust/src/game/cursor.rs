@@ -74,11 +74,11 @@ impl INode3D for Cursor {
         self.abs_camera = Some(abs_camera);
 
         Input::singleton().set_use_accumulated_input(false);
-        // Input::singleton().set_custom_mouse_cursor(load("res://assets/images/blank.png"));
+        Input::singleton().set_custom_mouse_cursor(load("res://assets/images/blank.png"));
     }
 
     fn exit_tree(&mut self) {
-        // Input::singleton().set_custom_mouse_cursor()
+        Input::singleton().call("set_custom_mouse_cursor".into(), &[Variant::nil()]);
         Input::singleton().set_mouse_mode(MouseMode::VISIBLE);
     }
 
