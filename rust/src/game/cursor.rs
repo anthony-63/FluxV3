@@ -51,6 +51,7 @@ impl INode3D for Cursor {
         let mut abs_camera = self.base_mut().get_node_as::<Camera3D>("../AbsCamera");
         
         camera.set_keep_aspect_mode(KeepAspect::HEIGHT);
+        camera.set_fov(unsafe { FLUX.settings.as_ref().unwrap().camera.fov });
         abs_camera.set_keep_aspect_mode(KeepAspect::HEIGHT);
         
         if !self.spin {
@@ -73,7 +74,7 @@ impl INode3D for Cursor {
         self.abs_camera = Some(abs_camera);
 
         Input::singleton().set_use_accumulated_input(false);
-        Input::singleton().set_custom_mouse_cursor(load("res://assets/images/blank.png"));
+        // Input::singleton().set_custom_mouse_cursor(load("res://assets/images/blank.png"));
     }
 
     fn exit_tree(&mut self) {

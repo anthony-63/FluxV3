@@ -15,7 +15,7 @@ pub struct MapContainer {
     map_details: Option<Gd<MapDetails>>,
     bg_blur: Option<Gd<TextureRect>>,
 
-    ignore_click: bool,
+    pub ignore_click: bool,
 
     cover_reciever: Option<Receiver<(String, InstanceId)>>, 
     map_button_reciever: Option<Receiver<(String, InstanceId)>>, 

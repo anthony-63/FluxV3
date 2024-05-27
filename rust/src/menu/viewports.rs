@@ -1,9 +1,9 @@
-use godot::{engine::{Button, Control, IControl, InputEvent, Label, TextureRect}, prelude::*};
+use godot::{engine::{Button, Control, IControl, InputEvent, Label}, prelude::*};
 
 use crate::{content::maploader::MapLoader, FLUX};
 use rand::prelude::SliceRandom;
 
-use super::{maplist::{container::MapContainer, details::MapDetails, Maplist}, menu::Menu, settings::SettingsMenu};
+use super::{maplist::{container::MapContainer, Maplist}, menu::Menu, settings::SettingsMenu};
 
 #[derive(GodotClass)]
 #[class(base=Control)]
@@ -13,6 +13,7 @@ pub struct Viewports {
     maplist_view: Option<Gd<Maplist>>,
     settings_view: Option<Gd<SettingsMenu>>,
     song_name: Option<Gd<Label>>,
+    post_enter_tree: bool
 }
 
 #[godot_api]
@@ -24,6 +25,7 @@ impl IControl for Viewports {
             maplist_view: None,
             settings_view: None,
             song_name: None,
+            post_enter_tree: false,
         }
     }
 
@@ -54,28 +56,23 @@ impl IControl for Viewports {
         skip_button.connect("pressed".into(), self.base_mut().callable("skip_music"));
         let mut open_map_button: Gd<Button> = self.base().get_node_as::<Button>("TopPanel/MusicPlayer/OpenMap");
         open_map_button.connect("pressed".into(), self.base_mut().callable("open_map"));
-
-        let mut map_details = Some(self.base().get_node_as::<MapDetails>("Viewports/Maplist/MapDetails"));
-        let mut bg_blur = Some(self.base().get_node_as::<TextureRect>("Viewports/Maplist/BgBlur"));
-        
-        if unsafe { FLUX.should_open_details && FLUX.selected_mapset.is_some() } {
-            self.change_visibility(false, true);
-
-            match map_details.as_mut().unwrap().try_call("set_details".into(), &[]) {
-                Ok(_) => {},
-                Err(e) => godot_print!("{}", e),
-            }
-
-            map_details.as_mut().unwrap().set_visible(true);
-            bg_blur.as_mut().unwrap().set_visible(true);
-
-            unsafe { FLUX.should_open_details = false; }
-        } else {
-            self.change_visibility(true, false);
-        }
     }
 
     fn process(&mut self, _: f64) {
+        if !self.post_enter_tree {
+            if unsafe { FLUX.should_open_details && FLUX.selected_mapset.is_some() } {
+                self.change_visibility(false, true);
+    
+                let mut container = self.maplist_view.as_mut().unwrap().get_node_as::<MapContainer>("MapList/Container");
+                container.bind_mut().selected_map(unsafe { FLUX.selected_mapset.clone().unwrap() }, unsafe { FLUX.selected_map.clone().unwrap() }, true);
+
+                unsafe { FLUX.should_open_details = false; }
+            } else {
+                self.change_visibility(true, false);
+            }
+            self.post_enter_tree = true;
+        }
+
         unsafe {
             if FLUX.selected_mapset.is_some() {
                 let title = FLUX.selected_mapset.clone().unwrap().bind().title.clone();
