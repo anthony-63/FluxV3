@@ -1083,6 +1083,7 @@ offset_bottom = 27.0
 text = "Approach Distance"
 
 [node name="FadeIn" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
+layout_mode = 0
 offset_left = 198.0
 offset_top = 207.0
 offset_right = 281.063
@@ -1253,6 +1254,7 @@ offset_bottom = 26.0
 text = "Sensitivity"
 
 [node name="AbsoluteScale" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
+layout_mode = 0
 offset_left = 198.0
 offset_top = 63.0
 offset_right = 281.063
@@ -1287,6 +1289,7 @@ offset_bottom = 26.0
 text = "Parallax"
 
 [node name="FOV" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
+layout_mode = 0
 offset_left = 198.0
 offset_top = 159.0
 offset_right = 281.063
@@ -1319,6 +1322,7 @@ offset_bottom = 27.0
 text = "Spin"
 
 [node name="AbsoluteMode" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
+layout_mode = 0
 offset_left = 192.0
 offset_top = 255.0
 offset_right = 236.0
