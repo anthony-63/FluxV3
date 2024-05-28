@@ -51,7 +51,7 @@ impl INode for SyncManager {
             }
         }
 
-        self.end_time = game.bind().loaded_map.as_ref().unwrap().bind().notes.last().unwrap().time;
+        self.end_time = game.bind().loaded_map.as_ref().unwrap().bind().notes.last().unwrap().time + 1.;
 
         self.audio_player = Some(audio_player);
         self.game = Some(game);
@@ -76,7 +76,7 @@ impl INode for SyncManager {
         self.last_time = now;
         self.real_time += time;
 
-        if self.real_time + 1. > self.end_time as f64 {
+        if self.real_time > self.end_time as f64 {
             self.base_mut().emit_signal("game_ended".into(), &[]);
         }
     }
