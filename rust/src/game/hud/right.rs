@@ -50,7 +50,7 @@ impl IControl for RightHUD {
 #[godot_api]
 impl RightHUD {
     pub fn update(&mut self) {
-        let score = unsafe { FLUX.score.as_ref().unwrap() };
+        let score = unsafe { FLUX.game.score.as_ref().unwrap() };
 
         self.combo.as_mut().unwrap().set_text(format!("{}", score.combo).into());
         self.misses.as_mut().unwrap().set_text(format!("{}", score.misses).into());

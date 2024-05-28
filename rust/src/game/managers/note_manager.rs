@@ -146,14 +146,14 @@ impl INode for NoteManager {
                 did_hitreg = true;
 
                 unsafe {
-                    FLUX.score.as_mut().unwrap().hits += 1;
-                    FLUX.score.as_mut().unwrap().total += 1;
-                    FLUX.score.as_mut().unwrap().combo += 1;
-                    FLUX.score.as_mut().unwrap().score += 25 * FLUX.score.as_ref().unwrap().multiplier;
-                    FLUX.score.as_mut().unwrap().miniplier += 1;
-                    if FLUX.score.as_mut().unwrap().miniplier >= 8 && FLUX.score.as_mut().unwrap().multiplier < 8 {
-                        FLUX.score.as_mut().unwrap().miniplier = 0;
-                        FLUX.score.as_mut().unwrap().multiplier = (FLUX.score.as_mut().unwrap().multiplier + 1).min(8);
+                    FLUX.game.score.as_mut().unwrap().hits += 1;
+                    FLUX.game.score.as_mut().unwrap().total += 1;
+                    FLUX.game.score.as_mut().unwrap().combo += 1;
+                    FLUX.game.score.as_mut().unwrap().score += 25 * FLUX.game.score.as_ref().unwrap().multiplier;
+                    FLUX.game.score.as_mut().unwrap().miniplier += 1;
+                    if FLUX.game.score.as_mut().unwrap().miniplier >= 8 && FLUX.game.score.as_mut().unwrap().multiplier < 8 {
+                        FLUX.game.score.as_mut().unwrap().miniplier = 0;
+                        FLUX.game.score.as_mut().unwrap().multiplier = (FLUX.game.score.as_mut().unwrap().multiplier + 1).min(8);
                     }
                 }
 
@@ -169,11 +169,11 @@ impl INode for NoteManager {
                 game.health = (game.health - 1.).max(0.);
 
                 unsafe {
-                    FLUX.score.as_mut().unwrap().misses += 1;
-                    FLUX.score.as_mut().unwrap().total += 1;
-                    FLUX.score.as_mut().unwrap().combo = 0;
-                    FLUX.score.as_mut().unwrap().miniplier = 0;
-                    FLUX.score.as_mut().unwrap().multiplier = (1_f32.max(FLUX.score.as_mut().unwrap().multiplier as f32 - 1.)) as usize;
+                    FLUX.game.score.as_mut().unwrap().misses += 1;
+                    FLUX.game.score.as_mut().unwrap().total += 1;
+                    FLUX.game.score.as_mut().unwrap().combo = 0;
+                    FLUX.game.score.as_mut().unwrap().miniplier = 0;
+                    FLUX.game.score.as_mut().unwrap().multiplier = (1_f32.max(FLUX.game.score.as_mut().unwrap().multiplier as f32 - 1.)) as usize;
                 }
             }
 
@@ -205,7 +205,7 @@ impl NoteManager {
 
         for (i, note_data) in notes.into_iter().enumerate() {
 
-            if note_data.time < unsafe { FLUX.start_from as f32 } {
+            if note_data.time < unsafe { FLUX.game.start_from as f32 } {
                 self.skipped_notes += 1;
                 continue;
             }

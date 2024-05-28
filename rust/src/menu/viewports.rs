@@ -60,13 +60,14 @@ impl IControl for Viewports {
 
     fn process(&mut self, _: f64) {
         if !self.post_enter_tree {
-            if unsafe { FLUX.should_open_details && FLUX.selected_mapset.is_some() } {
+            if unsafe { FLUX.maplist.should_open_details && FLUX.game.selected_mapset.is_some() } {
                 self.change_visibility(false, true);
     
                 let mut container = self.maplist_view.as_mut().unwrap().get_node_as::<MapContainer>("MapList/Container");
-                container.bind_mut().selected_map(unsafe { FLUX.selected_mapset.clone().unwrap() }, unsafe { FLUX.selected_map.clone().unwrap() }, true);
+                
+                container.bind_mut().selected_map(unsafe { FLUX.game.selected_mapset.clone().unwrap() }, unsafe { FLUX.game.selected_map.clone().unwrap() }, true);
 
-                unsafe { FLUX.should_open_details = false; }
+                unsafe { FLUX.maplist.should_open_details = false; }
             } else {
                 self.change_visibility(true, false);
             }
@@ -74,24 +75,24 @@ impl IControl for Viewports {
         }
 
         unsafe {
-            if FLUX.selected_mapset.is_some() {
-                let title = FLUX.selected_mapset.clone().unwrap().bind().title.clone();
+            if FLUX.game.selected_mapset.is_some() {
+                let title = FLUX.game.selected_mapset.clone().unwrap().bind().title.clone();
                 self.song_name.as_mut().unwrap().set_text(title.into());
             } else {
                 self.song_name.as_mut().unwrap().set_text("Not playing anything.".into());
             }
         }
         unsafe {
-            if FLUX.loaded_mapsets.len() > 0 {
+            if FLUX.maps.loaded_mapsets.len() > 0 {
                 let mut music = self.base().get_node_as::<AudioStreamPlayer>("Music");
                 if !music.is_playing() && !music.get_stream_paused() {
-                    let music_stream = FLUX.selected_mapset.clone().unwrap().bind().load_audio(true);
+                    let music_stream = FLUX.game.selected_mapset.clone().unwrap().bind().load_audio(true);
                     if music_stream.is_some() {
                         music.set_stream(music_stream.unwrap());
-                        if FLUX.mods.speed.enabled {
-                            music.set_pitch_scale(FLUX.mods.speed.value);
+                        if FLUX.game.mods.speed.enabled {
+                            music.set_pitch_scale(FLUX.game.mods.speed.value);
                         }
-                        music.seek(FLUX.start_from as f32);
+                        music.seek(FLUX.game.start_from as f32);
                         music.play();
                     }
                 }
@@ -139,7 +140,7 @@ impl Viewports {
     fn open_map(&mut self) {
         self.change_visibility(false, true);
         let mut map_container = self.base_mut().get_node_as::<MapContainer>("Viewports/Maplist/MapList/Container");
-        map_container.bind_mut().selected_map(unsafe{ FLUX.selected_mapset.clone().unwrap() }, unsafe { FLUX.selected_map.clone().unwrap() }, false);
+        map_container.bind_mut().selected_map(unsafe{ FLUX.game.selected_mapset.clone().unwrap() }, unsafe { FLUX.game.selected_map.clone().unwrap() }, false);
     }
 
     #[func]
@@ -147,11 +148,11 @@ impl Viewports {
         let mut music = self.base().get_node_as::<AudioStreamPlayer>("Music");
 
         unsafe { 
-            FLUX.selected_mapset = Some(Gd::from_object(FLUX.loaded_mapsets.choose(&mut rand::thread_rng()).unwrap().clone()));
-            FLUX.selected_map = Some(Gd::from_object(FLUX.selected_mapset.clone().unwrap().bind().difficulties.choose(&mut rand::thread_rng()).unwrap().clone()));
+            FLUX.game.selected_mapset = Some(Gd::from_object(FLUX.maps.loaded_mapsets.choose(&mut rand::thread_rng()).unwrap().clone()));
+            FLUX.game.selected_map = Some(Gd::from_object(FLUX.game.selected_mapset.clone().unwrap().bind().difficulties.choose(&mut rand::thread_rng()).unwrap().clone()));
         }
         
-        let music_stream = unsafe {  FLUX.selected_mapset.clone().unwrap().bind().load_audio(true) };
+        let music_stream = unsafe {  FLUX.game.selected_mapset.clone().unwrap().bind().load_audio(true) };
         if music_stream.is_some() {
             music.set_stream(music_stream.unwrap());
             music.play();

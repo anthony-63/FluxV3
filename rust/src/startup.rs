@@ -74,7 +74,7 @@ impl INode for Startup {
 
     fn enter_tree(&mut self) {
         unsafe {
-            FLUX.score = Some(Score::default());
+            FLUX.game.score = Some(Score::default());
         }
 
         let internal = Arc::clone(&self.internal);
@@ -115,9 +115,9 @@ impl Startup {
         internal.lock().unwrap().stage = "Selecting map...".to_string();
         internal.lock().unwrap().has_progress = false;
         unsafe {
-            if FLUX.loaded_mapsets.len() > 0 {
-                FLUX.selected_mapset = Some(Gd::from_object(FLUX.loaded_mapsets.choose(&mut rand::thread_rng()).unwrap().clone()));
-                FLUX.selected_map = Some(Gd::from_object(FLUX.selected_mapset.clone().unwrap().bind().difficulties.choose(&mut rand::thread_rng()).unwrap().clone()));
+            if FLUX.maps.loaded_mapsets.len() > 0 {
+                FLUX.game.selected_mapset = Some(Gd::from_object(FLUX.maps.loaded_mapsets.choose(&mut rand::thread_rng()).unwrap().clone()));
+                FLUX.game.selected_map = Some(Gd::from_object(FLUX.game.selected_mapset.clone().unwrap().bind().difficulties.choose(&mut rand::thread_rng()).unwrap().clone()));
             }
         }
 

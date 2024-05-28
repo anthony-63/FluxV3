@@ -433,7 +433,6 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Maplist" type="Maplist" parent="Viewports"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -937,6 +936,7 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_g7yte")
 text = "Close"
 
 [node name="SettingsMenu" type="SettingsMenu" parent="Viewports"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

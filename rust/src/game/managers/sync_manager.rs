@@ -46,8 +46,8 @@ impl INode for SyncManager {
         let audio_player = self.base_mut().get_node_as::<AudioStreamPlayer>("Music");
 
         unsafe {
-            if FLUX.mods.speed.enabled {
-                self.speed = FLUX.mods.speed.value;
+            if FLUX.game.mods.speed.enabled {
+                self.speed = FLUX.game.mods.speed.value;
             }
         }
 

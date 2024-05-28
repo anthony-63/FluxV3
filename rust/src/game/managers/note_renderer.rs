@@ -46,8 +46,8 @@ impl IMultiMeshInstance3D for NoteRenderer {
 
         self.fade_in = unsafe { FLUX.settings.as_ref().unwrap().note.fade_in as f64 } / 100.;
 
-        if unsafe { FLUX.mods.ghost.enabled } {
-            self.fade_out = unsafe { FLUX.mods.ghost.value as f64 } / 100.;
+        if unsafe { FLUX.game.mods.ghost.enabled } {
+            self.fade_out = unsafe { FLUX.game.mods.ghost.value as f64 } / 100.;
         } else {
             self.fade_out = 0.;
         }

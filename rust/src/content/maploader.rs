@@ -18,7 +18,7 @@ impl MapLoader {
 
             if file.path().is_dir() {
                 unsafe {
-                    FLUX.loaded_mapsets.push(BeatmapSet::from_folder(file.path().to_str().unwrap().to_string()));
+                    FLUX.maps.loaded_mapsets.push(BeatmapSet::from_folder(file.path().to_str().unwrap().to_string()));
                 }
                 update_label(file.file_name().to_string_lossy().to_string(), index, map_count, internal.clone());
             } else {
@@ -26,7 +26,7 @@ impl MapLoader {
                 if file.path().to_string_lossy().ends_with(".sspm") {
                     SSPMParser::sspm_to_folder(file.path().to_str().unwrap(), true);
                     unsafe {
-                        FLUX.loaded_mapsets.push(BeatmapSet::from_folder(file.path().with_extension("").to_str().unwrap().to_string()));
+                        FLUX.maps.loaded_mapsets.push(BeatmapSet::from_folder(file.path().with_extension("").to_str().unwrap().to_string()));
                     }
                     update_label(file.file_name().to_string_lossy().to_string(), index, map_count, internal.clone());
                     continue
@@ -46,7 +46,7 @@ impl MapLoader {
             SSPMParser::sspm_to_folder(&path, false);
             
             unsafe {
-                FLUX.loaded_mapsets.push(BeatmapSet::from_folder(Path::new(&folder_path).with_extension("").to_str().unwrap().to_string()));
+                FLUX.maps.loaded_mapsets.push(BeatmapSet::from_folder(Path::new(&folder_path).with_extension("").to_str().unwrap().to_string()));
             }
         }
     }

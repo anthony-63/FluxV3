@@ -1,4 +1,4 @@
-use flux::Flux;
+use flux::{Flux, StaticGame, StaticMapList, StaticMaps};
 use game::mods::{ghost::GhostMod, nofail::NoFailMod, speed::SpeedMod, AllMods};
 use godot::prelude::*;
 
@@ -14,38 +14,46 @@ struct MyExtension;
 const STAGE2_MAP_SEED: i64 = 1775906128188434359;
 
 static mut FLUX: Flux = Flux {
-    loaded_mapsets: vec![],
-    total_diff_count: 0,
+
+    maps: StaticMaps {
+        loaded_mapsets: vec![],
+        total_diff_count: 0,
+    },
+
+    maplist: StaticMapList {
+        should_open_details: false,
+        covers_instance_holder: vec![], 
+    },
 
     settings: None,
 
-    selected_map: None,
-    selected_mapset: None,
+    game: StaticGame {
+        mods: AllMods {
+            speed: SpeedMod {
+                value: 1.,
+                enabled: false,
+            },
+            nofail: NoFailMod {
+                enabled: false,
+            },
+            ghost: GhostMod {
+                enabled: false,
+                value: 32.,
+            }
+        },
 
-    score: None,
+        score: None,
+
+        selected_map: None,
+        selected_mapset: None,
+
+        start_from: 0.,
+    },
+
 
     fullscreen: false,
-    should_open_details: false,
 
     discord_client: None,
-
-    start_from: 0.,
-
-    covers_instance_holder: vec![],
-
-    mods: AllMods {
-        speed: SpeedMod {
-            value: 1.,
-            enabled: false,
-        },
-        nofail: NoFailMod {
-            enabled: false,
-        },
-        ghost: GhostMod {
-            enabled: false,
-            value: 32.,
-        }
-    }
 };
 
 #[gdextension]

@@ -3,26 +3,36 @@ use godot::{engine::ImageTexture, log::godot_warn, obj::Gd};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, game::{mods::AllMods, score::Score}, settings::Settings, FLUX};
 
-pub struct Flux {
+
+pub struct StaticMaps {
     pub loaded_mapsets: Vec<BeatmapSet>,
-
     pub total_diff_count: usize,
+}
 
-    pub settings: Option<Settings>,
-    pub score: Option<Score>,
-
-    pub fullscreen: bool,
-
+pub struct StaticGame {
     pub selected_mapset: Option<Gd<BeatmapSet>>,
     pub selected_map: Option<Gd<Beatmap>>,
 
     pub start_from: f64,
-
-    pub should_open_details: bool,
+    
+    pub score: Option<Score>,
 
     pub mods: AllMods,
+}
 
+pub struct StaticMapList {
     pub covers_instance_holder: Vec<Gd<ImageTexture>>,
+    pub should_open_details: bool,
+}
+
+pub struct Flux {
+    pub settings: Option<Settings>,
+
+    pub fullscreen: bool,
+
+    pub maps: StaticMaps,
+    pub maplist: StaticMapList,
+    pub game: StaticGame,
 
     pub discord_client: Option<DiscordIpcClient>,
 }

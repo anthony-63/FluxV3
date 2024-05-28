@@ -54,7 +54,7 @@ impl BeatmapSet {
         
         let mut difficulties: Vec<Beatmap> = vec![];
         for difficulty in meta["_difficulties"].members() {
-            unsafe{ FLUX.total_diff_count += 1 };
+            unsafe{ FLUX.maps.total_diff_count += 1 };
             difficulties.push(Beatmap::from_file(format!("{}/{}", folder_path, difficulty.to_string())));
         }
 

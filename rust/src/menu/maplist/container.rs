@@ -153,8 +153,8 @@ impl MapContainer {
     #[func]
     pub fn selected_map(&mut self, mapset: Gd<BeatmapSet>, map: Gd<Beatmap>, restart_music: bool) {
         unsafe {
-            FLUX.selected_map = Some(map.clone());
-            FLUX.selected_mapset = Some(mapset.clone());
+            FLUX.game.selected_map = Some(map.clone());
+            FLUX.game.selected_mapset = Some(mapset.clone());
         }
         // self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/game.tscn".into_godot());
 
@@ -179,8 +179,8 @@ impl MapContainer {
                 self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
                 self.audio_player.as_mut().unwrap().seek(start_from_slider.get_value() as f32);
                 unsafe {
-                    if FLUX.mods.speed.enabled {
-                        self.audio_player.as_mut().unwrap().set_pitch_scale(FLUX.mods.speed.value);
+                    if FLUX.game.mods.speed.enabled {
+                        self.audio_player.as_mut().unwrap().set_pitch_scale(FLUX.game.mods.speed.value);
                     }
                 }
                 self.audio_player.as_mut().unwrap().play();
@@ -201,9 +201,9 @@ impl MapContainer {
     }
 
     pub fn load_covers_threaded(sender: &mut Sender<(String, InstanceId)>) {
-        unsafe { FLUX.covers_instance_holder.clear() };
+        unsafe { FLUX.maplist.covers_instance_holder.clear() };
 
-        for mapset in unsafe { FLUX.loaded_mapsets.clone() } {
+        for mapset in unsafe { FLUX.maps.loaded_mapsets.clone() } {
             let cover = mapset.cover.as_ref();
             if  cover.is_some() {
                 let bytes = cover.unwrap();
@@ -215,7 +215,7 @@ impl MapContainer {
                 let texture = ImageTexture::create_from_image(img).unwrap();
 
                 let _ = sender.send((mapset.hash, texture.instance_id()));
-                unsafe { FLUX.covers_instance_holder.push(texture) };
+                unsafe { FLUX.maplist.covers_instance_holder.push(texture) };
             }
         }
     }
@@ -224,7 +224,7 @@ impl MapContainer {
         let entry_prefab = load::<PackedScene>("res://prefabs/map_button.tscn");
 
         unsafe {
-            for map in FLUX.loaded_mapsets.clone() {
+            for map in FLUX.maps.loaded_mapsets.clone() {
                 for diff in map.difficulties.clone() {
                     let mut entry = entry_prefab.instantiate_as::<MapButton>();
                     entry.call("set_data".into(), &[Gd::from_object(diff.clone()).to_variant(), Gd::from_object(map.clone()).to_variant()]);

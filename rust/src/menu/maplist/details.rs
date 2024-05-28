@@ -72,21 +72,21 @@ impl MapDetails {
         let mut pb_rank = self.base().get_node_as::<Label>("PB/Rank");
         let mut score_info = self.base().get_node_as::<VBoxContainer>("PB/VBoxContainer");
 
-        let map = unsafe { FLUX.selected_map.as_ref().unwrap() };
-        let mapset = unsafe { FLUX.selected_mapset.as_ref().unwrap() };
+        let map = unsafe { FLUX.game.selected_map.as_ref().unwrap() };
+        let mapset = unsafe { FLUX.game.selected_mapset.as_ref().unwrap() };
 
         title.set_text(mapset.bind().title.clone().into());
         mapper.set_text(mapset.bind().mappers.join(", ").clone().into());
         difficulty.set_text(map.bind().name.clone().into());
         notes.set_text(format!("{} notes", map.bind().notes.len()).into());
         
-        start_from_slider.set_value(unsafe { FLUX.start_from });
+        start_from_slider.set_value(unsafe { FLUX.game.start_from });
 
         if map.bind().notes.len() > 0 {
             let last_note_time = map.bind().notes.last().unwrap().time;
             start_from_slider.set_max(last_note_time as f64);
             unsafe { 
-                FLUX.start_from = FLUX.start_from.min(last_note_time as f64);
+                FLUX.game.start_from = FLUX.game.start_from.min(last_note_time as f64);
             }
             
             length.set_text(format!("{:01}:{:02}",
@@ -118,12 +118,12 @@ impl MapDetails {
         }
 
         unsafe {
-            if FLUX.score.is_some() && FLUX.score.as_ref().unwrap().map_id == FLUX.selected_map.as_ref().unwrap().bind().id {
+            if FLUX.game.score.is_some() && FLUX.game.score.as_ref().unwrap().map_id == FLUX.game.selected_map.as_ref().unwrap().bind().id {
                 let mut accuracy = score_info.get_node_as::<Label>("Accuracy/Count");
                 let mut misses = score_info.get_node_as::<Label>("Misses/Count");
                 let mut mods = score_info.get_node_as::<Label>("Mods/List");
                 
-                let score = FLUX.score.as_ref().unwrap();
+                let score = FLUX.game.score.as_ref().unwrap();
 
                 pb_no_score.set_visible(false);
                 pb_rank.set_visible(true);
@@ -177,7 +177,7 @@ impl MapDetails {
         start_from_label.set_text(format!("{:01}:{:02}",
                                     (value / 60.).floor() as usize,
                                     (value % 60.).floor() as usize).as_str().into());
-        unsafe { FLUX.start_from = value };
+        unsafe { FLUX.game.start_from = value };
         audio_player.seek(value as f32);
     }
 }

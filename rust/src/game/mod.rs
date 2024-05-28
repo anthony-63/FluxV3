@@ -52,15 +52,15 @@ impl INode3D for Game {
         let note_manager = self.base_mut().get_node_as::<NoteManager>("../NoteManager");
 
         unsafe {
-            self.loaded_map = FLUX.selected_map.clone();
-            self.loaded_mapset = FLUX.selected_mapset.clone();
+            self.loaded_map = FLUX.game.selected_map.clone();
+            self.loaded_mapset = FLUX.game.selected_mapset.clone();
         }
 
         set_activity(flux_activity()
             .details(format!("Playing {}", self.loaded_mapset.as_ref().unwrap().bind().title).as_str())
             .timestamps(Timestamps::new()
                 .start(SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() as i64 as i64)
-                .end(SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() as i64 + self.loaded_map.as_ref().unwrap().bind().notes.last().unwrap().time as i64 - unsafe { FLUX.start_from } as i64)));
+                .end(SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() as i64 + self.loaded_map.as_ref().unwrap().bind().notes.last().unwrap().time as i64 - unsafe { FLUX.game.start_from } as i64)));
 
         sync_manager.connect("game_ended".into(), self.base_mut().callable("note_manager_ended"));
 
@@ -69,8 +69,8 @@ impl INode3D for Game {
         let audio_stream = self.loaded_mapset.as_ref().unwrap().bind().load_audio(false).unwrap();
 
         unsafe {
-            FLUX.score = Some(Score::default());
-            FLUX.score.as_mut().unwrap().multiplier = 1;
+            FLUX.game.score = Some(Score::default());
+            FLUX.game.score.as_mut().unwrap().multiplier = 1;
         }
         
         sync_manager.call("set_stream".into(), &[audio_stream.to_variant()]);
@@ -89,10 +89,10 @@ impl INode3D for Game {
     fn process(&mut self, _: f64) {
         self.try_start();
 
-        if self.health <= 0. && unsafe { !FLUX.score.as_ref().unwrap().failed } {
-            if unsafe { FLUX.mods.nofail.enabled } {
+        if self.health <= 0. && unsafe { !FLUX.game.score.as_ref().unwrap().failed } {
+            if unsafe { FLUX.game.mods.nofail.enabled } {
                 unsafe {
-                    FLUX.score.as_mut().unwrap().failed = true;
+                    FLUX.game.score.as_mut().unwrap().failed = true;
                 }
             } else {
                 self.fail_score();
@@ -110,7 +110,7 @@ impl Game {
         if !self.started_audio {
             drop(sync_manager);
             
-            self.sync_manager.as_mut().unwrap().call("start".into(), &[(unsafe { FLUX.start_from - 1. }).to_variant()]);
+            self.sync_manager.as_mut().unwrap().call("start".into(), &[(unsafe { FLUX.game.start_from - 1. }).to_variant()]);
 
             self.started_audio = true;
         }
@@ -129,8 +129,8 @@ impl Game {
 
     fn fail_score(&mut self) {
         unsafe {
-            FLUX.score.as_mut().unwrap().failed = true; 
-            FLUX.score.as_mut().unwrap().fail_time = self.sync_manager.as_ref().unwrap().bind().real_time;
+            FLUX.game.score.as_mut().unwrap().failed = true; 
+            FLUX.game.score.as_mut().unwrap().fail_time = self.sync_manager.as_ref().unwrap().bind().real_time;
         }
         self.end_game();
     }
@@ -138,9 +138,9 @@ impl Game {
     fn end_game(&mut self) {
         Input::singleton().set_mouse_mode(MouseMode::VISIBLE);
         unsafe {
-            FLUX.should_open_details = true;
-            FLUX.score.as_mut().unwrap().mods_used = FLUX.mods.clone();
-            FLUX.score.as_mut().unwrap().map_id = FLUX.selected_mapset.as_ref().unwrap().bind().hash.clone() + "/" + &FLUX.selected_map.as_ref().unwrap().bind().name;
+            FLUX.maplist.should_open_details = true;
+            FLUX.game.score.as_mut().unwrap().mods_used = FLUX.game.mods.clone();
+            FLUX.game.score.as_mut().unwrap().map_id = FLUX.game.selected_mapset.as_ref().unwrap().bind().hash.clone() + "/" + &FLUX.game.selected_map.as_ref().unwrap().bind().name;
         };
         self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/menu.tscn".into_godot());
     }
