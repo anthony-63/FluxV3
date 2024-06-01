@@ -21,6 +21,9 @@ pub struct Score {
 
 impl Score {
     pub fn get_accuracy(&self) -> f64 {
+        if self.total == 0 {
+            return 100.;
+        }
         return (self.hits as f64).div(self.total as f64) * 100.;
     }
 
