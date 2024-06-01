@@ -80,7 +80,6 @@ impl MapDetails {
         difficulty.set_text(map.bind().name.clone().into());
         notes.set_text(format!("{} notes", map.bind().notes.len()).into());
         
-        start_from_slider.set_value(unsafe { FLUX.game.start_from });
 
         if map.bind().notes.len() > 0 {
             let last_note_time = map.bind().notes.last().unwrap().time;
@@ -96,6 +95,8 @@ impl MapDetails {
             length.set_text("0:00".into());
             start_from_slider.set_max(0.);
         }
+        
+        start_from_slider.set_value(unsafe { FLUX.game.start_from });
 
         start_from_label.set_text(format!("{:01}:{:02}",
                                     (start_from_slider.get_value() / 60.).floor() as usize,

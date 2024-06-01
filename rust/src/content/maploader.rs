@@ -25,7 +25,7 @@ impl MapLoader {
                 godot_print!("{}", file.path().to_string_lossy());
                 if file.path().to_string_lossy().ends_with(".sspm") {
                     let parsed = SSPMParser::sspm_to_folder(file.path().to_str().unwrap(), true);
-                    
+
                     if parsed {
                         unsafe {
                             FLUX.maps.loaded_mapsets.push(BeatmapSet::from_folder(file.path().with_extension("").to_str().unwrap().to_string()));
