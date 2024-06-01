@@ -38,7 +38,7 @@ impl INode3D for Cursor {
             pitch: 0.,
             yaw: 0.,
         }
-    }
+    } 
 
     fn enter_tree(&mut self) {
         unsafe {
@@ -141,13 +141,12 @@ impl INode3D for Cursor {
             camera_transform.origin /= Vector3::ONE * 4. + camera_transform.basis.rows[2] / 2.;
             camera.set_transform(camera_transform);
         } else {
-            self.pitch -= relative.y * self.sensitivity;
-            self.yaw -= relative.x * self.sensitivity;
+            self.pitch -= relative.y;
+            self.yaw -= relative.x;
 
             self.pitch = self.pitch.clamp(-90., 90.);
             self.yaw = self.yaw.clamp(-180., 180.);
         }
-
     }
 }
 

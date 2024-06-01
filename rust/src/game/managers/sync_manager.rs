@@ -112,7 +112,7 @@ impl SyncManager {
         let audio_player = self.audio_player.as_mut().unwrap();
 
         self.last_time = Time::singleton().get_ticks_usec() as f64;
-        self.real_time = from.min(from / self.speed as f64);
+        self.real_time = from;
         
         audio_player.set_pitch_scale(self.speed);
 

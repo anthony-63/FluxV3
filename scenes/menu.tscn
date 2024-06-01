@@ -57,10 +57,10 @@ shader_parameter/lod = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lyhwq"]
 bg_color = Color(0.0392157, 0.0392157, 0.0392157, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -370,7 +370,6 @@ bus = &"Music"
 [node name="Viewports" type="Node" parent="."]
 
 [node name="Menu" type="Menu" parent="Viewports"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -433,6 +432,7 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Maplist" type="Maplist" parent="Viewports"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -524,7 +524,6 @@ mouse_filter = 0
 texture = ExtResource("7_bt406")
 
 [node name="MapDetails" type="MapDetails" parent="Viewports/Maplist"]
-visible = false
 custom_minimum_size = Vector2(610, 568)
 layout_mode = 1
 anchors_preset = 8
