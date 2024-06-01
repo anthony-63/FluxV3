@@ -24,9 +24,12 @@ impl MapLoader {
             } else {
                 godot_print!("{}", file.path().to_string_lossy());
                 if file.path().to_string_lossy().ends_with(".sspm") {
-                    SSPMParser::sspm_to_folder(file.path().to_str().unwrap(), true);
-                    unsafe {
-                        FLUX.maps.loaded_mapsets.push(BeatmapSet::from_folder(file.path().with_extension("").to_str().unwrap().to_string()));
+                    let parsed = SSPMParser::sspm_to_folder(file.path().to_str().unwrap(), true);
+                    
+                    if parsed {
+                        unsafe {
+                            FLUX.maps.loaded_mapsets.push(BeatmapSet::from_folder(file.path().with_extension("").to_str().unwrap().to_string()));
+                        }
                     }
                     update_label(file.file_name().to_string_lossy().to_string(), index, map_count, internal.clone());
                     continue

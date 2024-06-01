@@ -84,7 +84,7 @@ pub struct SSPMParser {
 }
 
 impl SSPMParser {
-    pub fn sspm_to_folder(path: &str, should_remove: bool) {
+    pub fn sspm_to_folder(path: &str, should_remove: bool) -> bool {
         let user_dir = Os::singleton().get_user_data_dir().to_string();
         let folder_name = PathBuf::from(path).with_extension("").file_name().unwrap().to_str().unwrap().to_string();
 
@@ -101,12 +101,12 @@ impl SSPMParser {
 
         if !parser.magic_exists() {
             godot_warn!("SSPM File has invalid magic.\nmap: {}", path);
-            return
+            return false;
         }
 
         if parser.get_version() != 2 {
             godot_warn!("Only sspmv2 is supported.\nmap: {}\nversion: {}", path, parser.get_version());
-            return
+            return false;
         }
 
         let offsets = parser.get_data_offsets();
@@ -178,7 +178,7 @@ impl SSPMParser {
                 Ok(file) => file,
                 Err(error) => {
                     godot_error!("{}", error);
-                    return
+                    return false;
                 }
             };
 
@@ -190,21 +190,21 @@ impl SSPMParser {
             Ok(file) => file,
             Err(error) => {
                 godot_error!("{}", error);
-                return
+                return false;
             }
         };
         let mut export_file = match std::fs::File::create(format!("{}/sspm.json", folder_path)) {
             Ok(file) => file,
             Err(error) => {
                 godot_error!("{}", error);
-                return
+                return false;
             }
         };
         let mut music_file = match std::fs::File::create(format!("{}/music.bin", folder_path)) {
             Ok(file) => file,
             Err(error) => {
                 godot_error!("{}", error);
-                return
+                return false;
             }
         };
 
@@ -220,6 +220,8 @@ impl SSPMParser {
         if should_remove {
             std::fs::remove_file(path).unwrap();
         }
+
+        return true;
     }
 
     fn magic_exists(&mut self) -> bool {
