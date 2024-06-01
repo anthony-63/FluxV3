@@ -1,0 +1,121 @@
+[gd_scene load_steps=8 format=3 uid="uid://b67bkdae6v07m"]
+
+[ext_resource type="Texture2D" uid="uid://c0l8mfawm6f5g" path="res://assets/skins/Default/cover_placeholder.png" id="1_n6p70"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_763aj"]
+bg_color = Color(0.151276, 0.151276, 0.151276, 0.827451)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrh17"]
+bg_color = Color(0.051971, 0.0519709, 0.051971, 0.827451)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="Theme" id="Theme_wcu67"]
+Button/styles/disabled = SubResource("StyleBoxFlat_763aj")
+Button/styles/focus = SubResource("StyleBoxFlat_763aj")
+Button/styles/hover = SubResource("StyleBoxFlat_763aj")
+Button/styles/normal = SubResource("StyleBoxFlat_rrh17")
+Button/styles/pressed = SubResource("StyleBoxFlat_763aj")
+
+[sub_resource type="LabelSettings" id="LabelSettings_j3wn3"]
+font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_yigvh"]
+font_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xrlbu"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="MapButton" type="MapButton"]
+clip_contents = true
+custom_minimum_size = Vector2(426, 104)
+offset_right = 982.0
+offset_bottom = 104.0
+size_flags_horizontal = 3
+theme = SubResource("Theme_wcu67")
+
+[node name="ArtistSongName" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 136.0
+offset_top = 8.0
+offset_right = 119.0
+offset_bottom = -57.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Artist - Song Name"
+label_settings = SubResource("LabelSettings_j3wn3")
+vertical_alignment = 1
+clip_text = true
+
+[node name="Mapper" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 136.0
+offset_top = 37.0
+offset_right = 119.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Mapper"
+label_settings = SubResource("LabelSettings_yigvh")
+vertical_alignment = 1
+clip_text = true
+
+[node name="Difficulty" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 136.0
+offset_top = 63.0
+offset_right = 119.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Difficulty"
+label_settings = SubResource("LabelSettings_yigvh")
+vertical_alignment = 1
+clip_text = true
+
+[node name="Cover" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 95.0
+offset_bottom = -9.0
+grow_vertical = 2
+texture = ExtResource("1_n6p70")
+expand_mode = 5
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 98.0
+offset_bottom = -6.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xrlbu")

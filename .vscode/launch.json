@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+      "configurations": [
+         {
+            "name": "(gdb) Launch",
+            "type": "lldb",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/godot",
+            "args": [
+                "--path", // run editor (remove this to launch the scene directly)
+                "${workspaceFolder}/godot", // windowed mode
+            ],
+            "windows": {
+                "program": "C:\\Users\\antho\\Documents\\godot\\Godot_v4.2.2-stable_win64.exe",
+            },
+            "console": "internalConsole",
+         }
+    ]
+ }
