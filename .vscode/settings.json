@@ -72,6 +72,7 @@
         "chrono": "cpp",
         "bitset": "cpp",
         "regex": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "gdextension_interface.h": "c"
     }
 }

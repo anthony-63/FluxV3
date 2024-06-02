@@ -2,8 +2,6 @@
 import os
 import sys
 
-env = SConscript("godot-cpp/SConstruct")
-
 # For reference:
 # - CCFLAGS are compilation flags shared between C and C++
 # - CFLAGS are for C-specific compilation flags
@@ -13,9 +11,9 @@ env = SConscript("godot-cpp/SConstruct")
 # - LINKFLAGS are for linking flags
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
-env.Append(CPPPATH=["src/", "godot-cpp/gen/include"])
+env.Append(CPPPATH=["src/", "include/"])
 
-sources = Glob("src/*/*.cpp") + Glob("src/*.cpp")
+sources = Glob("src/*/*.c") + Glob("src/*.c")
 
 if env["platform"] == "windows":
     env.Append(CPPFLAGS="/O2")
@@ -24,14 +22,14 @@ else:
 
 if env["platform"] == "macos":
     library = env.SharedLibrary(
-        "godot/bin/libflux.{}.{}.framework/libflux.{}.{}".format(
+        "godot/bin/flux.{}.{}.framework/libflux.{}.{}".format(
             env["platform"], env["target"], env["platform"], env["target"]
         ),
         source=sources,
     )
 else:
     library = env.SharedLibrary(
-        "godot/bin/libflux{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "godot/bin/flux{}".format(env["SHLIBSUFFIX"]),
         source=sources,
     )
 
