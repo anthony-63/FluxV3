@@ -58,5 +58,4 @@ gl_compatibility/driver.windows="opengl3_angle"
 gl_compatibility/driver.linuxbsd="opengl3_es"
 gl_compatibility/driver.macos="opengl3_angle"
 gl_compatibility/nvidia_disable_threaded_optimization=false
-driver/threads/thread_model=2
 anti_aliasing/screen_space_roughness_limiter/enabled=false

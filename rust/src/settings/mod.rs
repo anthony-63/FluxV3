@@ -19,6 +19,7 @@ pub struct NoteSettings {
     pub pushback: bool,
     pub approach_mode: ApproachMode,
     pub fade_in: f32,
+    pub half_ghost: bool,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -61,6 +62,7 @@ impl Settings {
                 approach_mode: ApproachMode::RateTime,
                 pushback: true,
                 fade_in: 50.,
+                half_ghost: true,
             },
             audio: AudioSettings {
                 master_volume: 0.5,

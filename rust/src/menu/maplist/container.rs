@@ -182,6 +182,7 @@ impl MapContainer {
                     if FLUX.game.mods.speed.enabled {
                         self.audio_player.as_mut().unwrap().set_pitch_scale(FLUX.game.mods.speed.value);
                     }
+                    self.audio_player.as_mut().unwrap().seek(FLUX.game.start_from as f32);
                 }
                 self.audio_player.as_mut().unwrap().play();
             }

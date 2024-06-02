@@ -78,10 +78,10 @@ impl IMultiMeshInstance3D for NoteRenderer {
             let fade_out_end = self.approach_distance * (1. - ghost_amm + 0.24);
 
             if self.fade_in != 0. {
-                fade_in = Self::linstep(fade_in_start, fade_in_end, note_distance).powf(1.3);
+                fade_in = Self::linstep(fade_in_start, fade_in_end, note_distance).powf(1.3 * 2.);
             }
             if self.fade_out != 0. {
-                fade_out = Self::linstep(fade_out_start, fade_out_end, note_distance).powf(1.3);
+                fade_out = Self::linstep(fade_out_start, fade_out_end, note_distance).powf(1.3 * 2.);
             }
 
             mesh.set_instance_transform(i as i32, Transform3D::new(Basis::IDENTITY, Vector3::new(bound.x as f32 * 2., bound.y as f32 * 2., -note_distance as f32)));
