@@ -17,12 +17,12 @@ impl IControl for CursorSettings {
     }
 
     fn enter_tree(&mut self) {
-        let mut sensitivity_spinbox = self.base_mut().get_node_as::<SpinBox>("GridContainer/Cursor/Sensitivity");
-        let mut absolute_scale_spinbox = self.base_mut().get_node_as::<SpinBox>("GridContainer/Cursor/AbsoluteScale");
-        let mut parallax_spinbox = self.base_mut().get_node_as::<SpinBox>("GridContainer/Cursor/Parallax");
-        let mut fov_spinbox = self.base_mut().get_node_as::<SpinBox>("GridContainer/Cursor/FOV");
-        let mut spin_checkbox = self.base_mut().get_node_as::<CheckButton>("GridContainer/Cursor/Spin");
-        let mut absolute_checkbox = self.base_mut().get_node_as::<CheckButton>("GridContainer/Cursor/AbsoluteMode");
+        let mut sensitivity_spinbox = self.base_mut().get_node_as::<SpinBox>("GridContainer/Cursor/VBoxContainer/Sensitivity");
+        let mut absolute_scale_spinbox = self.base_mut().get_node_as::<SpinBox>("GridContainer/Cursor/VBoxContainer/AbsoluteScale");
+        let mut parallax_spinbox = self.base_mut().get_node_as::<SpinBox>("GridContainer/Cursor/VBoxContainer/Parallax");
+        let mut fov_spinbox = self.base_mut().get_node_as::<SpinBox>("GridContainer/Cursor/VBoxContainer/FOV");
+        let mut spin_checkbox = self.base_mut().get_node_as::<CheckButton>("GridContainer/Cursor/VBoxContainer/Spin");
+        let mut absolute_checkbox = self.base_mut().get_node_as::<CheckButton>("GridContainer/Cursor/VBoxContainer/AbsoluteMode");
 
         let sensitivty = unsafe {FLUX.settings.as_ref().unwrap().cursor.sensitivity};
         let parallax = unsafe {FLUX.settings.as_ref().unwrap().camera.parallax};

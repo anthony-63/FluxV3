@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=58 format=3 uid="uid://dkq7fb6lkop1u"]
 
 [ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
@@ -61,6 +61,7 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.631373)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -75,6 +76,7 @@ border_width_left = 6
 border_width_top = 6
 border_width_right = 6
 border_width_bottom = 6
+border_color = Color(0.381703, 0.381703, 0.381703, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
@@ -86,6 +88,7 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.431373)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -287,6 +290,54 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0718s"]
+bg_color = Color(0.144063, 0.144063, 0.144062, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.54902)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_klbtd"]
+bg_color = Color(0.08469, 0.0846899, 0.0846898, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.54902)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1uru2"]
+bg_color = Color(0.176419, 0.176419, 0.176419, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.340339, 0.340339, 0.340339, 0.54902)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Theme" id="Theme_nrwro"]
+CheckButton/styles/disabled = null
+CheckButton/styles/focus = null
+CheckButton/styles/hover = null
+CheckButton/styles/hover_pressed = null
+CheckButton/styles/normal = null
+CheckButton/styles/pressed = null
+LineEdit/font_sizes/font_size = 16
+LineEdit/styles/focus = SubResource("StyleBoxFlat_0718s")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_klbtd")
+LineEdit/styles/read_only = SubResource("StyleBoxFlat_1uru2")
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j2bqa"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqxjy"]
@@ -298,6 +349,7 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.580392)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -437,7 +489,6 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Maplist" type="Maplist" parent="Viewports"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -941,7 +992,6 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_g7yte")
 text = "Close"
 
 [node name="SettingsMenu" type="SettingsMenu" parent="Viewports"]
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -990,6 +1040,7 @@ theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_ijbli")
 theme_override_styles/tab_focus = SubResource("StyleBoxFlat_rsv41")
 theme_override_styles/panel = SubResource("StyleBoxFlat_ye0bj")
 current_tab = 2
+clip_tabs = false
 
 [node name="Note" type="NoteSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
 visible = false
@@ -1013,12 +1064,22 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mjhed")
 
-[node name="Type" type="OptionButton" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
-layout_mode = 0
-offset_left = 142.0
-offset_top = 15.0
-offset_right = 281.0
-offset_bottom = 46.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 164.0
+offset_top = 3.0
+offset_right = -387.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Type" type="OptionButton" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 item_count = 3
 selected = 0
 popup/item_0/text = "Rate & Dist."
@@ -1028,96 +1089,114 @@ popup/item_1/id = 1
 popup/item_2/text = "Dist. & Time"
 popup/item_2/id = 2
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/Type"]
-layout_mode = 0
-offset_left = -126.0
-offset_top = 3.0
-offset_right = -12.0
-offset_bottom = 26.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/Type"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -44.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Approach Type"
 
-[node name="Rate" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
-layout_mode = 0
-offset_left = 198.0
-offset_top = 63.0
-offset_right = 281.063
-offset_bottom = 94.0
+[node name="Rate" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
+alignment = 1
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/Rate"]
-layout_mode = 0
-offset_left = -182.0
-offset_top = 3.0
-offset_right = -68.0
-offset_bottom = 26.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/Rate"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -46.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Approach Rate"
 
-[node name="Time" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
-layout_mode = 0
-offset_left = 198.0
-offset_top = 111.0
-offset_right = 281.063
-offset_bottom = 142.0
+[node name="Time" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
+alignment = 1
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/Time"]
-layout_mode = 0
-offset_left = -182.0
-offset_top = 3.0
-offset_right = -65.0
-offset_bottom = 26.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/Time"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -43.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Approach Time"
 
-[node name="Distance" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
-layout_mode = 0
-offset_left = 198.0
-offset_top = 159.0
-offset_right = 281.063
-offset_bottom = 190.0
+[node name="Distance" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
+alignment = 1
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/Distance"]
-layout_mode = 0
-offset_left = -184.0
-offset_top = 4.0
-offset_right = -38.0
-offset_bottom = 27.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/Distance"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -14.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Approach Distance"
 
-[node name="FadeIn" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
-layout_mode = 0
-offset_left = 198.0
-offset_top = 207.0
-offset_right = 281.063
-offset_bottom = 238.0
+[node name="FadeIn" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 step = 0.01
 value = 50.0
+alignment = 1
 suffix = "%"
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/FadeIn"]
-layout_mode = 0
-offset_left = -184.0
-offset_top = 4.0
-offset_right = -38.0
-offset_bottom = 27.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/FadeIn"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -14.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Fade In Percent"
 
-[node name="Pushback" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach"]
-layout_mode = 0
-offset_left = 192.0
-offset_top = 255.0
-offset_right = 236.0
-offset_bottom = 286.0
+[node name="Pushback" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/Pushback"]
-layout_mode = 0
-offset_left = -178.0
-offset_top = 4.0
-offset_right = -32.0
-offset_bottom = 27.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/Pushback"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -14.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Pushback"
 
 [node name="Audio" type="AudioSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
@@ -1241,104 +1320,133 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mjhed")
 
-[node name="Sensitivity" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
-layout_mode = 0
-offset_left = 198.0
-offset_top = 15.0
-offset_right = 281.063
-offset_bottom = 46.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 164.0
+offset_top = 3.0
+offset_right = -372.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sensitivity" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
+alignment = 1
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/Sensitivity"]
-layout_mode = 0
-offset_left = -182.0
-offset_top = 3.0
-offset_right = -68.0
-offset_bottom = 26.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer/Sensitivity"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -46.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Sensitivity"
 
-[node name="AbsoluteScale" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
-layout_mode = 0
-offset_left = 198.0
-offset_top = 63.0
-offset_right = 281.063
-offset_bottom = 94.0
+[node name="AbsoluteScale" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
+alignment = 1
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/AbsoluteScale"]
-layout_mode = 0
-offset_left = -182.0
-offset_top = 3.0
-offset_right = -68.0
-offset_bottom = 26.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer/AbsoluteScale"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -46.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Absolute Scale"
 
-[node name="Parallax" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
-layout_mode = 0
-offset_left = 198.0
-offset_top = 111.0
-offset_right = 281.063
-offset_bottom = 142.0
+[node name="Parallax" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
 value = 10.0
+alignment = 1
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/Parallax"]
-layout_mode = 0
-offset_left = -182.0
-offset_top = 3.0
-offset_right = -68.0
-offset_bottom = 26.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer/Parallax"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -46.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Parallax"
 
-[node name="FOV" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
-layout_mode = 0
-offset_left = 198.0
-offset_top = 159.0
-offset_right = 281.063
-offset_bottom = 190.0
+[node name="FOV" type="SpinBox" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
 value = 70.0
+alignment = 1
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/FOV"]
-layout_mode = 0
-offset_left = -182.0
-offset_top = 3.0
-offset_right = -68.0
-offset_bottom = 26.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer/FOV"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -46.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Field of View"
 
-[node name="Spin" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
-layout_mode = 0
-offset_left = 192.0
-offset_top = 207.0
-offset_right = 236.0
-offset_bottom = 238.0
+[node name="Spin" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/Spin"]
-layout_mode = 0
-offset_left = -178.0
-offset_top = 4.0
-offset_right = -32.0
-offset_bottom = 27.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer/Spin"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -14.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Spin"
 
-[node name="AbsoluteMode" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor"]
-layout_mode = 0
-offset_left = 192.0
-offset_top = 255.0
-offset_right = 236.0
-offset_bottom = 286.0
+[node name="AbsoluteMode" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
 
-[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/AbsoluteMode"]
-layout_mode = 0
-offset_left = -178.0
-offset_top = 4.0
-offset_right = -32.0
-offset_bottom = 27.0
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer/AbsoluteMode"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -14.0
+offset_bottom = 11.5
+grow_vertical = 2
 text = "Absolute Mode"
 
 [node name="Close" type="Button" parent="Viewports/SettingsMenu/Settings"]

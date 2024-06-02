@@ -29,12 +29,12 @@ impl IControl for NoteSettings {
     }
 
     fn enter_tree(&mut self) {
-        let mut approach_type = self.base().get_node_as::<OptionButton>("GridContainer/Approach/Type");
-        let mut approach_rate = self.base().get_node_as::<SpinBox>("GridContainer/Approach/Rate");
-        let mut approach_distance = self.base().get_node_as::<SpinBox>("GridContainer/Approach/Distance");
-        let mut approach_time = self.base().get_node_as::<SpinBox>("GridContainer/Approach/Time");
-        let mut fade_in = self.base().get_node_as::<SpinBox>("GridContainer/Approach/FadeIn");
-        let mut pushback = self.base().get_node_as::<CheckButton>("GridContainer/Approach/Pushback");
+        let mut approach_type = self.base().get_node_as::<OptionButton>("GridContainer/Approach/VBoxContainer/Type");
+        let mut approach_rate = self.base().get_node_as::<SpinBox>("GridContainer/Approach/VBoxContainer/Rate");
+        let mut approach_distance = self.base().get_node_as::<SpinBox>("GridContainer/Approach/VBoxContainer/Distance");
+        let mut approach_time = self.base().get_node_as::<SpinBox>("GridContainer/Approach/VBoxContainer/Time");
+        let mut fade_in = self.base().get_node_as::<SpinBox>("GridContainer/Approach/VBoxContainer/FadeIn");
+        let mut pushback = self.base().get_node_as::<CheckButton>("GridContainer/Approach/VBoxContainer/Pushback");
         
         approach_type.connect("item_selected".into(), self.base_mut().callable("update_type"));
         approach_distance.connect("value_changed".into(), self.base_mut().callable("update_ad"));

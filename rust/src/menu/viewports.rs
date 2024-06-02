@@ -13,7 +13,7 @@ pub struct Viewports {
     maplist_view: Option<Gd<Maplist>>,
     settings_view: Option<Gd<SettingsMenu>>,
     song_name: Option<Gd<Label>>,
-    post_enter_tree: bool
+    post_enter_tree: bool,
 }
 
 #[godot_api]
