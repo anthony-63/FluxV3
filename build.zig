@@ -27,14 +27,11 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    const raylib = raylib_dep.module("raylib");
-    const raygui = raylib_dep.module("raygui");
-    const raylib_artifact = raylib_dep.artifact("raylib");
+    const raylib = raylib_dep.module("raylib"); // main raylib module
+    const raylib_artifact = raylib_dep.artifact("raylib"); // raylib C library
 
     exe.linkLibrary(raylib_artifact);
     exe.root_module.addImport("raylib", raylib);
-    exe.root_module.addImport("raygui", raygui);
-
     b.installArtifact(exe);
 
     const run_cmd = b.addRunArtifact(exe);
