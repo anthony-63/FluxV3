@@ -8,7 +8,7 @@ pub fn main() !void {
         _ = gpa.deinit();
     }
 
-    BeatmapSet.loadFromFolder("C:/Users/antho/AppData/Roaming/Flux/maps/zitronitro_7_7_-_mii_munbe_plaza", allocator) catch |err| {
-        std.log.err("Error loading beatmap: {any}", .{err});
-    };
+    const beatmap = try BeatmapSet.loadFromFolder("C:/Users/antho/AppData/Roaming/Flux/maps/zitronitro_7_7_-_mii_munbe_plaza", allocator);
+
+    std.log.debug("{s}\n\t{s}", .{ beatmap.Title, beatmap.Difficulties[0].Name });
 }
