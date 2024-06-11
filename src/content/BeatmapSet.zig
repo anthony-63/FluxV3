@@ -1,5 +1,6 @@
 const std = @import("std");
 
+const Global = @import("../Global.zig");
 const Beatmap = @import("Beatmap.zig");
 
 const MetaFormat = struct {
@@ -56,7 +57,7 @@ pub fn loadFromFolder(folder_path: []const u8, allocator: std.mem.Allocator) !@T
         .Title = meta.value._title,
         .Difficulties = diffs,
         .Mappers = meta.value._mappers,
-        .MusicPath = meta.value._music,
+        .MusicPath = try std.fmt.allocPrint(allocator, "{s}/{s}", .{ folder_path, meta.value._music }),
         .Parser = meta,
     };
 }
@@ -67,4 +68,5 @@ pub fn deinit(self: @This(), allocator: std.mem.Allocator) void {
         diff.deinit();
     }
     allocator.free(self.Difficulties);
+    allocator.free(self.MusicPath);
 }
