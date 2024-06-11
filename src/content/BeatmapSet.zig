@@ -1,5 +1,14 @@
 const std = @import("std");
+
 const Beatmap = @import("Beatmap.zig");
+
+const MetaFormat = struct {
+    _version: u8,
+    _title: []const u8,
+    _mappers: [][]const u8,
+    _music: []const u8,
+    _difficulties: [][]const u8,
+};
 
 Broken: bool,
 Version: u8,
@@ -14,6 +23,8 @@ Mappers: [][]const u8,
 MusicPath: []const u8,
 Cover: ?[]const u8 = null,
 
+Parser: std.json.Parsed(MetaFormat),
+
 pub fn loadFromFolder(folder_path: []const u8, allocator: std.mem.Allocator) !@This() {
     const meta_path = try std.fmt.allocPrint(allocator, "{s}/meta.json", .{folder_path});
     defer allocator.free(meta_path);
@@ -26,18 +37,9 @@ pub fn loadFromFolder(folder_path: []const u8, allocator: std.mem.Allocator) !@T
     const meta_buf = try meta_file.readToEndAlloc(allocator, meta_stat.size);
     defer allocator.free(meta_buf);
 
-    const MetaFormat = struct {
-        _version: u8,
-        _title: []const u8,
-        _mappers: [][]const u8,
-        _music: []const u8,
-        _difficulties: [][]const u8,
-    };
-
-    const meta = try std.json.parseFromSlice(MetaFormat, allocator, meta_buf, .{});
+    const meta = try std.json.parseFromSlice(MetaFormat, allocator, meta_buf, .{ .allocate = .alloc_always });
 
     var diffs = try allocator.alloc(Beatmap, meta.value._difficulties.len);
-    defer allocator.free(diffs);
 
     for (meta.value._difficulties, 0..) |diff_file_path, i| {
         const diff_path = try std.fmt.allocPrint(allocator, "{s}/{s}", .{ folder_path, diff_file_path });
@@ -55,5 +57,14 @@ pub fn loadFromFolder(folder_path: []const u8, allocator: std.mem.Allocator) !@T
         .Difficulties = diffs,
         .Mappers = meta.value._mappers,
         .MusicPath = meta.value._music,
+        .Parser = meta,
     };
+}
+
+pub fn deinit(self: @This(), allocator: std.mem.Allocator) void {
+    self.Parser.deinit();
+    for (self.Difficulties) |diff| {
+        diff.deinit();
+    }
+    allocator.free(self.Difficulties);
 }
