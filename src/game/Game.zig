@@ -15,8 +15,6 @@ Playing: bool,
 Allocator: std.mem.Allocator,
 
 pub fn init(allocator: std.mem.Allocator) !@This() {
-    std.log.debug("{s}, {s}, {s}", .{ Global.SelectedBeatmapSet.?.Title, Global.SelectedBeatmapSet.?.Difficulties[0].Name, Global.SelectedBeatmapSet.?.MusicPath });
-
     return .{
         .Camera = try Camera.init(rl.Vector3.init(0, 0, 7.5)),
         .Grid = try Grid.init("./.game/skin/Default/grid.png"),
