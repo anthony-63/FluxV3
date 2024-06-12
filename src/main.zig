@@ -23,8 +23,7 @@ pub fn getOrCreateChild(parent: std.fs.Dir, path: []const u8, fail_message: []co
         switch (err) {
             error.FileNotFound => {
                 parent.makeDir(path) catch {};
-                const opened = try std.fs.openDirAbsolute(path, .{});
-                return opened;
+                return try parent.openDir(path, .{});
             },
             else => {
                 @panic(fail_message);
