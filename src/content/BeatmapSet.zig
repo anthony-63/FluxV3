@@ -27,10 +27,13 @@ Cover: ?[]const u8 = null,
 Parser: std.json.Parsed(MetaFormat),
 
 pub fn loadFromFolder(folder_path: []const u8, allocator: std.mem.Allocator) !@This() {
-    const meta_path = try std.fmt.allocPrint(allocator, "{s}/meta.json", .{folder_path});
-    defer allocator.free(meta_path);
+    const map_folder = Global.MapsFolder.?.openDir(folder_path, .{}) catch {
+        return error.FailedToOpenMapFolder;
+    };
 
-    const meta_file = try std.fs.cwd().openFile(meta_path, .{});
+    const meta_file = map_folder.openFile("meta.json", .{}) catch {
+        return error.FailedToOpenMeta;
+    };
     defer meta_file.close();
 
     const meta_stat = try meta_file.stat();
@@ -43,10 +46,18 @@ pub fn loadFromFolder(folder_path: []const u8, allocator: std.mem.Allocator) !@T
     var diffs = try allocator.alloc(Beatmap, meta.value._difficulties.len);
 
     for (meta.value._difficulties, 0..) |diff_file_path, i| {
-        const diff_path = try std.fmt.allocPrint(allocator, "{s}/{s}", .{ folder_path, diff_file_path });
-        diffs[i] = try Beatmap.loadFromFile(diff_path, allocator);
-        allocator.free(diff_path);
+        const diff_file = map_folder.openFile(diff_file_path, .{}) catch {
+            return error.FailedToOpenDiff;
+        };
+        diffs[i] = Beatmap.loadFromFile(diff_file, allocator) catch {
+            return error.FailedToParseDiff;
+        };
+        diff_file.close();
     }
+
+    const music_file_path = map_folder.realpathAlloc(allocator, meta.value._music) catch {
+        return error.FailedToFindMusic;
+    };
 
     return .{
         .Broken = false,
@@ -57,7 +68,7 @@ pub fn loadFromFolder(folder_path: []const u8, allocator: std.mem.Allocator) !@T
         .Title = meta.value._title,
         .Difficulties = diffs,
         .Mappers = meta.value._mappers,
-        .MusicPath = try std.fmt.allocPrint(allocator, "{s}/{s}", .{ folder_path, meta.value._music }),
+        .MusicPath = music_file_path,
         .Parser = meta,
     };
 }

@@ -34,9 +34,7 @@ pub fn run(self: *@This()) !void {
 
         switch (self.CurrentState) {
             .LOADING => {
-                const map_folder = try std.fmt.allocPrint(self.Allocator, "{s}/maps/zitronitro_7_7_-_mii_munbe_plaza", .{Global.GameFolder});
-                defer self.Allocator.free(map_folder);
-                Global.SelectedBeatmapSet = try BeatmapSet.loadFromFolder(map_folder, self.Allocator);
+                Global.SelectedBeatmapSet = try BeatmapSet.loadFromFolder("aremite", self.Allocator);
                 self.CurrentState = .GAME;
             },
             .GAME => {

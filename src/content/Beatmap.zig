@@ -10,17 +10,13 @@ const DiffFormat = struct {
 
 Broken: bool,
 Version: u8,
-Path: []const u8,
 Name: []const u8,
 Notes: []NoteData,
 Id: []const u8,
 
 Parser: std.json.Parsed(DiffFormat),
 
-pub fn loadFromFile(path: []const u8, allocator: std.mem.Allocator) !@This() {
-    const diff_file = try std.fs.cwd().openFile(path, .{});
-    defer diff_file.close();
-
+pub fn loadFromFile(diff_file: std.fs.File, allocator: std.mem.Allocator) !@This() {
     const diff_stat = try diff_file.stat();
 
     const diff_buf = try diff_file.readToEndAlloc(allocator, diff_stat.size);
@@ -31,7 +27,6 @@ pub fn loadFromFile(path: []const u8, allocator: std.mem.Allocator) !@This() {
     return .{
         .Broken = false,
         .Version = diff.value._version,
-        .Path = path,
         .Name = diff.value._name,
         .Notes = diff.value._notes,
         .Id = "",
