@@ -39,14 +39,15 @@ pub fn main() !void {
         _ = gpa.deinit();
     }
 
-    const env_map = try allocator.create(std.process.EnvMap);
-    env_map.* = try std.process.getEnvMap(allocator);
+    var env_map = try std.process.getEnvMap(allocator);
     defer env_map.deinit();
 
     const appdata = env_map.get("AppData") orelse ".";
+
     const game_folder_path = try std.fmt.allocPrint(allocator, "{s}/Flux", .{appdata});
+    defer allocator.free(game_folder_path);
+
     Global.GameFolder = try getOrCreateAbs(game_folder_path, "Failed to create game folder. Should never happen.");
-    allocator.free(game_folder_path);
 
     Global.MapsFolder = try getOrCreateChild(Global.GameFolder.?, "maps", "Failed to create maps folder. Should never happen.");
     Global.SkinsFolder = try getOrCreateChild(Global.GameFolder.?, "skins", "Failed to create skins folder. Should never happen?");
