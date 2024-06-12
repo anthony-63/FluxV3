@@ -41,8 +41,8 @@ pub fn start(self: *@This(), from: f64) void {
     self.LastTime = @floatFromInt(std.time.microTimestamp());
     self.RealTime = from;
     self.Playing = true;
-    self.MusicPlayer.setVolume(0.1);
     self.MusicPlayer.play(from);
+    self.MusicPlayer.setVolume(0.1);
 }
 
 pub fn deinit(self: @This(), allocator: std.mem.Allocator) void {

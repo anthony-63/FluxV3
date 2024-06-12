@@ -17,7 +17,7 @@ Allocator: std.mem.Allocator,
 pub fn init(allocator: std.mem.Allocator) !@This() {
     return .{
         .Camera = try Camera.init(rl.Vector3.init(0, 0, 7.5)),
-        .Grid = try Grid.init("./.game/skin/Default/grid.png"),
+        .Grid = try Grid.init("Default/grid.png", allocator),
         .SyncManager = try SyncManager.init(allocator),
         .Playing = false,
         .Allocator = allocator,

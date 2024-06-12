@@ -1,4 +1,7 @@
+const std = @import("std");
 const rl = @import("raylib");
+
+const Global = @import("../../Global.zig");
 
 Position: rl.Vector3,
 Rotation: rl.Vector3,
@@ -8,13 +11,20 @@ Model: rl.Model,
 
 Loaded: bool,
 
-pub fn init(texture_path: [:0]const u8) !@This() {
+pub fn init(texture_path: []const u8, allocator: std.mem.Allocator) !@This() {
     const size = rl.Vector2.init(6, 6);
     const position = rl.Vector3.init(0, 0, 0);
     const rotation = rl.Vector3.init(90, 0, 0);
 
     const model = rl.loadModelFromMesh(rl.genMeshPlane(size.x, size.y, 1, 1));
-    const img = rl.loadImage(texture_path);
+
+    const full_tex_path = try Global.SkinsFolder.?.realpathAlloc(allocator, texture_path);
+    defer allocator.free(full_tex_path);
+
+    const zeroed: [:0]const u8 = try allocator.dupeZ(u8, full_tex_path);
+    defer allocator.free(zeroed);
+
+    const img = rl.loadImage(zeroed);
 
     const tex = rl.loadTextureFromImage(img);
     img.unload();

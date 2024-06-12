@@ -1,2 +1,4 @@
 .zig-cache/
 zig-out/
+*.fpck1
+.game
