@@ -26,6 +26,7 @@ pub fn init(allocator: std.mem.Allocator) !@This() {
 
 pub fn draw(self: @This()) void {
     rl.clearBackground(rl.Color.black);
+    rl.drawFPS(0, 0);
     self.Camera.RlCamera.begin();
     defer self.Camera.RlCamera.end();
 
