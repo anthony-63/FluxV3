@@ -4,22 +4,31 @@ const rl = @import("raylib");
 const Global = @import("../Global.zig");
 const Camera = @import("objects/Camera.zig");
 const Grid = @import("objects/Grid.zig");
+
 const SyncManager = @import("managers/SyncManager.zig");
+const NoteRenderer = @import("managers/NoteRenderer.zig");
 
 Camera: Camera,
 Grid: Grid,
+
 SyncManager: SyncManager,
+NoteRenderer: NoteRenderer,
 
 Playing: bool,
 
 Allocator: std.mem.Allocator,
 
 pub fn init(allocator: std.mem.Allocator) !@This() {
+    var sync_manager = try SyncManager.init(allocator);
+    const note_renderer = try NoteRenderer.init(&sync_manager, "Default/mesh.obj", allocator);
+
     return .{
         .Camera = try Camera.init(rl.Vector3.init(0, 0, 7.5)),
         .Grid = try Grid.init("Default/grid.png", allocator),
-        .SyncManager = try SyncManager.init(allocator),
+        .SyncManager = sync_manager,
+        .NoteRenderer = note_renderer,
         .Playing = false,
+
         .Allocator = allocator,
     };
 }

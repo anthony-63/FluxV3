@@ -18,13 +18,11 @@ pub fn init(texture_path: []const u8, allocator: std.mem.Allocator) !@This() {
 
     const model = rl.loadModelFromMesh(rl.genMeshPlane(size.x, size.y, 1, 1));
 
-    const full_tex_path = try Global.SkinsFolder.?.realpathAlloc(allocator, texture_path);
+    var buf: [std.fs.max_path_bytes]u8 = undefined;
+    const full_tex_path = try allocator.dupeZ(u8, try Global.SkinsFolder.?.realpath(texture_path, buf[0..]));
     defer allocator.free(full_tex_path);
 
-    const zeroed: [:0]const u8 = try allocator.dupeZ(u8, full_tex_path);
-    defer allocator.free(zeroed);
-
-    const img = rl.loadImage(zeroed);
+    const img = rl.loadImage(full_tex_path);
 
     const tex = rl.loadTextureFromImage(img);
     img.unload();
@@ -46,6 +44,6 @@ pub fn draw(self: @This()) void {
     rl.gl.rlRotatef(self.Rotation.x, 1, 0, 0);
     rl.gl.rlRotatef(self.Rotation.y, 0, 1, 0);
     rl.gl.rlRotatef(self.Rotation.z, 0, 0, 1);
-    rl.drawModel(self.Model, self.Position, 1, rl.Color.white);
+    self.Model.draw(self.Position, 1, rl.Color.white);
     rl.gl.rlPopMatrix();
 }
