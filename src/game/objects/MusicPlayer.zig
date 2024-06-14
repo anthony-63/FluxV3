@@ -28,7 +28,7 @@ pub fn update(self: @This()) void {
 }
 
 pub fn shouldSync(self: @This(), current_time: f64) bool {
-    return current_time - rl.getMusicTimePlayed(self.Music) >= 0.2;
+    return @abs(current_time - rl.getMusicTimePlayed(self.Music)) >= 0.05;
 }
 
 pub fn sync(self: @This(), current_time: f64) void {

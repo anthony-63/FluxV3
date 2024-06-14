@@ -18,16 +18,13 @@ SkippedNotes: usize,
 
 StartProcess: usize,
 
-SyncManager: *SyncManager,
-NoteRenderer: *NoteRenderer,
-
 Colors: [2]rl.Color,
 ToRender: usize,
 
 Pushback: bool,
 Started: bool,
 
-pub fn init(sync_manager: *SyncManager, note_renderer: *NoteRenderer, allocator: std.mem.Allocator) !@This() {
+pub fn init(allocator: std.mem.Allocator) !@This() {
     var self: @This() = .{
         .OrderedNotes = undefined,
         .NextNote = undefined,
@@ -36,9 +33,6 @@ pub fn init(sync_manager: *SyncManager, note_renderer: *NoteRenderer, allocator:
         .SkippedNotes = 0,
         .StartProcess = 0,
         .ToRender = 0,
-
-        .SyncManager = sync_manager,
-        .NoteRenderer = note_renderer,
 
         .Colors = [2]rl.Color{
             rl.Color.pink,
@@ -54,25 +48,24 @@ pub fn init(sync_manager: *SyncManager, note_renderer: *NoteRenderer, allocator:
     return self;
 }
 
-pub fn update(self: *@This()) !void {
-    try self.updateRender();
+pub fn update(self: *@This(), renderer: *NoteRenderer, sync: SyncManager) !void {
+    try self.updateRender(renderer, sync);
 }
 
-fn updateRender(self: *@This()) !void {
-    self.NoteRenderer.ToRender.clearRetainingCapacity();
+fn updateRender(self: *@This(), renderer: *NoteRenderer, sync: SyncManager) !void {
+    renderer.ToRender.clearRetainingCapacity();
 
     self.ToRender = 0;
 
     for (self.StartProcess..self.OrderedNotes.len) |i| {
         const note = self.OrderedNotes[i];
-        if (note.isVisisble(self.SyncManager.RealTime, self.SyncManager.Speed, self.ApproachTime, self.Pushback)) {
-            try self.NoteRenderer.ToRender.append(note);
+        if (note.isVisisble(sync.RealTime, sync.Speed, self.ApproachTime, self.Pushback)) {
+            try renderer.ToRender.append(note);
             self.ToRender += 1;
         }
 
-        if (note.T > self.SyncManager.RealTime + self.ApproachTime * self.SyncManager.Speed) break;
+        if (note.T > sync.RealTime + self.ApproachTime * sync.Speed) break;
     }
-    std.debug.print("torender: {d}\n", .{self.ToRender});
 }
 
 fn loadNotes(self: *@This(), allocator: std.mem.Allocator) !void {

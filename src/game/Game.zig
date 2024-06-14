@@ -21,15 +21,12 @@ Playing: bool,
 Allocator: std.mem.Allocator,
 
 pub fn init(allocator: std.mem.Allocator) !@This() {
-    var sync_manager = try SyncManager.init(allocator);
-    var note_renderer = try NoteRenderer.init(&sync_manager, "Default/mesh.obj", allocator);
-    const note_manager = try NoteManager.init(&sync_manager, &note_renderer, allocator);
     return .{
         .Camera = try Camera.init(rl.Vector3.init(0, 0, 7.5)),
         .Grid = try Grid.init("Default/grid.png", allocator),
-        .SyncManager = sync_manager,
-        .NoteRenderer = note_renderer,
-        .NoteManager = note_manager,
+        .SyncManager = try SyncManager.init(allocator),
+        .NoteRenderer = try NoteRenderer.init("Default/mesh.obj", allocator),
+        .NoteManager = try NoteManager.init(allocator),
         .Playing = false,
 
         .Allocator = allocator,
@@ -43,7 +40,7 @@ pub fn draw(self: *@This()) void {
     self.Camera.RlCamera.begin();
     defer self.Camera.RlCamera.end();
 
-    self.NoteRenderer.drawSingle();
+    self.NoteRenderer.drawSingle(self.SyncManager);
     self.Grid.draw();
 }
 
@@ -54,7 +51,7 @@ pub fn update(self: *@This()) !void {
     }
 
     self.SyncManager.update();
-    try self.NoteManager.update();
+    try self.NoteManager.update(&self.NoteRenderer, self.SyncManager);
 }
 
 pub fn deinit(self: @This()) void {

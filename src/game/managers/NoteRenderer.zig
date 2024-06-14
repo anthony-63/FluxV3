@@ -14,15 +14,12 @@ ApproachTime: f64,
 
 ToRender: std.ArrayList(Note),
 
-SyncManager: *SyncManager,
-
-pub fn init(sync_manager: *SyncManager, mesh_path: []const u8, allocator: std.mem.Allocator) !@This() {
+pub fn init(mesh_path: []const u8, allocator: std.mem.Allocator) !@This() {
     var buf: [std.fs.max_path_bytes]u8 = undefined;
     const full_mesh_path = try allocator.dupeZ(u8, try Global.SkinsFolder.?.realpath(mesh_path, buf[0..]));
     defer allocator.free(full_mesh_path);
 
     var renderer: @This() = .{
-        .SyncManager = sync_manager,
         .ToRender = std.ArrayList(Note).init(allocator),
         .NoteMaterial = rl.loadMaterialDefault(),
         .ApproachTime = Settings.Note.ApproachTime,
@@ -36,11 +33,11 @@ pub fn init(sync_manager: *SyncManager, mesh_path: []const u8, allocator: std.me
     return renderer;
 }
 
-pub fn drawSingle(self: @This()) void {
+pub fn drawSingle(self: @This(), sync: SyncManager) void {
     if (self.ToRender.items.len < 1) return;
 
     for (self.ToRender.items) |n| {
-        const note_time = n.calculateTime(self.SyncManager.RealTime, self.ApproachTime);
+        const note_time = n.calculateTime(sync.RealTime, self.ApproachTime);
         const note_distance = note_time * Settings.Note.ApproachDistance;
 
         var transform = rl.Matrix.identity();
