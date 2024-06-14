@@ -34,14 +34,14 @@ pub fn run(self: *@This()) !void {
 
         switch (self.CurrentState) {
             .LOADING => {
-                Global.SelectedBeatmapSet = try BeatmapSet.loadFromFolder("aremite", self.Allocator);
+                Global.SelectedBeatmapSet = try BeatmapSet.loadFromFolder("wasteful_succducc_me_u", self.Allocator);
                 self.CurrentState = .GAME;
             },
             .GAME => {
                 if (self.Game == null) {
                     self.Game = try Game.init(self.Allocator);
                 } else {
-                    self.Game.?.update();
+                    try self.Game.?.update();
                     self.Game.?.draw();
                 }
             },

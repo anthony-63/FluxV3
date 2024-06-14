@@ -1,4 +1,5 @@
 const std = @import("std");
+const builtin = @import("builtin");
 
 const Window = @import("window/Window.zig");
 const BeatmapSet = @import("content/BeatmapSet.zig");
@@ -60,10 +61,11 @@ fn runFpck1Store(allocator: std.mem.Allocator) void {
 }
 
 pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    const allocator = gpa.allocator();
+    var alloc = if (builtin.mode == .Debug) std.heap.GeneralPurposeAllocator(.{ .stack_trace_frames = 16 }){} else std.heap.ArenaAllocator.init(std.heap.page_allocator);
+    const allocator = alloc.allocator();
+
     defer {
-        _ = gpa.deinit();
+        _ = alloc.deinit();
     }
 
     const args = try std.process.argsAlloc(allocator);

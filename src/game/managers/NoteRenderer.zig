@@ -12,7 +12,7 @@ NoteMaterial: rl.Material,
 
 ApproachTime: f64,
 
-ToRender: ?[]Note,
+ToRender: std.ArrayList(Note),
 
 SyncManager: *SyncManager,
 
@@ -23,7 +23,7 @@ pub fn init(sync_manager: *SyncManager, mesh_path: []const u8, allocator: std.me
 
     var renderer: @This() = .{
         .SyncManager = sync_manager,
-        .ToRender = undefined,
+        .ToRender = std.ArrayList(Note).init(allocator),
         .NoteMaterial = rl.loadMaterialDefault(),
         .ApproachTime = Settings.Note.ApproachTime,
         .NoteMesh = undefined,
@@ -34,4 +34,28 @@ pub fn init(sync_manager: *SyncManager, mesh_path: []const u8, allocator: std.me
     renderer.NoteMaterial.maps[0].color = rl.Color.white;
 
     return renderer;
+}
+
+pub fn drawSingle(self: @This()) void {
+    if (self.ToRender.items.len < 1) return;
+
+    for (self.ToRender.items) |n| {
+        const note_time = n.calculateTime(self.SyncManager.RealTime, self.ApproachTime);
+        const note_distance = note_time * Settings.Note.ApproachDistance;
+
+        var transform = rl.Matrix.identity();
+        transform = transform.multiply(rl.Matrix.translate(
+            @floatCast(n.X * 2),
+            @floatCast(n.Y * 2),
+            @floatCast(-note_distance),
+        ));
+
+        var colored_mat = self.NoteMaterial;
+        colored_mat.maps[0].color = n.Color;
+        self.NoteMesh.?.draw(colored_mat, transform);
+    }
+}
+
+pub fn deinit(self: @This()) void {
+    self.ToRender.deinit();
 }
