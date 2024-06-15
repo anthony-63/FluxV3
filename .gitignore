@@ -2,3 +2,4 @@
 zig-out/
 *.fpck1
 .game
+*.exe

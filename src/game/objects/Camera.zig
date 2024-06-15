@@ -4,7 +4,9 @@ Pitch: f32,
 Yaw: f32,
 RlCamera: rl.Camera3D,
 
-pub fn init(position: rl.Vector3) !@This() {
+pub fn init() !@This() {
+    const position = rl.Vector3.init(0, 0, 7.5);
+
     return .{
         .RlCamera = rl.Camera3D{
             .position = position,
