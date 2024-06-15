@@ -8,7 +8,7 @@ const std = @import("std");
 // format: id(u32) path_len(u32) path
 
 // second section: id(u32) + data
-// id(u32) length(u64) data...
+// id(u32) length(u64) data
 
 // compressed with flate/deflate
 
@@ -165,11 +165,11 @@ pub fn unpack(file: std.fs.File, output: std.fs.Dir, allocator: std.mem.Allocato
     var tree_stream = std.io.fixedBufferStream(tree);
 
     while (tree_stream.pos < tree_stream.buffer.len) {
-        var id_buffer = [4]u8{ 0, 0, 0, 0 };
+        var id_buffer = [_]u8{0} ** 4;
         _ = try tree_stream.read(&id_buffer);
         const id = std.mem.readInt(u32, &id_buffer, .little);
 
-        var path_len_buffer = [4]u8{ 0, 0, 0, 0 };
+        var path_len_buffer = [_]u8{0} ** 4;
         _ = try tree_stream.read(&path_len_buffer);
         const path_len = std.mem.readInt(u32, &path_len_buffer, .little);
 
@@ -184,11 +184,11 @@ pub fn unpack(file: std.fs.File, output: std.fs.Dir, allocator: std.mem.Allocato
     std.debug.print("[FPCK1] decompressing file data\n", .{});
     var file_stream = std.io.fixedBufferStream(files);
     while (file_stream.pos < file_stream.buffer.len) {
-        var id_buffer = [4]u8{ 0, 0, 0, 0 };
+        var id_buffer = [_]u8{0} ** 4;
         _ = try file_stream.read(&id_buffer);
         const id = std.mem.readInt(u32, &id_buffer, .little);
 
-        var data_len_buffer = [8]u8{ 0, 0, 0, 0, 0, 0, 0, 0 };
+        var data_len_buffer = [_]u8{0} ** 8;
         _ = try file_stream.read(&data_len_buffer);
         const data_len = std.mem.readInt(u64, &data_len_buffer, .little);
 

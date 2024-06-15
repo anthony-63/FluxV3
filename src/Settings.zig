@@ -8,7 +8,7 @@ pub var Note: NoteSettings = .{
 };
 
 pub var Cursor: CursorSettings = .{
-    .Scale = 1.0,
+    .Scale = 0.8,
     .Sensitivity = 1.5,
     .Drift = false,
 };

@@ -34,7 +34,7 @@ pub fn run(self: *@This()) !void {
 
         switch (self.CurrentState) {
             .LOADING => {
-                Global.SelectedBeatmapSet = try BeatmapSet.loadFromFolder("wasteful_succducc_me_u", self.Allocator);
+                Global.SelectedBeatmapSet = try BeatmapSet.loadFromFolder("omgz_singularity", self.Allocator);
                 self.CurrentState = .GAME;
             },
             .GAME => {
