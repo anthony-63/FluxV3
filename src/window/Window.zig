@@ -2,17 +2,22 @@ const std = @import("std");
 const rl = @import("raylib");
 
 const Game = @import("../game/Game.zig");
+const Menu = @import("../menu/Menu.zig");
+
 const Global = @import("../Global.zig");
 const BeatmapSet = @import("../content/BeatmapSet.zig");
 
 pub const WindowState = enum {
     LOADING,
+    MENU,
     GAME,
 };
 
 CurrentState: WindowState,
-Game: ?Game,
 Allocator: std.mem.Allocator,
+
+Game: ?Game,
+Menu: ?Menu,
 
 pub fn init(allocator: std.mem.Allocator) !@This() {
     rl.initWindow(1280, 720, "FluxV3-OPT");
@@ -22,6 +27,7 @@ pub fn init(allocator: std.mem.Allocator) !@This() {
         .Allocator = allocator,
         .CurrentState = .LOADING,
         .Game = null,
+        .Menu = null,
     };
 }
 
@@ -34,8 +40,15 @@ pub fn run(self: *@This()) !void {
 
         switch (self.CurrentState) {
             .LOADING => {
-                Global.SelectedBeatmapSet = try BeatmapSet.loadFromFolder("omgz_singularity", self.Allocator);
-                self.CurrentState = .GAME;
+                Global.SelectedBeatmapSet = try BeatmapSet.loadFromFolder("dive_camellia_-_superluminal", self.Allocator);
+                self.CurrentState = .MENU;
+            },
+            .MENU => {
+                if (self.Menu == null) {
+                    self.Menu = try Menu.init(self.Allocator);
+                } else {
+                    self.Menu.?.draw();
+                }
             },
             .GAME => {
                 if (self.Game == null) {

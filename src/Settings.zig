@@ -10,7 +10,7 @@ pub var Note: NoteSettings = .{
 pub var Cursor: CursorSettings = .{
     .Scale = 0.8,
     .Sensitivity = 1.5,
-    .Drift = false,
+    .Drift = true,
 };
 
 const NoteSettings = struct {
