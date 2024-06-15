@@ -4,6 +4,7 @@ const rl = @import("raylib");
 const Global = @import("../Global.zig");
 const Camera = @import("objects/Camera.zig");
 const Grid = @import("objects/Grid.zig");
+const Cursor = @import("objects/Cursor.zig");
 
 const SyncManager = @import("managers/SyncManager.zig");
 const NoteRenderer = @import("managers/NoteRenderer.zig");
@@ -11,6 +12,7 @@ const NoteManager = @import("managers/NoteManager.zig");
 
 Camera: Camera,
 Grid: Grid,
+Cursor: Cursor,
 
 SyncManager: SyncManager,
 NoteRenderer: NoteRenderer,
@@ -21,9 +23,12 @@ Playing: bool,
 Allocator: std.mem.Allocator,
 
 pub fn init(allocator: std.mem.Allocator) !@This() {
+    defer rl.disableCursor();
+
     return .{
-        .Camera = try Camera.init(rl.Vector3.init(0, 0, 7.5)),
+        .Camera = try Camera.init(),
         .Grid = try Grid.init("Default/grid.png", allocator),
+        .Cursor = try Cursor.init("Default/cursor.png", allocator),
         .SyncManager = try SyncManager.init(allocator),
         .NoteRenderer = try NoteRenderer.init("Default/mesh.obj", allocator),
         .NoteManager = try NoteManager.init(allocator),
@@ -42,6 +47,7 @@ pub fn draw(self: *@This()) void {
 
     self.NoteRenderer.drawSingle(self.SyncManager);
     self.Grid.draw();
+    self.Cursor.draw();
 }
 
 pub fn update(self: *@This()) !void {
@@ -51,6 +57,7 @@ pub fn update(self: *@This()) !void {
     }
 
     self.SyncManager.update();
+    self.Cursor.update();
     try self.NoteManager.update(&self.NoteRenderer, self.SyncManager);
 }
 
