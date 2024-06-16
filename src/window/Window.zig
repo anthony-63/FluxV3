@@ -48,6 +48,7 @@ pub fn run(self: *@This()) !void {
                 if (self.Menu == null) {
                     self.Menu = try Menu.init(self.Allocator);
                 } else {
+                    self.Menu.?.update();
                     self.Menu.?.draw();
                 }
             },

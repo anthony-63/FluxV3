@@ -23,9 +23,9 @@ pub fn getCenter(self: @This()) rl.Vector2 {
 
 pub fn addChild(self: *@This(), element: *UIElement) void {
     switch (element.*) {
-        .label => element.label.Root = self,
+        .label => element.label.Root = self.*,
         .root => {
-            std.log.err("Cannot have root as child of root(draw) {any}", .{self.Children.items});
+            std.log.err("Cannot have root as child of root(addChild) {any}", .{self.Children.items});
             std.process.exit(1);
         },
     }
@@ -33,9 +33,21 @@ pub fn addChild(self: *@This(), element: *UIElement) void {
     self.Children.append(element.*) catch {};
 }
 
-pub fn draw(self: *@This()) void {
+pub fn update(self: *@This()) void {
     self.Size = .{ .x = @floatFromInt(rl.getScreenWidth()), .y = @floatFromInt(rl.getScreenHeight()) };
 
+    for (self.Children.items, 0..) |elem, i| {
+        switch (elem) {
+            .label => self.Children.items[i].label.Root = self.*,
+            .root => {
+                std.log.err("Cannot have root as child of root(draw) {any}", .{self.Children.items});
+                std.process.exit(1);
+            },
+        }
+    }
+}
+
+pub fn draw(self: *@This()) void {
     for (self.Children.items) |elem| {
         switch (elem) {
             .label => |*label| label.draw(self.DefaultFont) catch {},
