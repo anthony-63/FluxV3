@@ -66,6 +66,9 @@ pub fn deinit(self: @This()) void {
     if (self.Game != null) {
         self.Game.?.deinit();
     }
+    if (self.Menu != null) {
+        self.Menu.?.deinit();
+    }
     Global.deinit(self.Allocator);
     rl.closeWindow();
 }

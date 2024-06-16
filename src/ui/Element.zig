@@ -1,7 +1,12 @@
 const Label = @import("Label.zig");
 const Root = @import("Root.zig");
 
-pub const UIElement = union(enum) {
+const UIElementTag = enum {
+    label,
+    root,
+};
+
+pub const UIElement = union(UIElementTag) {
     label: Label,
     root: Root,
 };
