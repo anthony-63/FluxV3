@@ -17,6 +17,10 @@ pub fn init(allocator: std.mem.Allocator) @This() {
     };
 }
 
+pub fn getCenter(self: @This()) rl.Vector2 {
+    return self.Size.multiply(rl.Vector2.init(0.5, 0.5));
+}
+
 pub fn addChild(self: *@This(), element: *UIElement) void {
     switch (element.*) {
         .label => element.label.Root = self,
@@ -29,7 +33,9 @@ pub fn addChild(self: *@This(), element: *UIElement) void {
     self.Children.append(element.*) catch {};
 }
 
-pub fn draw(self: @This()) void {
+pub fn draw(self: *@This()) void {
+    self.Size = .{ .x = @floatFromInt(rl.getScreenWidth()), .y = @floatFromInt(rl.getScreenHeight()) };
+
     for (self.Children.items) |elem| {
         switch (elem) {
             .label => |*label| label.draw(self.DefaultFont) catch {},

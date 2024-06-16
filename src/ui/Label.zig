@@ -28,5 +28,7 @@ pub fn draw(self: @This(), font: rl.Font) !void {
     const text = try self.Allocator.dupeZ(u8, self.Text);
     defer self.Allocator.free(text);
 
-    rl.drawTextPro(font, text, self.Position, rl.Vector2.zero(), 0.0, 16, 4, rl.Color.white);
+    const global_pos = self.Root.Size.multiply(self.Anchor).add(self.Position);
+
+    rl.drawTextPro(font, text, global_pos, rl.Vector2.zero(), 0.0, 16, 4, rl.Color.white);
 }

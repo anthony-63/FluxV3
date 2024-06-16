@@ -20,9 +20,10 @@ Game: ?Game,
 Menu: ?Menu,
 
 pub fn init(allocator: std.mem.Allocator) !@This() {
+    rl.setConfigFlags(.{ .window_resizable = true });
+
     rl.initWindow(1280, 720, "FluxV3-OPT");
     rl.initAudioDevice();
-
     return .{
         .Allocator = allocator,
         .CurrentState = .LOADING,

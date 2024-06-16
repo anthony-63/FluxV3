@@ -12,8 +12,8 @@ pub fn init(allocator: std.mem.Allocator) !@This() {
     var root = Root.init(allocator);
     var test_label = UIElement{ .label = Label.init(
         "Hello",
-        .{ .x = 100, .y = 100 },
-        rl.Vector2.zero(),
+        root.getCenter(),
+        root.getCenter(),
         false,
         allocator,
     ) };
@@ -26,7 +26,7 @@ pub fn init(allocator: std.mem.Allocator) !@This() {
     };
 }
 
-pub fn draw(self: @This()) void {
+pub fn draw(self: *@This()) void {
     self.Root.draw();
 }
 
