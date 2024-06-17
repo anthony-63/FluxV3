@@ -25,6 +25,8 @@ Allocator: std.mem.Allocator,
 pub fn init(allocator: std.mem.Allocator) !@This() {
     defer rl.disableCursor();
 
+    rl.toggleBorderlessWindowed();
+
     return .{
         .Camera = try Camera.init(),
         .Grid = try Grid.init("Default/grid.png", allocator),
@@ -57,7 +59,7 @@ pub fn update(self: *@This()) !void {
     }
 
     self.SyncManager.update();
-    self.Cursor.update();
+    self.Cursor.update(&self.Camera);
     try self.NoteManager.update(&self.NoteRenderer, self.SyncManager);
 }
 

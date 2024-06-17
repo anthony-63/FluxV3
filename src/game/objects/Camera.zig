@@ -1,5 +1,7 @@
 const rl = @import("raylib");
 
+const Settings = @import("../../Settings.zig");
+
 Pitch: f32,
 Yaw: f32,
 RlCamera: rl.Camera3D,
@@ -18,4 +20,12 @@ pub fn init() !@This() {
         .Yaw = 0,
         .Pitch = 0,
     };
+}
+
+pub fn doParallax(self: *@This(), cursor_position: rl.Vector2) void {
+    var pos = self.RlCamera.position;
+    pos.x = @as(f32, @floatCast((cursor_position.x * Settings.Camera.Parallax) / 50.0));
+    pos.y = -@as(f32, @floatCast((cursor_position.y * Settings.Camera.Parallax) / 50.0));
+    self.RlCamera.position = pos;
+    self.RlCamera.target = rl.Vector3.init(pos.x, pos.y, 0.0);
 }

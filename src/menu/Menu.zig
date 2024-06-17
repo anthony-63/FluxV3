@@ -13,9 +13,12 @@ pub fn init(allocator: std.mem.Allocator) !@This() {
     var root = Root.init(allocator);
     var test_panel = UIElement{ .panel = Panel.init(
         rl.Vector2.init(0, 0),
-        rl.Vector2.init(50, 50),
+        rl.Vector2.init(100, 50),
         rl.Vector2.init(0.5, 0.5),
         rl.Color.white,
+        rl.Color.red,
+        8,
+        0.5,
         true,
     ) };
 

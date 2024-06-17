@@ -1,6 +1,8 @@
 const std = @import("std");
 const rl = @import("raylib");
 
+const Camera = @import("Camera.zig");
+
 const Global = @import("../../Global.zig");
 const Settings = @import("../../Settings.zig");
 
@@ -54,7 +56,7 @@ pub fn draw(self: @This()) void {
     rl.gl.rlPopMatrix();
 }
 
-pub fn update(self: *@This()) void {
+pub fn update(self: *@This(), camera: *Camera) void {
     const mouse_now = rl.getMousePosition();
     const mouse_delta = mouse_now.subtract(self.LastMousePos);
 
@@ -77,4 +79,5 @@ pub fn update(self: *@This()) void {
     }
 
     self.Position = rl.Vector3.init(self.ClampedPosition.x, 0, self.ClampedPosition.y);
+    camera.doParallax(self.ClampedPosition);
 }

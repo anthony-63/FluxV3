@@ -13,6 +13,10 @@ pub var Cursor: CursorSettings = .{
     .Drift = true,
 };
 
+pub var Camera: CameraSettings = .{
+    .Parallax = 10.0,
+};
+
 const NoteSettings = struct {
     ApproachRate: f64,
     ApproachDistance: f64,
@@ -24,4 +28,8 @@ const CursorSettings = struct {
     Scale: f64,
     Sensitivity: f64,
     Drift: bool,
+};
+
+const CameraSettings = struct {
+    Parallax: f64,
 };
