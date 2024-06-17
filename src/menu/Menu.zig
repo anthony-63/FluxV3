@@ -3,6 +3,7 @@ const rl = @import("raylib");
 
 const Root = @import("../ui/Root.zig");
 const Label = @import("../ui/Label.zig");
+const Panel = @import("../ui/Panel.zig");
 const UIElement = @import("../ui/Element.zig").UIElement;
 
 Root: Root,
@@ -10,20 +11,19 @@ Test: UIElement,
 
 pub fn init(allocator: std.mem.Allocator) !@This() {
     var root = Root.init(allocator);
-    var test_label = UIElement{ .label = Label.init(
-        "Hello from zig! HELLO!",
-        rl.Vector2.zero(),
+    var test_panel = UIElement{ .panel = Panel.init(
+        rl.Vector2.init(0, 0),
+        rl.Vector2.init(50, 50),
         rl.Vector2.init(0.5, 0.5),
+        rl.Color.white,
         true,
-        16.0,
-        allocator,
     ) };
 
-    root.addChild(&test_label);
+    root.addChild(&test_panel);
 
     return .{
         .Root = root,
-        .Test = test_label,
+        .Test = test_panel,
     };
 }
 

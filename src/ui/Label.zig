@@ -30,7 +30,7 @@ pub fn draw(self: @This(), font: rl.Font) !void {
     const text = try self.Allocator.dupeZ(u8, self.Text);
     defer self.Allocator.free(text);
 
-    var global_pos = self.Root.?.Size.multiply(self.Anchor).add(self.Position);
+    var global_pos = self.Root.?.getGlobalPosition(self.Position, self.Anchor);
 
     if (self.Centered) {
         global_pos = global_pos.subtract(rl.measureTextEx(font, text, self.FontSize, 2).multiply(rl.Vector2.init(0.5, 0.5)));
