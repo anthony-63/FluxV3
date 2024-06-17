@@ -40,7 +40,7 @@ pub fn update(self: *@This()) void {
         switch (elem) {
             .label => self.Children.items[i].label.Root = self.*,
             .root => {
-                std.log.err("Cannot have root as child of root(draw) {any}", .{self.Children.items});
+                std.log.err("Cannot have root as child of root(update) {any}", .{self.Children.items});
                 std.process.exit(1);
             },
         }

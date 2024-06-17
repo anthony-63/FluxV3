@@ -11,10 +11,11 @@ Test: UIElement,
 pub fn init(allocator: std.mem.Allocator) !@This() {
     var root = Root.init(allocator);
     var test_label = UIElement{ .label = Label.init(
-        "Hello",
+        "Hello from zig! HELLO!",
         rl.Vector2.zero(),
         rl.Vector2.init(0.5, 0.5),
-        false,
+        true,
+        16.0,
         allocator,
     ) };
 
