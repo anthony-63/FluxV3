@@ -18,4 +18,4 @@ typedef struct {
     difficulty_t* difficulties;
 } beatmap_t;
 
-beatmap_t beatmap_from_folder(const char* path);
+beatmap_t beatmap_from_folder(char* path);

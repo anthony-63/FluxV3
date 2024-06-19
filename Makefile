@@ -6,7 +6,7 @@ else
     OUT = bin/flux
 endif
 
-CFLAGS = -fPIC -O3 -Llib -lraylib -lopengl32 -lgdi32 -lwinmm
+CFLAGS = -fPIC -O3 -Llib -lraylib -lopengl32 -lgdi32 -lwinmm -g
 INCLUDE = -Iinclude -Isrc
 
 build:

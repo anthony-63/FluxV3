@@ -19,10 +19,10 @@ void log_info(logger_t logger, const char* fmt, ...) {
     time(&raw_time);
     timeinfo = localtime(&raw_time);
     
-    printf("[INFO %d:%d] ", timeinfo->tm_hour, timeinfo->tm_sec);
+    printf("[INFO %d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     vprintf(fmt, args);
 
-    fprintf(logger.output_file, "[INFO %d:%d] ", timeinfo->tm_hour, timeinfo->tm_sec);
+    fprintf(logger.output_file, "[INFO %d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     vfprintf(logger.output_file, fmt, args);
 
     va_end(args);
@@ -38,10 +38,10 @@ void log_warn(logger_t logger, const char* fmt, ...) {
     time(&raw_time);
     timeinfo = localtime(&raw_time);
     
-    printf("[WARNING %d:%d] ", timeinfo->tm_hour, timeinfo->tm_sec);
+    printf("[WARNING %d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     vprintf(fmt, args);
 
-    fprintf(logger.output_file, "[WARNING %d:%d] ", timeinfo->tm_hour, timeinfo->tm_sec);
+    fprintf(logger.output_file, "[WARNING %d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     vfprintf(logger.output_file, fmt, args);
     
     va_end(args);
@@ -57,10 +57,10 @@ void log_err(logger_t logger, const char* fmt, ...) {
     time(&raw_time);
     timeinfo = localtime(&raw_time);
     
-    printf("[ERROR %d:%d] ", timeinfo->tm_hour, timeinfo->tm_sec);
+    printf("[ERROR %d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     vprintf(fmt, args);
 
-    fprintf(logger.output_file, "[ERROR %d:%d] ", timeinfo->tm_hour, timeinfo->tm_sec);
+    fprintf(logger.output_file, "[ERROR %d:%d:%d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     vfprintf(logger.output_file, fmt, args);
     
     va_end(args);

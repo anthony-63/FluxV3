@@ -1,19 +1,30 @@
 {
     "version": "0.2.0",
-      "configurations": [
-         {
+    "configurations": [
+        {
             "name": "(gdb) Launch",
-            "type": "lldb",
+            "type": "cppdbg",
             "request": "launch",
-            "cwd": "${workspaceFolder}/godot",
-            "args": [
-                "--path", // run editor (remove this to launch the scene directly)
-                "${workspaceFolder}/godot", // windowed mode
+            "program": "C:\\Users\\antho\\Documents\\Code\\C\\FluxV3\\bin\\flux.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
             ],
-            "windows": {
-                "program": "C:\\Users\\antho\\Documents\\godot\\Godot_v4.2.2-stable_win64.exe",
-            },
-            "console": "internalConsole",
-         }
+            "preLaunchTask": "run the makefile"
+        }
     ]
- }
+}
