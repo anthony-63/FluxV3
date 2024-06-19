@@ -1,4 +1,4 @@
-SRC = src/*.c
+SRC = src/*.c src/*/*.c src/*/*/*.c
 
 ifeq ($(OS),Windows_NT)
     OUT = bin/flux.exe
