@@ -1,13 +1,15 @@
 SRC = src/*.c
 
 ifeq ($(OS),Windows_NT)
-    OUT = bin/flux.dll
+    OUT = bin/flux.exe
 else
-    OUT = bin/flux.so
+    OUT = bin/flux
 endif
 
-CFLAGS = -fPIC -O3
+CFLAGS = -fPIC -O3 -Llib -lraylib -lopengl32 -lgdi32 -lwinmm
 INCLUDE = -Iinclude -Isrc
 
-all:
-	gcc $(SRC) -shared -o $(OUT) $(CFLAGS) $(INCLUDE)
+build:
+	gcc $(SRC) -o $(OUT) $(CFLAGS) $(INCLUDE)
+run: build
+	./$(OUT)

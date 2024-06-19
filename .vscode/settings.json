@@ -73,6 +73,7 @@
         "bitset": "cpp",
         "regex": "cpp",
         "cinttypes": "cpp",
-        "gdextension_interface.h": "c"
+        "gdextension_interface.h": "c",
+        "grid.h": "c"
     }
 }
