@@ -1,2 +1,5 @@
 bin/flux.exe
 *.dll
+.vscode
+log.txt
+raylib.dll

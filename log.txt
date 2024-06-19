@@ -1,6 +1,0 @@
-[INFO 17:32:23] setting raylib log level
-[INFO 17:32:23] initializing raylib
-[INFO 17:32:24] allocating game
-[INFO 17:32:24] loading map: test/when_i_use_it
-[INFO 17:32:24] got version: 1
-[INFO 17:32:24] got title: Buster Nalmi - When I use it
