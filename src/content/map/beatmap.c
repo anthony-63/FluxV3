@@ -35,7 +35,7 @@ beatmap_t beatmap_from_folder(char* path) {
     meta_buffer[meta_size] = '\0';
 
     json_t meta_pool[META_MAX_FIELDS];
-    json_t const* parent = json_create(meta_buffer, meta_pool, META_MAX_FIELDS);
+    const json_t* parent = json_create(meta_buffer, meta_pool, META_MAX_FIELDS);
     if(parent == NULL) {
         log_warn(g_logger, "failed to parse metadata\nmap: %s\n", path);
         return (beatmap_t) {
@@ -43,7 +43,7 @@ beatmap_t beatmap_from_folder(char* path) {
         };
     }
 
-    json_t const* version_field = json_getProperty(parent, "_version");
+    const json_t* version_field = json_getProperty(parent, "_version");
     if(version_field == NULL || json_getType(version_field) != JSON_INTEGER) {
         log_warn(g_logger, "failed to parse metadata(version)\nmap: %s\n", path);
         return (beatmap_t) {
@@ -52,14 +52,37 @@ beatmap_t beatmap_from_folder(char* path) {
     }
     uint8_t version = (uint8_t)json_getInteger(version_field);
 
-    json_t const* title_field = json_getProperty(parent, "_title");
+    const json_t* title_field = json_getProperty(parent, "_title");
     if(title_field == NULL || json_getType(title_field) != JSON_TEXT) {
         log_warn(g_logger, "failed to parse metadata(title)\nmap: %s\n", path);
         return (beatmap_t) {
             .broken = 1,
         };
     }
-    char* title = json_getValue(title_field);
+    const char* title = json_getValue(title_field);
 
+    size_t mapper_size = 0;
+    const json_t* mapper_list = json_getProperty(parent, "_mappers");
+    if(mapper_list == NULL || json_getType(mapper_list) != JSON_ARRAY) {
+        log_warn(g_logger, "failed to parse metadata(mappers)\nmap: %s\n", path);
+        return (beatmap_t) {
+            .broken = 1,
+        };
+    }
+
+    const json_t* mapper;
+    for(mapper = json_getChild(mapper_list); mapper != 0; mapper = json_getSibling(mapper)) {
+        const char* mapper_str = json_getValue(mapper);
+        mapper_size += sizeof(mapper_str);
+    }
+
+    char** mappers = (char**)malloc(mapper_size);
+    int i = 0;
+    for(mapper = json_getChild(mapper_list); mapper != 0; mapper = json_getSibling(mapper)) {
+        char* mapper_str = (char*)json_getValue(mapper);
+        mappers[i] = mapper_str;
+        i++;
+    }
+    
     
 }
