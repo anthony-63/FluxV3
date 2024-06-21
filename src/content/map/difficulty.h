@@ -14,4 +14,4 @@ typedef struct {
     notedata_t* notes;
 } difficulty_t;
 
-difficulty_t difficulty_from_file(const char* path);
+difficulty_t difficulty_from_file(char* path);

@@ -10,8 +10,9 @@ typedef struct {
 
     const char* path;
     const char* artist;
+    const char* title;
     
-    const char** mappers;
+    char** mappers;
 
     const uint8_t* cover;
 

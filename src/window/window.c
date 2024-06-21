@@ -30,10 +30,13 @@ void run_window(window_t* window) {
                 window->state = WINDOW_STATE_GAME;
             } break;
             case WINDOW_STATE_GAME: {
+                BeginDrawing();
                 ClearBackground(BLACK);
+                update_game(window->game);
+                draw_game(window->game);
+                EndDrawing();
             } break;
         }
-        PollInputEvents();
     }
 }
 

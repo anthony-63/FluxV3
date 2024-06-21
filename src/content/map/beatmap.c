@@ -83,6 +83,39 @@ beatmap_t beatmap_from_folder(char* path) {
         mappers[i] = mapper_str;
         i++;
     }
+
+    difficulty_t* difficulties = (difficulty_t*)malloc(sizeof(difficulty_t));
+    const json_t* diff_list = json_getProperty(parent, "_difficulties");
+    if(diff_list == NULL || json_getType(diff_list) != JSON_ARRAY) {
+        log_warn(g_logger, "failed to parse metadata(mappers)\nmap: %s\n", path);
+        return (beatmap_t) {
+            .broken = 1,
+        };
+    }
+
+    i = 0;
+    const json_t* difficulty;
+    for(difficulty = json_getChild(diff_list); difficulty != 0; difficulty = json_getSibling(difficulty)) {
+        const char* diff_str = json_getValue(difficulty);
+        char diff_path[strlen(diff_str) + strlen(path) + 1];
+        sprintf(diff_path, "%s/%s", path, diff_str);
+        difficulty_t diff = difficulty_from_file(diff_path);
+        difficulties = (difficulty_t*)realloc(difficulties, sizeof(difficulties) + sizeof(diff) + 1);
+        difficulties[i] = diff;
+        i++;
+    }
     
-    
+
+    log_info(g_logger, "done loading map\n");
+
+    return (beatmap_t){
+        .artist = "",
+        .broken = 0,
+        .mappers = mappers,
+        .cover = (uint8_t[]){},
+        .path = path,
+        .version = version,
+        .title = title,
+        .difficulties = difficulties,
+    };
 }
