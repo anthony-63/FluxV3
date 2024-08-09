@@ -26,6 +26,7 @@ pub struct Game {
     cursor: Option<Gd<Cursor>>,
 
     pub health: f32,
+    pub health_step: f32,
     
     started_audio: bool,
     started_notes: bool,
@@ -41,7 +42,8 @@ impl INode3D for Game {
             loaded_mapset: None,
             sync_manager: None,
             note_manager: None,
-            health: 5.,
+            health: 100.,
+            health_step: 15.,
             started_audio: false,
             started_notes: false,
         }

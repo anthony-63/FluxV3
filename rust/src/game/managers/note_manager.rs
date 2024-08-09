@@ -156,8 +156,8 @@ impl INode for NoteManager {
                         FLUX.game.score.as_mut().unwrap().multiplier = (FLUX.game.score.as_mut().unwrap().multiplier + 1).min(8);
                     }
                 }
-
-                game.health = (game.health + 0.5).min(5.);
+                game.health_step = (game.health_step / 1.45).max(15.);
+                game.health = (game.health + game.health_step / 1.75).min(100.);
 
                 self.hit_player.as_mut().unwrap().play();
             }
@@ -166,7 +166,8 @@ impl INode for NoteManager {
                 did_hitreg = true;
                 bound.hit = true;
 
-                game.health = (game.health - 1.).max(0.);
+                game.health_step += 1.2;
+                game.health = (game.health - game.health_step).max(0.);
 
                 unsafe {
                     FLUX.game.score.as_mut().unwrap().misses += 1;

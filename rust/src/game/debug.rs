@@ -29,6 +29,8 @@ impl ILabel for DebugLabel {
         let game_time = game.sync_manager.as_ref().unwrap().bind().real_time;
         let notes_processed = game.note_manager.as_ref().unwrap().bind().notes_processing;
         let start_process = game.note_manager.as_ref().unwrap().bind().start_process;
+        let health = game.health;
+        let health_step = game.health_step;
 
         drop(game);
 
@@ -36,11 +38,14 @@ impl ILabel for DebugLabel {
             "{} FPS
 Time: {:.8}
 Processing: {}
-Start Proc: {}",
+Start Proc: {}
+Health: {}
+Health Step: {}",
         fps_monitor,
         game_time,
         notes_processed,
         start_process,
+        health, health_step
         ).to_godot());
     }
 }

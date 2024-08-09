@@ -24,7 +24,7 @@ impl HealthHUD {
         if health == self.hp {
             return;
         }
-        
+
         let mut tween = self.base_mut().get_tree().unwrap().create_tween().unwrap();
 
         tween.stop();
