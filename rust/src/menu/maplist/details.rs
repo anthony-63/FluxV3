@@ -1,4 +1,4 @@
-use godot::{engine::{global::{Error, MouseButton}, Button, HSlider, IPanel, Image, ImageTexture, InputEvent, InputEventMouseButton, Label, Panel, TextureRect, VBoxContainer}, prelude::*};
+use godot::{engine::{global::Error, Button, HSlider, IPanel, Image, ImageTexture, Label, Panel, TextureRect, VBoxContainer}, prelude::*};
 
 use crate::FLUX;
 
@@ -28,7 +28,7 @@ impl IPanel for MapDetails {
 
         let mut close_details = self.bg_blur.as_ref().unwrap().get_node_as::<Button>("Close");
         close_details.connect("pressed".into(), self.base_mut().callable("close_details"));
-        
+
         let mut play_button = self.base().get_node_as::<Button>("Play");
         play_button.connect("pressed".into(), self.base_mut().callable("play_map"));
 
