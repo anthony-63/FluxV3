@@ -19,6 +19,7 @@ pub struct StartupInternal {
     progress_count: usize,
     progress_total: usize,
     has_progress: bool,
+    done: bool,
 }
 
 
@@ -33,6 +34,7 @@ impl INode for Startup {
                 progress_count: 0, 
                 progress_total: 0,
                 has_progress: false,
+                done: false,
             })),
             dot_timer: 0.,
         };
@@ -65,8 +67,9 @@ impl INode for Startup {
             self.dot_timer = 0.
         }
 
-        if internal.stage.contains("Done") {
+        if internal.done {
             drop(internal);
+            godot_print!("Changing to menu scene");
             self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/menu.tscn".into_godot());
         }
     }
@@ -76,15 +79,6 @@ impl INode for Startup {
             FLUX.game.score = Some(Score::default());
         }
 
-        let internal = Arc::clone(&self.internal);
-        thread::spawn(|| {
-            Self::run_load(internal);
-        });
-    }
-}
-
-impl Startup { 
-    fn run_load(internal: Arc<Mutex<StartupInternal>>) {
         unsafe { 
             FLUX.discord_client = Some(DiscordIpcClient::new("1231849122336604171").unwrap());
             match FLUX.discord_client.as_mut().unwrap().connect() {
@@ -95,11 +89,18 @@ impl Startup {
             }
         }
 
-
         set_activity(flux_activity().details("Starting Up"));
 
+        let internal = Arc::clone(&self.internal);
+        thread::spawn(|| {
+            Self::run_load(internal);
+        });
+    }
+}
+
+impl Startup { 
+    fn run_load(internal: Arc<Mutex<StartupInternal>>) {
         let user_dir = Os::singleton().get_user_data_dir().to_string();
-        godot_print!("loading maps from {}/maps", user_dir.clone());
 
         internal.lock().unwrap().stage = "Loading settings".to_string();
         Self::load_settings();
@@ -115,14 +116,14 @@ impl Startup {
 
         internal.lock().unwrap().stage = "Selecting map...".to_string();
         internal.lock().unwrap().has_progress = false;
+
         unsafe {
             if FLUX.maps.loaded_mapsets.len() > 0 {
                 FLUX.game.selected_mapset = Some(Gd::from_object(FLUX.maps.loaded_mapsets.choose(&mut rand::thread_rng()).unwrap().clone()));
                 FLUX.game.selected_map = Some(Gd::from_object(FLUX.game.selected_mapset.clone().unwrap().bind().difficulties.choose(&mut rand::thread_rng()).unwrap().clone()));
             }
         }
-
-        internal.lock().unwrap().stage = "Done".to_string();
+        internal.lock().unwrap().done = true;
     }
 
     fn load_settings() {
