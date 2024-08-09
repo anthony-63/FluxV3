@@ -1,6 +1,6 @@
 use std::{sync::mpsc::{Receiver, Sender}, thread};
 
-use godot::{engine::{global::Error, node::ProcessMode, Button, GridContainer, HSlider, IGridContainer, Image, ImageTexture, LineEdit, TextureRect}, obj::WithBaseField, prelude::*};
+use godot::{engine::{global::Error, Button, GridContainer, HSlider, IGridContainer, Image, ImageTexture, LineEdit, TextureRect}, obj::WithBaseField, prelude::*};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
 
@@ -145,7 +145,6 @@ impl MapContainer {
 
         let map_audio = mapset.bind().load_audio(true);
 
-        self.set_children_process(false);
         self.ignore_click = true;
         self.map_details.as_mut().unwrap().set_visible(true);
         self.bg_blur.as_mut().unwrap().set_visible(true);
@@ -173,16 +172,6 @@ impl MapContainer {
             }
             play_button.set_text("Play".into());
             play_button.set_disabled(false);
-        }
-    }
-
-    pub fn set_children_process(&mut self, should: bool) {
-        for mut child in self.base_mut().get_children().iter_shared() {
-            if should {
-                child.set_process_mode(ProcessMode::INHERIT);
-            } else {
-                child.set_process_mode(ProcessMode::DISABLED);
-            }
         }
     }
 
