@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=59 format=3 uid="uid://dkq7fb6lkop1u"]
 
 [ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
@@ -54,6 +54,8 @@ corner_radius_bottom_left = 8
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hgeyy"]
 shader = ExtResource("6_nkv8a")
 shader_parameter/lod = 1.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qctgq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lyhwq"]
 bg_color = Color(0.0392157, 0.0392157, 0.0392157, 1)
@@ -357,9 +359,10 @@ corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jbosf"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="LabelSettings" id="LabelSettings_seiwh"]
-font_size = 20
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_785n5"]
 bg_color = Color(0.0605303, 0.0605304, 0.0605303, 1)
@@ -393,6 +396,9 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+
+[sub_resource type="LabelSettings" id="LabelSettings_seiwh"]
+font_size = 20
 
 [node name="Menu" type="Viewports"]
 anchors_preset = 15
@@ -557,11 +563,15 @@ grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_66esq")
 
 [node name="Search" type="LineEdit" parent="Viewports/Maplist/Filters"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
 offset_left = 24.0
-offset_top = 14.0
+offset_top = -15.5
 offset_right = 555.0
-offset_bottom = 45.0
+offset_bottom = 15.5
+grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_3jjwm")
 theme_override_styles/focus = SubResource("StyleBoxFlat_vegsv")
 theme_override_styles/read_only = SubResource("StyleBoxFlat_3jjwm")
@@ -578,6 +588,20 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
 texture = ExtResource("7_bt406")
+
+[node name="Button" type="Button" parent="Viewports/Maplist/BgBlur"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qctgq")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qctgq")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_qctgq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qctgq")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qctgq")
+button_mask = 3
 
 [node name="MapDetails" type="MapDetails" parent="Viewports/Maplist"]
 visible = false
@@ -992,6 +1016,7 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_g7yte")
 text = "Close"
 
 [node name="SettingsMenu" type="SettingsMenu" parent="Viewports"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -1483,6 +1508,7 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="MusicPlayer" type="Panel" parent="TopPanel"]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -1496,32 +1522,15 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_bbnk3")
 
 [node name="OpenMap" type="Button" parent="TopPanel/MusicPlayer"]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.116667
-anchor_top = 0.0208333
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.979167
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_jbosf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_jbosf")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_jbosf")
 theme_override_styles/focus = SubResource("StyleBoxFlat_jbosf")
-metadata/_edit_use_anchors_ = true
-
-[node name="SongName" type="Label" parent="TopPanel/MusicPlayer"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 101.0
-offset_top = -15.0
-offset_right = 831.0
-offset_bottom = 13.0
-grow_vertical = 2
-text = "Artist - Song Name"
-label_settings = SubResource("LabelSettings_seiwh")
-clip_text = true
 
 [node name="Skip" type="Button" parent="TopPanel/MusicPlayer"]
 layout_mode = 1
@@ -1560,3 +1569,17 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_785n5")
 icon = ExtResource("9_glbw7")
 icon_alignment = 1
 expand_icon = true
+
+[node name="SongName" type="Label" parent="TopPanel/MusicPlayer"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 101.0
+offset_top = -15.0
+offset_right = 831.0
+offset_bottom = 13.0
+grow_vertical = 2
+text = "Artist - Song Name"
+label_settings = SubResource("LabelSettings_seiwh")
+clip_text = true

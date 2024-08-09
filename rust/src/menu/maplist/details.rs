@@ -26,6 +26,9 @@ impl IPanel for MapDetails {
         let mut open_mods = self.base().get_node_as::<Button>("Mods");
         open_mods.connect("pressed".into(), self.base_mut().callable("open_mods"));
 
+        let mut close_details = self.bg_blur.as_ref().unwrap().get_node_as::<Button>("Close");
+        close_details.connect("pressed".into(), self.base_mut().callable("close_details"));
+        
         let mut play_button = self.base().get_node_as::<Button>("Play");
         play_button.connect("pressed".into(), self.base_mut().callable("play_map"));
 
@@ -35,26 +38,16 @@ impl IPanel for MapDetails {
 
     fn process(&mut self, _: f64) {
     }
-
-    fn input(&mut self, ev: Gd<InputEvent>) {
-        let Ok(event) = ev.try_cast::<InputEventMouseButton>() else {
-            return;
-        };
-
-        if !event.is_pressed() || (event.get_button_index() != MouseButton::LEFT && event.get_button_index() != MouseButton::RIGHT) {
-            return;
-        }
-
-        let cursor_pos = event.get_global_position();
-        if !Rect2::new(self.base().get_global_position(), self.base().get_size()).has_point(cursor_pos) {
-            self.base_mut().set_visible(false);
-            self.bg_blur.as_mut().unwrap().set_visible(false);
-        }
-    }
 }
 
 #[godot_api]
 impl MapDetails {
+    #[func]
+    pub fn close_details(&mut self) {
+        self.base_mut().set_visible(false);
+        self.bg_blur.as_mut().unwrap().set_visible(false);
+    }
+
     #[func]
     pub fn set_details(&mut self) {
         let mut title = self.base().get_node_as::<Label>("Details/VBoxContainer/Title");

@@ -1,6 +1,6 @@
 use std::{sync::mpsc::{Receiver, Sender}, thread};
 
-use godot::{engine::{global::{Error, MouseButton}, node::ProcessMode, Button, GridContainer, HSlider, IGridContainer, Image, ImageTexture, InputEvent, InputEventMouseButton, LineEdit, TextureRect}, obj::WithBaseField, prelude::*};
+use godot::{engine::{global::Error, node::ProcessMode, Button, GridContainer, HSlider, IGridContainer, Image, ImageTexture, LineEdit, TextureRect}, obj::WithBaseField, prelude::*};
 
 use crate::{content::maps::{beatmap::Beatmap, beatmapset::BeatmapSet}, FLUX};
 
@@ -58,21 +58,6 @@ impl IGridContainer for MapContainer {
             }).join();
         });
     
-    }
-
-    fn unhandled_input(&mut self, ev: Gd<InputEvent>) {
-        let Ok(event) = ev.try_cast::<InputEventMouseButton>() else {
-            return;
-        };
-        if !event.is_released() && (event.get_button_index() != MouseButton::LEFT && event.get_button_index() != MouseButton::RIGHT) {
-            return;
-        }
-
-        if self.ignore_click {
-            self.ignore_click = false;
-        } else {
-            self.set_children_process(true);
-        }
     }
 
     fn process(&mut self, _: f64) {

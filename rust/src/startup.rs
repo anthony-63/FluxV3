@@ -51,7 +51,6 @@ impl INode for Startup {
         progress.set_max(internal.progress_total as f64);
         progress.set_value(internal.progress_count as f64);
         progress.set_visible(internal.has_progress);
-
         label.set_text(internal.stage.clone().into_godot());
         substatus.set_text(internal.substatus.clone().into_godot());
 
@@ -96,9 +95,11 @@ impl Startup {
             }
         }
 
+
         set_activity(flux_activity().details("Starting Up"));
 
         let user_dir = Os::singleton().get_user_data_dir().to_string();
+        godot_print!("loading maps from {}/maps", user_dir.clone());
 
         internal.lock().unwrap().stage = "Loading settings".to_string();
         Self::load_settings();
