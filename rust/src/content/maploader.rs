@@ -44,7 +44,7 @@ impl MapLoader {
             let user_dir = Os::singleton().get_user_data_dir().to_string();
             let folder_name = PathBuf::from(path.clone()).with_extension("").file_name().unwrap().to_str().unwrap().to_string();
     
-            let folder_path = format!("{}/{}", user_dir, folder_name);
+            let folder_path = format!("{}/maps/{}", user_dir, folder_name);
     
             SSPMParser::sspm_to_folder(&path, false);
             

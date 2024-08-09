@@ -57,7 +57,6 @@ impl IGridContainer for MapContainer {
                 Self::load_covers_threaded(&mut cover_sender);
             }).join();
         });
-    
     }
 
     fn process(&mut self, _: f64) {

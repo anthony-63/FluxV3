@@ -123,6 +123,7 @@ impl Viewports {
         for path_gstr in maps.as_slice() {
             let path = path_gstr.to_string();
             MapLoader::add_map(path);
+            self.base_mut().get_tree().unwrap().change_scene_to_file("res://scenes/menu.tscn".into_godot());
         }
     }
 
