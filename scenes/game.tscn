@@ -43,7 +43,7 @@ buffer = PackedFloat32Array(0, 0, 0, 0.7, 8.5, 146.5, 0, 0, 0, 0.7, 9.5, 147.5, 
 
 [sub_resource type="LabelSettings" id="LabelSettings_7wv0u"]
 line_spacing = 0.0
-font_color = Color(0.632686, 0.632686, 7.70092e-07, 1)
+font_color = Color(1, 0.644294, 0.895095, 1)
 
 [node name="Game" type="Node3D"]
 
