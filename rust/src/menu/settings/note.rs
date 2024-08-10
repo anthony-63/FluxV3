@@ -12,6 +12,7 @@ pub struct NoteSettings {
     approach_distance: Option<Gd<SpinBox>>,
     fade_in: Option<Gd<SpinBox>>,
     pushback: Option<Gd<CheckButton>>,
+    half_ghost: Option<Gd<CheckButton>>,
 }
 
 #[godot_api]
@@ -25,6 +26,7 @@ impl IControl for NoteSettings {
             approach_time: None,
             fade_in: None,
             pushback: None,
+            half_ghost: None,
         }
     }
 
@@ -35,6 +37,7 @@ impl IControl for NoteSettings {
         let mut approach_time = self.base().get_node_as::<SpinBox>("GridContainer/Approach/VBoxContainer/Time");
         let mut fade_in = self.base().get_node_as::<SpinBox>("GridContainer/Approach/VBoxContainer/FadeIn");
         let mut pushback = self.base().get_node_as::<CheckButton>("GridContainer/Approach/VBoxContainer/Pushback");
+        let mut half_ghost = self.base().get_node_as::<CheckButton>("GridContainer/Approach/VBoxContainer/HalfGhost");
         
         approach_type.connect("item_selected".into(), self.base_mut().callable("update_type"));
         approach_distance.connect("value_changed".into(), self.base_mut().callable("update_ad"));
@@ -42,6 +45,7 @@ impl IControl for NoteSettings {
         approach_time.connect("value_changed".into(), self.base_mut().callable("update_at"));
         fade_in.connect("value_changed".into(), self.base_mut().callable("update_fade_in"));
         pushback.connect("toggled".into(), self.base_mut().callable("update_pushback"));
+        half_ghost.connect("toggled".into(), self.base_mut().callable("update_half_ghost"));
 
         self.approach_type = Some(approach_type.clone());
         self.approach_rate = Some(approach_rate.clone());
@@ -49,6 +53,7 @@ impl IControl for NoteSettings {
         self.approach_time = Some(approach_time.clone());
         self.fade_in = Some(fade_in.clone());
         self.pushback = Some(pushback.clone());
+        self.half_ghost = Some(half_ghost.clone());
 
         self.update_settings();
     }
@@ -65,6 +70,7 @@ impl NoteSettings {
         self.approach_time.as_mut().unwrap().set_value(settings.note.approach_time as f64);
         self.fade_in.as_mut().unwrap().set_value(settings.note.fade_in as f64);
         self.pushback.as_mut().unwrap().set_pressed(settings.note.pushback);
+        self.half_ghost.as_mut().unwrap().set_pressed(settings.note.half_ghost);
 
         match settings.note.approach_mode  {
             ApproachMode::DistRate => {
@@ -141,6 +147,15 @@ impl NoteSettings {
     fn update_pushback(&mut self, value: bool) {
         unsafe { 
             FLUX.settings.as_mut().unwrap().note.pushback = value;
+            FLUX.settings.as_mut().unwrap().update(false);
+        }
+        self.update_settings();
+    }
+
+    #[func]
+    fn update_half_ghost(&mut self, value: bool) {
+        unsafe {
+            FLUX.settings.as_mut().unwrap().note.half_ghost = value;
             FLUX.settings.as_mut().unwrap().update(false);
         }
         self.update_settings();

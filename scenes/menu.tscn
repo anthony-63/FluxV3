@@ -1064,11 +1064,9 @@ theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_5x3ke")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_ijbli")
 theme_override_styles/tab_focus = SubResource("StyleBoxFlat_rsv41")
 theme_override_styles/panel = SubResource("StyleBoxFlat_ye0bj")
-current_tab = 2
 clip_tabs = false
 
 [node name="Note" type="NoteSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
-visible = false
 layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="Viewports/SettingsMenu/Settings/Tabs/Note"]
@@ -1224,6 +1222,23 @@ offset_bottom = 11.5
 grow_vertical = 2
 text = "Pushback"
 
+[node name="HalfGhost" type="CheckButton" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nrwro")
+
+[node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/HalfGhost"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -11.5
+offset_right = -14.0
+offset_bottom = 11.5
+grow_vertical = 2
+text = "Half Ghost"
+
 [node name="Audio" type="AudioSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
 visible = false
 layout_mode = 2
@@ -1325,6 +1340,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Cursor & Camera" type="CursorSettings" parent="Viewports/SettingsMenu/Settings/Tabs"]
+visible = false
 layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera"]

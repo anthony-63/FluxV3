@@ -48,10 +48,11 @@ impl IMultiMeshInstance3D for NoteRenderer {
 
         if unsafe { FLUX.game.mods.ghost.enabled } {
             self.fade_out = unsafe { FLUX.game.mods.ghost.value as f64 } / 100.;
-        } else {
+        } else if unsafe { FLUX.settings.as_ref().unwrap().note.half_ghost } {
+            self.fade_out = 0.02;
+        }else {
             self.fade_out = 0.;
         }
-
 
         self.sync_manager = Some(sync_manager);
     }
@@ -77,11 +78,21 @@ impl IMultiMeshInstance3D for NoteRenderer {
             let fade_out_start = self.approach_distance * (1. - ghost_amm);
             let fade_out_end = self.approach_distance * (1. - ghost_amm + 0.24);
 
+            let end_clamp;
+
+            if unsafe { FLUX.game.mods.ghost.enabled } {
+                end_clamp = 0.
+            } else if unsafe { FLUX.settings.as_ref().unwrap().note.half_ghost } {
+                end_clamp = 0.2;
+            }else {
+                end_clamp = 1.;
+            }
+
             if self.fade_in != 0. {
                 fade_in = Self::linstep(fade_in_start, fade_in_end, note_distance).powf(1.3 * 2.);
             }
             if self.fade_out != 0. {
-                fade_out = Self::linstep(fade_out_start, fade_out_end, note_distance).powf(1.3 * 2.);
+                fade_out = Self::linstep(fade_out_start, fade_out_end, note_distance).powf(1.3 * 2.).max(end_clamp);
             }
 
             mesh.set_instance_transform(i as i32, Transform3D::new(Basis::IDENTITY, Vector3::new(bound.x as f32 * 2., bound.y as f32 * 2., -note_distance as f32)));

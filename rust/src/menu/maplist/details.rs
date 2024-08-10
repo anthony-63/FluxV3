@@ -126,10 +126,24 @@ impl MapDetails {
                 accuracy.set_text(format!("{:.02}%", score.get_accuracy()).into());
                 misses.set_text(format!("{}", score.misses).into());
                 
-                let mut mod_text = String::from("None");
+                let mut mod_text: String;
+
+                if score.mods_used.speed.enabled || score.mods_used.ghost.enabled || score.mods_used.nofail.enabled {
+                    mod_text = "".into();
+                } else {
+                    mod_text = "None".into();
+                }
 
                 if score.mods_used.speed.enabled {
-                    mod_text = format!("S{}", (score.mods_used.speed.value * 100.).floor());
+                    mod_text = format!("{} S{}", mod_text, (score.mods_used.speed.value * 100.).floor());
+                }
+
+                if score.mods_used.ghost.enabled {
+                    mod_text = format!("{} G{}", mod_text, (score.mods_used.ghost.value).floor());
+                }
+
+                if score.mods_used.nofail.enabled {
+                    mod_text = format!("{} NF", mod_text);
                 }
 
                 mods.set_text(mod_text.into());
