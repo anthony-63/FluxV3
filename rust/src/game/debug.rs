@@ -31,7 +31,6 @@ impl ILabel for DebugLabel {
         let start_process = game.note_manager.as_ref().unwrap().bind().start_process;
         let health = game.health;
         let health_step = game.health_step;
-
         drop(game);
 
         self.base_mut().set_text(format!(

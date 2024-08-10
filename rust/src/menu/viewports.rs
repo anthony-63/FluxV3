@@ -1,4 +1,4 @@
-use godot::{engine::{Button, Control, IControl, InputEvent, Label}, prelude::*};
+use godot::{engine::{AnimationPlayer, Button, Control, IControl, InputEvent, Label}, prelude::*};
 
 use crate::{content::maploader::MapLoader, FLUX};
 use rand::prelude::SliceRandom;
@@ -164,13 +164,25 @@ impl Viewports {
     fn toggle_settings(&mut self) {
         let mut settings_view = self.settings_view.clone().unwrap();
         let is_visible = settings_view.is_visible();
-        settings_view.set_visible(!is_visible);
+        let mut anim: Gd<AnimationPlayer> = self.base().get_node_as::<AnimationPlayer>("Viewports/SettingsMenu/AnimationPlayer");
+        if !is_visible {
+            anim.set_current_animation("show_settings".into());
+            settings_view.bind_mut().closing = false;
+            settings_view.set_visible(true);
+        } else {
+            anim.set_current_animation("hide_settings".into());
+            settings_view.bind_mut().closing = true;
+        }
+        anim.play();
     }
 
     #[func]
     fn close_settings(&mut self) {
         let mut settings_view = self.settings_view.clone().unwrap();
-        settings_view.set_visible(false);
+        let mut anim = self.base().get_node_as::<AnimationPlayer>("Viewports/SettingsMenu/AnimationPlayer");
+        anim.set_current_animation("hide_settings".into());
+        settings_view.bind_mut().closing = true;
+        anim.play();
     }
 
     #[func]

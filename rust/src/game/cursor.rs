@@ -102,12 +102,10 @@ impl INode3D for Cursor {
             if self.spin {
                 let camera = self.camera.as_mut().unwrap();
                 camera.set_rotation_degrees(Vector3::new(self.pitch, self.yaw, 0.));
-
-                let camera_trans = camera.get_global_transform();
+                
                 let basis = camera.get_global_basis();
-
-                let look = Vector3::new(basis.rows[0].z, basis.rows[1].z, basis.rows[2].z);
-
+                let look = Vector3::new(basis.rows[0].z, basis.rows[1].z, basis.rows[2].z);                
+                let camera_trans = camera.get_global_transform();
                 let pos_vec = Vector2::new(camera_trans.origin.x, camera_trans.origin.y);
                 self.position = pos_vec - Vector2::new(look.x, look.y) * (camera_trans.origin.z / look.z);
             } else {

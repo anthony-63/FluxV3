@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://dkq7fb6lkop1u"]
+[gd_scene load_steps=62 format=3 uid="uid://dkq7fb6lkop1u"]
 
 [ext_resource type="Texture2D" uid="uid://3g74uwcr6hlx" path="res://assets/skins/Default/backgrounds/animegril.jpg" id="1_sru2r"]
 [ext_resource type="Texture2D" uid="uid://dyyxki7tebp4x" path="res://assets/skins/Default/singleplayerbutton.png" id="1_ufmdi"]
@@ -341,6 +341,42 @@ LineEdit/styles/normal = SubResource("StyleBoxFlat_klbtd")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_1uru2")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j2bqa"]
+
+[sub_resource type="Animation" id="Animation_6dlpo"]
+resource_name = "show_settings"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Settings:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.9),
+"transitions": PackedFloat32Array(0.203063, 4.43828),
+"update": 0,
+"values": [Vector2(-358, 459), Vector2(-358, -197)]
+}
+
+[sub_resource type="Animation" id="Animation_abn31"]
+resource_name = "hide_settings"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Settings:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(2.63902, 1),
+"update": 0,
+"values": [Vector2(-358, -196.999), Vector2(-358, 459.001)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uchbo"]
+_data = {
+"hide_settings": SubResource("Animation_abn31"),
+"show_settings": SubResource("Animation_6dlpo")
+}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqxjy"]
 bg_color = Color(0.0562916, 0.0562916, 0.0562916, 1)
@@ -1033,9 +1069,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -358.0
-offset_top = -197.0
+offset_top = 459.0
 offset_right = 358.0
-offset_bottom = 197.0
+offset_bottom = 852.998
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_13b3q")
@@ -1506,6 +1542,11 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_j2bqa")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_j2bqa")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_j2bqa")
 text = "X"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Viewports/SettingsMenu"]
+libraries = {
+"": SubResource("AnimationLibrary_uchbo")
+}
 
 [node name="TopPanel" type="Panel" parent="."]
 layout_mode = 1
