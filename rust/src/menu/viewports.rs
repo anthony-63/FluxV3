@@ -115,6 +115,10 @@ impl IControl for Viewports {
 impl Viewports {
     #[func]
     fn change_to_maplist(&mut self) {
+        let settings_view = self.settings_view.clone().unwrap();
+        if settings_view.is_visible() {
+            self.toggle_settings();
+        }
         self.change_visibility(false, true);
     }
 
