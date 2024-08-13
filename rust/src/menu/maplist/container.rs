@@ -135,7 +135,7 @@ impl IGridContainer for MapContainer {
 #[godot_api]
 impl MapContainer {
     #[func]
-    pub fn selected_map(&mut self, mapset: Gd<BeatmapSet>, map: Gd<Beatmap>, restart_music: bool) {
+    pub fn selected_map(&mut self, mapset: Gd<BeatmapSet>, map: Gd<Beatmap>) {
         unsafe {
             FLUX.game.selected_map = Some(map.clone());
             FLUX.game.selected_mapset = Some(mapset.clone());
@@ -158,16 +158,14 @@ impl MapContainer {
             play_button.set_text("BROKEN".into());
             play_button.set_disabled(true);
         } else {
-            if restart_music {
-                self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
-                self.audio_player.as_mut().unwrap().seek(start_from_slider.get_value() as f32);
-                unsafe {
-                    if FLUX.game.mods.speed.enabled {
-                        self.audio_player.as_mut().unwrap().set_pitch_scale(FLUX.game.mods.speed.value);
-                    }
-                    self.audio_player.as_mut().unwrap().seek(FLUX.game.start_from as f32);
+            self.audio_player.as_mut().unwrap().set_stream(map_audio.unwrap());
+            self.audio_player.as_mut().unwrap().play();
+            self.audio_player.as_mut().unwrap().seek(start_from_slider.get_value() as f32);
+            unsafe {
+                if FLUX.game.mods.speed.enabled {
+                    self.audio_player.as_mut().unwrap().set_pitch_scale(FLUX.game.mods.speed.value);
                 }
-                self.audio_player.as_mut().unwrap().play();
+                self.audio_player.as_mut().unwrap().seek(FLUX.game.start_from as f32);
             }
             play_button.set_text("Play".into());
             play_button.set_disabled(false);

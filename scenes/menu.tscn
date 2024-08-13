@@ -347,14 +347,14 @@ resource_name = "hide_settings"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Settings:position")
+tracks/0/path = NodePath("Settings:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(2.63902, 1),
+"transitions": PackedFloat32Array(0.189464, 1),
 "update": 0,
-"values": [Vector2(-358, -196.999), Vector2(-358, 459.001)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_6dlpo"]
@@ -362,14 +362,14 @@ resource_name = "show_settings"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Settings:position")
+tracks/0/path = NodePath("Settings:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.9),
-"transitions": PackedFloat32Array(0.203063, 4.43828),
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.217638, 1),
 "update": 0,
-"values": [Vector2(-358, 459), Vector2(-358, -197)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uchbo"]
@@ -1062,6 +1062,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Settings" type="Panel" parent="Viewports/SettingsMenu"]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1167,6 +1168,7 @@ theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
 alignment = 1
+suffix = "m/s"
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/Rate"]
 layout_mode = 1
@@ -1187,6 +1189,7 @@ theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
 alignment = 1
+suffix = "s"
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/Time"]
 layout_mode = 1
@@ -1207,6 +1210,7 @@ theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
 alignment = 1
+suffix = "m"
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/Distance"]
 layout_mode = 1
@@ -1436,6 +1440,7 @@ theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
 alignment = 1
+suffix = "x"
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer/AbsoluteScale"]
 layout_mode = 1

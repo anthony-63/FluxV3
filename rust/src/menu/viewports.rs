@@ -65,7 +65,7 @@ impl IControl for Viewports {
     
                 let mut container = self.maplist_view.as_mut().unwrap().get_node_as::<MapContainer>("MapList/Container");
                 
-                container.bind_mut().selected_map(unsafe { FLUX.game.selected_mapset.clone().unwrap() }, unsafe { FLUX.game.selected_map.clone().unwrap() }, true);
+                container.bind_mut().selected_map(unsafe { FLUX.game.selected_mapset.clone().unwrap() }, unsafe { FLUX.game.selected_map.clone().unwrap() });
 
                 unsafe { FLUX.maplist.should_open_details = false; }
             } else {
@@ -92,8 +92,8 @@ impl IControl for Viewports {
                         if FLUX.game.mods.speed.enabled {
                             music.set_pitch_scale(FLUX.game.mods.speed.value);
                         }
-                        music.seek(FLUX.game.start_from as f32);
                         music.play();
+                        music.seek(FLUX.game.start_from as f32);
                     }
                 }
             }
@@ -145,7 +145,7 @@ impl Viewports {
     fn open_map(&mut self) {
         self.change_visibility(false, true);
         let mut map_container = self.base_mut().get_node_as::<MapContainer>("Viewports/Maplist/MapList/Container");
-        map_container.bind_mut().selected_map(unsafe{ FLUX.game.selected_mapset.clone().unwrap() }, unsafe { FLUX.game.selected_map.clone().unwrap() }, false);
+        map_container.bind_mut().selected_map(unsafe{ FLUX.game.selected_mapset.clone().unwrap() }, unsafe { FLUX.game.selected_map.clone().unwrap() });
     }
 
     #[func]
