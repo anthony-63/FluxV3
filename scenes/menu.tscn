@@ -1167,7 +1167,6 @@ size_flags_horizontal = 0
 theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
-alignment = 1
 suffix = "m/s"
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/Rate"]
@@ -1188,7 +1187,6 @@ size_flags_horizontal = 0
 theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
-alignment = 1
 suffix = "s"
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/Time"]
@@ -1209,7 +1207,6 @@ size_flags_horizontal = 0
 theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
-alignment = 1
 suffix = "m"
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/Distance"]
@@ -1230,7 +1227,6 @@ size_flags_horizontal = 0
 theme = SubResource("Theme_nrwro")
 step = 0.01
 value = 50.0
-alignment = 1
 suffix = "%"
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Note/GridContainer/Approach/VBoxContainer/FadeIn"]
@@ -1419,7 +1415,6 @@ size_flags_horizontal = 0
 theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
-alignment = 1
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer/Sensitivity"]
 layout_mode = 1
@@ -1439,7 +1434,6 @@ size_flags_horizontal = 0
 theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
-alignment = 1
 suffix = "x"
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer/AbsoluteScale"]
@@ -1462,7 +1456,6 @@ theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
 value = 10.0
-alignment = 1
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer/Parallax"]
 layout_mode = 1
@@ -1483,7 +1476,6 @@ theme = SubResource("Theme_nrwro")
 max_value = 1000.0
 step = 0.01
 value = 70.0
-alignment = 1
 
 [node name="Label" type="Label" parent="Viewports/SettingsMenu/Settings/Tabs/Cursor & Camera/GridContainer/Cursor/VBoxContainer/FOV"]
 layout_mode = 1

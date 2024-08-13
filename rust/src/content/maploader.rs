@@ -52,6 +52,10 @@ impl MapLoader {
             
             unsafe {
                 FLUX.maps.loaded_mapsets.push(BeatmapSet::from_folder(Path::new(&folder_path).with_extension("").to_str().unwrap().to_string()));
+                if FLUX.maps.loaded_mapsets.len() < 2 {
+                    FLUX.game.selected_mapset = Some(Gd::from_object(FLUX.maps.loaded_mapsets[0].clone()));
+                    FLUX.game.selected_map = Some(Gd::from_object(FLUX.game.selected_mapset.as_ref().unwrap().bind().difficulties[0].clone()));
+                }
             }
         }
     }

@@ -133,7 +133,7 @@ impl Viewports {
 
     #[func]
     fn toggle_music(&mut self) {
-        let mut music = self.base().get_node_as::<AudioStreamPlayer>("Music");
+        let mut music: Gd<AudioStreamPlayer> = self.base().get_node_as::<AudioStreamPlayer>("Music");
         if music.is_playing() {
             music.set_stream_paused(true);
         } else {
