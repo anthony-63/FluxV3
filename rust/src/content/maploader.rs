@@ -10,6 +10,8 @@ impl MapLoader {
     pub fn load_all_from_dir(path: String, update_label: fn(String, usize, usize, Arc<Mutex<StartupInternal>>), internal: Arc<Mutex<StartupInternal>>) {
         godot_print!("loading all maps from {}", path);
 
+        update_label("No maps".into(), 1, 1, internal.clone());
+
         let map_count = std::fs::read_dir(path.clone()).unwrap().count();
         let map_folders = std::fs::read_dir(path).unwrap();
 

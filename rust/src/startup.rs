@@ -1,4 +1,4 @@
-use std::{sync::{Arc, Mutex}, thread};
+use std::{path::Path, sync::{Arc, Mutex}, thread};
 
 use discord_rich_presence::{DiscordIpc, DiscordIpcClient};
 use godot::{engine::{Label, Os, ProgressBar, Time}, prelude::*};
@@ -91,6 +91,8 @@ impl INode for Startup {
 
         set_activity(flux_activity().details("Starting Up"));
 
+        Self::setup_filesystem(Os::singleton().get_user_data_dir().to_string());
+        
         let internal = Arc::clone(&self.internal);
         thread::spawn(|| {
             Self::run_load(internal);
@@ -141,5 +143,15 @@ impl Startup {
         MapLoader::load_all_from_dir(format!("{}/maps", user_dir), update_label, internal);
         let end = time.get_ticks_usec();
         godot_print!("Loaded maps in {}ms", (end - start) / 1000);
+    }
+}
+
+impl Startup {
+    fn setup_filesystem(user_dir: String) {
+        let map_dir = format!("{}/maps", user_dir);
+        
+        if !Path::new(&map_dir).exists() {
+            std::fs::create_dir(map_dir).expect("Failed to create maps dir");
+        }
     }
 }
