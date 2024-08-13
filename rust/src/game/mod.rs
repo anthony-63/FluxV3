@@ -109,18 +109,18 @@ impl Game {
     fn try_start(&mut self) {
         let sync_manager = self.sync_manager.as_ref().unwrap().bind();
 
+        if !self.started_notes {
+            self.note_manager.as_mut().unwrap().bind_mut().load_notes(self.loaded_map.as_ref().unwrap().bind().notes.clone());
+            self.note_manager.as_mut().unwrap().call("start".into(), &[]);
+            self.started_notes = true;
+        }
+        
         if !self.started_audio {
             drop(sync_manager);
             
             self.sync_manager.as_mut().unwrap().call("start".into(), &[(unsafe { FLUX.game.start_from - 1. }).to_variant()]);
 
             self.started_audio = true;
-        }
-
-        if !self.started_notes {
-            self.note_manager.as_mut().unwrap().bind_mut().load_notes(self.loaded_map.as_ref().unwrap().bind().notes.clone());
-            self.note_manager.as_mut().unwrap().call("start".into(), &[]);
-            self.started_notes = true;
         }
     }
 
