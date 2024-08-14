@@ -5,8 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://bow41ovi3ktl0" path="res://prefabs/righthud.tscn" id="3_5me73"]
 [ext_resource type="PackedScene" uid="uid://gi3jmg8gqxa" path="res://prefabs/lefthud.tscn" id="4_662rr"]
 [ext_resource type="PackedScene" uid="uid://ea4do71tdqtl" path="res://prefabs/health.tscn" id="5_eivlr"]
-[ext_resource type="ArrayMesh" path="res://assets/skins/DefaultToCopy/mesh.obj" id="5_oqkyy"]
 [ext_resource type="AudioStream" uid="uid://llu1appq4j4r" path="res://assets/skins/Default/hit.mp3" id="6_46wqm"]
+[ext_resource type="ArrayMesh" uid="uid://bb4k165orjql6" path="res://assets/skins/Default/mesh.obj" id="6_edhgp"]
 
 [sub_resource type="Environment" id="Environment_ur1ql"]
 background_mode = 1
@@ -38,7 +38,7 @@ vertex_color_is_srgb = true
 transform_format = 1
 use_colors = true
 instance_count = 1
-mesh = ExtResource("5_oqkyy")
+mesh = ExtResource("6_edhgp")
 buffer = PackedFloat32Array(0, 0, 0, 0.7, 8.5, 146.5, 0, 0, 0, 0.7, 9.5, 147.5, 0, 0, 0, 0.699707)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7wv0u"]
@@ -109,7 +109,6 @@ value = 3.0
 [node name="NoteManager" type="NoteManager" parent="."]
 
 [node name="NoteRenderer" type="NoteRenderer" parent="NoteManager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.15)
 layers = 2
 sorting_offset = 1.0
 material_override = SubResource("StandardMaterial3D_haxa0")
