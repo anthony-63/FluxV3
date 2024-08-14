@@ -65,7 +65,7 @@ impl IControl for Viewports {
     
                 let mut container = self.maplist_view.as_mut().unwrap().get_node_as::<MapContainer>("MapList/Container");
                 
-                container.bind_mut().selected_map(unsafe { FLUX.game.selected_mapset.clone().unwrap() }, unsafe { FLUX.game.selected_map.clone().unwrap() });
+                container.bind_mut().selected_map(unsafe { FLUX.game.selected_mapset.clone().unwrap() }, unsafe { FLUX.game.selected_map.clone().unwrap() }, true);
 
                 unsafe { FLUX.maplist.should_open_details = false; }
             } else {
@@ -145,7 +145,7 @@ impl Viewports {
     fn open_map(&mut self) {
         self.change_visibility(false, true);
         let mut map_container = self.base_mut().get_node_as::<MapContainer>("Viewports/Maplist/MapList/Container");
-        map_container.bind_mut().selected_map(unsafe{ FLUX.game.selected_mapset.clone().unwrap() }, unsafe { FLUX.game.selected_map.clone().unwrap() });
+        map_container.bind_mut().selected_map(unsafe{ FLUX.game.selected_mapset.clone().unwrap() }, unsafe { FLUX.game.selected_map.clone().unwrap() }, false);
     }
 
     #[func]

@@ -53,9 +53,9 @@ impl MapButton {
     pub fn run_selected_map(&mut self) {
         let mapset = self.mapset.clone().to_variant();
         let map = self.map.clone().to_variant();
-        self.base_mut().emit_signal("selected_map".into(), &[mapset, map]);
+        self.base_mut().emit_signal("selected_map".into(), &[mapset, map, true.to_variant()]);
     }
 
     #[signal]
-    pub fn selected_map(mapset: Gd<BeatmapSet>, map: Gd<Beatmap>);
+    pub fn selected_map(mapset: Gd<BeatmapSet>, map: Gd<Beatmap>, restart_music: bool);
 }
